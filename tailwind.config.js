@@ -28,6 +28,17 @@ module.exports = {
           'ink':         '#0A2E33',
           'ink-mute':    '#46686C',
         },
+        // ── Agency dark palette ──
+        agency: {
+          'black':       '#0a0a0a',
+          'dark':        '#111111',
+          'gray':        '#1a1a1a',
+          'muted':       '#2a2a2a',
+          'sand':        '#c9b99a',
+          'sand-light':  '#d9cdb2',
+          'sand-muted':  '#a09078',
+          'cream':       '#f5f0e6',
+        },
         border: "hsl(var(--border))",
         input: "hsl(var(--input))",
         ring: "hsl(var(--ring))",
@@ -82,6 +93,11 @@ module.exports = {
       boxShadow: {
         xs: "0 1px 2px 0 rgb(0 0 0 / 0.05)",
       },
+      fontFamily: {
+        'display': ['"Playfair Display"', 'serif'],
+        'sans': ['Inter', 'sans-serif'],
+        'mono': ['"JetBrains Mono"', 'monospace'],
+      },
       keyframes: {
         "accordion-down": {
           from: { height: "0" },
@@ -95,11 +111,32 @@ module.exports = {
           "0%,70%,100%": { opacity: "1" },
           "20%,50%": { opacity: "0" },
         },
+        "glitch-bar": {
+          "0%, 100%": { transform: "translateX(0)", opacity: "0.8" },
+          "10%": { transform: "translateX(-2px)", opacity: "1" },
+          "20%": { transform: "translateX(2px)", opacity: "0.6" },
+          "30%": { transform: "translateX(0)", opacity: "0.9" },
+          "40%": { transform: "translateX(-1px)", opacity: "0.7" },
+          "50%": { transform: "translateX(1px)", opacity: "1" },
+          "60%": { transform: "translateX(0)", opacity: "0.8" },
+        },
+        "text-flicker": {
+          "0%, 100%": { opacity: "1" },
+          "3%": { opacity: "0.8" },
+          "6%": { opacity: "1" },
+          "7%": { opacity: "0.9" },
+          "9%": { opacity: "1" },
+          "87%": { opacity: "1" },
+          "89%": { opacity: "0.85" },
+          "91%": { opacity: "1" },
+        },
       },
       animation: {
         "accordion-down": "accordion-down 0.2s ease-out",
         "accordion-up": "accordion-up 0.2s ease-out",
         "caret-blink": "caret-blink 1.25s ease-out infinite",
+        "glitch-bar": "glitch-bar 3s ease-in-out infinite",
+        "text-flicker": "text-flicker 4s ease-in-out infinite",
       },
     },
   },
