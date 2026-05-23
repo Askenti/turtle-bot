@@ -1,0 +1,624 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --background: 0 0% 100%;
+    --foreground: 240 10% 3.9%;
+    --card: 0 0% 100%;
+    --card-foreground: 240 10% 3.9%;
+    --popover: 0 0% 100%;
+    --popover-foreground: 240 10% 3.9%;
+    --primary: 240 5.9% 10%;
+    --primary-foreground: 0 0% 98%;
+    --secondary: 240 4.8% 95.9%;
+    --secondary-foreground: 240 5.9% 10%;
+    --muted: 240 4.8% 95.9%;
+    --muted-foreground: 240 3.8% 46.1%;
+    --accent: 240 4.8% 95.9%;
+    --accent-foreground: 240 5.9% 10%;
+    --destructive: 0 84.2% 60.2%;
+    --destructive-foreground: 0 0% 98%;
+    --border: 240 5.9% 90%;
+    --input: 240 5.9% 90%;
+    --ring: 240 5.9% 10%;
+    --radius: 0.625rem;
+
+    /* ── WARDEN Hotel × Robotics palette ── */
+    --teal-deep:   #051E22;
+    --teal-dark:   #0A2E33;
+    --teal:        #103E42;
+    --teal-mid:    #155A60;
+    --teal-light:  #1F8189;
+    --beige:       #F5F0E6;
+    --beige-warm:  #EDE3D0;
+    --beige-soft:  #E2D7BE;
+    --beige-mute:  #A89A82;
+    --cyan:        #00F0FF;
+    --cyan-bright: #66F7FF;
+    --cyan-soft:   #3DD9E6;
+    --cyan-dim:    #1A8B94;
+    --cyan-glow:   rgba(0, 240, 255, 0.18);
+    --ink:         #0A2E33;
+    --ink-mute:    #46686C;
+
+    /* Legacy aliases used by existing component CSS */
+    --teal-medium: var(--teal);
+    --beige-dark:  var(--beige-warm);
+    --cyan-light:  var(--cyan-bright);
+    --cyan-muted:  rgba(0, 240, 255, 0.15);
+  }
+
+  body {
+    font-family: 'Inter', sans-serif;
+    background-color: var(--teal-deep);
+    color: var(--beige);
+    overflow-x: hidden;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+}
+
+/* ============================================
+   SEAMLESS SECTION TRANSITIONS
+   ============================================ */
+.section-bridge {
+  position: relative;
+}
+.section-bridge::before,
+.section-bridge::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  right: 0;
+  height: 60px;
+  pointer-events: none;
+  z-index: 5;
+}
+.section-bridge.from-teal::before {
+  top: -1px;
+  background: linear-gradient(to bottom, var(--teal-dark) 0%, transparent 100%);
+}
+.section-bridge.to-teal::after {
+  bottom: -1px;
+  background: linear-gradient(to top, var(--teal-dark) 0%, transparent 100%);
+}
+.section-bridge.from-beige::before {
+  top: -1px;
+  background: linear-gradient(to bottom, var(--beige) 0%, transparent 100%);
+}
+.section-bridge.to-beige::after {
+  bottom: -1px;
+  background: linear-gradient(to top, var(--beige) 0%, transparent 100%);
+}
+
+/* Cyan LED text glow helper */
+.text-cyan-glow {
+  color: var(--cyan);
+  text-shadow: 0 0 8px rgba(0, 240, 255, 0.4);
+}
+
+/* ============================================
+   ORBITRON DISPLAY FONT — for big wordmarks & cinematic numerals
+   ============================================ */
+.font-display {
+  font-family: 'Orbitron', 'Inter', sans-serif;
+  letter-spacing: 0.04em;
+}
+
+/* Status indicator (terminal green) */
+.status-ok {
+  color: #00ff88;
+  text-shadow: 0 0 6px rgba(0, 255, 136, 0.5);
+}
+
+/* ============================================
+   BOOT SEQUENCE ANIMATIONS
+   ============================================ */
+@keyframes bootFadeIn {
+  from { opacity: 0; transform: translateY(10px); }
+  to   { opacity: 1; transform: none; }
+}
+@keyframes bootGlowIn {
+  from {
+    opacity: 0;
+    letter-spacing: 0.3em;
+    filter: blur(8px);
+  }
+  to {
+    opacity: 1;
+    letter-spacing: 0.06em;
+    filter: blur(0);
+  }
+}
+@keyframes scrollPulse {
+  0%, 100% { opacity: 0.3; transform: translate(-50%, 0); }
+  50%      { opacity: 1;   transform: translate(-50%, 4px); }
+}
+@keyframes scanlineDrift {
+  from { background-position: 0 0; }
+  to   { background-position: 0 8px; }
+}
+
+.boot-line {
+  opacity: 0;
+  animation: bootFadeIn 0.5s ease forwards;
+}
+.boot-line:nth-child(1) { animation-delay: 0.20s; }
+.boot-line:nth-child(2) { animation-delay: 0.60s; }
+.boot-line:nth-child(3) { animation-delay: 1.00s; }
+.boot-line:nth-child(4) { animation-delay: 1.40s; }
+
+.boot-title {
+  opacity: 0;
+  animation: bootGlowIn 0.9s cubic-bezier(0.22, 1, 0.36, 1) 1.80s forwards;
+}
+.boot-after-title {
+  opacity: 0;
+  animation: bootFadeIn 0.6s ease forwards;
+}
+.boot-after-title.delay-1 { animation-delay: 2.40s; }
+.boot-after-title.delay-2 { animation-delay: 2.70s; }
+.boot-after-title.delay-3 { animation-delay: 3.00s; }
+.boot-after-title.delay-4 { animation-delay: 3.30s; }
+
+.scroll-pulse {
+  animation: scrollPulse 2s ease-in-out infinite;
+}
+
+/* ============================================
+   CINEMATIC PORTRAIT (NAV//X-style)
+   ============================================ */
+.cine-portrait {
+  position: relative;
+  scroll-snap-align: center;
+}
+
+/* HUD bracket corners */
+.cine-portrait .bracket {
+  position: absolute;
+  width: 18px;
+  height: 18px;
+  border-color: var(--cyan);
+  opacity: 0.7;
+  transition: opacity 0.4s ease, border-color 0.4s ease;
+}
+.cine-portrait:hover .bracket,
+.cine-portrait:focus-within .bracket {
+  opacity: 1;
+}
+.cine-portrait .bracket.tl { top: -4px; left: -4px;  border-top: 2px solid; border-left: 2px solid; }
+.cine-portrait .bracket.tr { top: -4px; right: -4px; border-top: 2px solid; border-right: 2px solid; }
+.cine-portrait .bracket.bl { bottom: -4px; left: -4px;  border-bottom: 2px solid; border-left: 2px solid; }
+.cine-portrait .bracket.br { bottom: -4px; right: -4px; border-bottom: 2px solid; border-right: 2px solid; }
+
+/* Scan-line texture on portrait image */
+.cine-portrait .scanlines {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background-image: repeating-linear-gradient(
+    0deg,
+    rgba(0, 240, 255, 0.06) 0px,
+    rgba(0, 240, 255, 0.06) 1px,
+    transparent 1px,
+    transparent 3px
+  );
+  mix-blend-mode: screen;
+  animation: scanlineDrift 4s linear infinite;
+}
+
+/* Initials placeholder with B&W cinematic gradient */
+.cine-portrait .initials-placeholder {
+  background:
+    radial-gradient(ellipse at 30% 25%, rgba(255,255,255,0.12), transparent 55%),
+    linear-gradient(135deg, #1a2326 0%, #0a1416 60%, #050a0c 100%);
+  filter: grayscale(1) contrast(1.15);
+}
+
+/* ── Focus & blur (Cleo-inspired) state ── */
+.cine-portrait {
+  outline: none;
+  transition:
+    transform 500ms cubic-bezier(0.22, 1, 0.36, 1),
+    filter   500ms cubic-bezier(0.22, 1, 0.36, 1),
+    opacity  500ms cubic-bezier(0.22, 1, 0.36, 1);
+  will-change: transform, filter, opacity;
+}
+.cine-portrait[data-state="dimmed"] {
+  filter: blur(3px) saturate(0.8);
+  opacity: 0.5;
+  transform: scale(0.97);
+}
+.cine-portrait[data-state="locked"] {
+  transform: scale(1.04);
+  z-index: 20;
+}
+.cine-portrait[data-state="locked"] .bracket {
+  opacity: 1;
+  border-color: var(--cyan-bright);
+  filter: drop-shadow(0 0 6px rgba(0, 240, 255, 0.7));
+  width: 22px;
+  height: 22px;
+}
+
+/* Top sweep — appears across the locked portrait */
+@keyframes sweepDown {
+  0%   { top: 0%;   opacity: 0; }
+  8%   { opacity: 1; }
+  92%  { opacity: 1; }
+  100% { top: 100%; opacity: 0; }
+}
+.cine-portrait[data-state="locked"] .sweep-line {
+  animation: sweepDown 2.2s ease-in-out infinite;
+}
+.sweep-line {
+  position: absolute;
+  left: 0;
+  right: 0;
+  height: 2px;
+  background: linear-gradient(to right, transparent, var(--cyan), transparent);
+  box-shadow: 0 0 10px rgba(0, 240, 255, 0.8);
+  opacity: 0;
+  pointer-events: none;
+  top: 0;
+}
+
+/* Status uplink chip — slides up from card bottom when locked */
+.uplink-chip {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: -10px;
+  opacity: 0;
+  transform: translateY(8px);
+  transition:
+    opacity 350ms ease 60ms,
+    transform 350ms cubic-bezier(0.22, 1, 0.36, 1) 60ms;
+  pointer-events: none;
+}
+.cine-portrait[data-state="locked"] .uplink-chip {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* Horizontal scroll container */
+.cine-rail {
+  display: flex;
+  gap: 1.5rem;
+  overflow-x: auto;
+  scroll-snap-type: x mandatory;
+  scroll-padding-inline: 12vw;
+  padding-inline: 12vw;
+  padding-block: 2rem 3rem;
+  scrollbar-width: none;
+}
+.cine-rail::-webkit-scrollbar { display: none; }
+.cine-rail > * { flex: 0 0 280px; }
+
+@media (min-width: 768px) {
+  .cine-rail > * { flex: 0 0 320px; }
+}
+
+/* Serif & Mono Fonts */
+.font-serif {
+  font-family: 'Playfair Display', serif;
+}
+
+.font-mono {
+  font-family: 'JetBrains Mono', monospace;
+}
+
+/* ============================================
+   IMMERSIVE HOTEL ROOM DOORS
+   ============================================ */
+.room-door-frame {
+  perspective: 1200px;
+  position: relative;
+  background-color: var(--teal-dark);
+  border: 1px solid var(--teal-medium);
+  border-radius: 12px;
+  overflow: hidden;
+  height: 380px;
+  box-shadow: 0 10px 30px rgba(8, 44, 48, 0.15);
+}
+
+.room-door {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(135deg, #0f4045, #082528);
+  border: 6px solid #0d383d;
+  border-radius: 8px;
+  z-index: 20;
+  transition: transform 1.2s cubic-bezier(0.25, 1, 0.5, 1), box-shadow 0.8s ease;
+  transform-origin: left center;
+  box-shadow: inset 0 0 20px rgba(0, 0, 0, 0.6), 0 5px 15px rgba(0, 0, 0, 0.3);
+  padding: 24px;
+  display: flex;
+  flex-col: justify-between;
+}
+
+.room-door-frame:hover .room-door {
+  transform: rotateY(-105deg);
+  box-shadow: 15px 0 30px rgba(0, 0, 0, 0.7);
+}
+
+.room-door-plaque {
+  background: radial-gradient(circle, #20626a, #0b2f33);
+  border: 2px solid var(--cyan);
+  box-shadow: 0 0 10px rgba(0, 240, 255, 0.3);
+  border-radius: 4px;
+  padding: 8px 16px;
+  text-align: center;
+  width: 90px;
+  margin: 0 auto;
+}
+
+.keycard-reader {
+  width: 20px;
+  height: 32px;
+  background: #111111;
+  border-radius: 3px;
+  position: absolute;
+  right: 16px;
+  top: 50%;
+  transform: translateY(-50%);
+  border: 1px solid #222222;
+  box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.8);
+}
+
+.keycard-led {
+  width: 6px;
+  height: 6px;
+  border-radius: 9999px;
+  background-color: #EF4444;
+  margin: 5px auto 0;
+  box-shadow: 0 0 4px #EF4444;
+  transition: background-color 0.4s ease, box-shadow 0.4s ease;
+}
+
+.room-door-frame:hover .keycard-led {
+  background-color: var(--cyan);
+  box-shadow: 0 0 10px var(--cyan);
+}
+
+.room-interior {
+  position: relative;
+  z-index: 10;
+  height: 100%;
+  width: 100%;
+  background-color: #051a1c;
+  color: var(--beige);
+  padding: 32px 24px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+/* ============================================
+   3D FLIP PORTRAIT CARD
+   ============================================ */
+.luxury-frame-wrap {
+  perspective: 1200px;
+  transform-origin: top center;
+}
+
+.swing-target {
+  transform-origin: top center;
+}
+
+.luxury-frame-wrap:hover .swing-target {
+  animation: frameSwing 1.6s ease-in-out;
+}
+
+.card-3d {
+  transition: transform 0.7s cubic-bezier(0.4, 0, 0.2, 1);
+  transform-style: preserve-3d;
+}
+
+.luxury-frame-wrap:hover .card-3d {
+  transform: rotateY(180deg);
+}
+
+.card-front,
+.card-back {
+  backface-visibility: hidden;
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+}
+
+.card-back {
+  transform: rotateY(180deg);
+}
+
+@keyframes frameSwing {
+  0% { transform: rotate(0deg); }
+  20% { transform: rotate(6deg); }
+  40% { transform: rotate(-5deg); }
+  60% { transform: rotate(2deg); }
+  80% { transform: rotate(-1deg); }
+  100% { transform: rotate(0deg); }
+}
+
+/* ============================================
+   ANIMATION REVEALS
+   ============================================ */
+.animate-subtitle {
+  opacity: 0;
+  transform: translateY(20px);
+}
+
+.animate-subtitle.revealed {
+  animation: subtitleReveal 0.6s ease forwards;
+}
+
+@keyframes subtitleReveal {
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.animate-flipcard {
+  opacity: 0;
+  transform: perspective(800px) rotateX(-90deg);
+  transform-origin: center bottom;
+}
+
+.animate-flipcard.revealed {
+  animation: flipReveal 0.8s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+}
+
+@keyframes flipReveal {
+  to {
+    opacity: 1;
+    transform: perspective(800px) rotateX(0deg);
+  }
+}
+
+.animate-content {
+  opacity: 0;
+  transform: translateY(30px);
+}
+
+.animate-content.revealed {
+  animation: contentReveal 0.6s ease forwards;
+}
+
+@keyframes contentReveal {
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.stagger-card {
+  opacity: 0;
+  transform: translateY(30px);
+}
+
+.stagger-card.revealed {
+  animation: staggerReveal 0.6s ease forwards;
+}
+
+.stagger-card.revealed:nth-child(1) { animation-delay: 0ms; }
+.stagger-card.revealed:nth-child(2) { animation-delay: 100ms; }
+.stagger-card.revealed:nth-child(3) { animation-delay: 200ms; }
+.stagger-card.revealed:nth-child(4) { animation-delay: 300ms; }
+.stagger-card.revealed:nth-child(5) { animation-delay: 400ms; }
+.stagger-card.revealed:nth-child(6) { animation-delay: 500ms; }
+.stagger-card.revealed:nth-child(7) { animation-delay: 600ms; }
+.stagger-card.revealed:nth-child(8) { animation-delay: 700ms; }
+.stagger-card.revealed:nth-child(9) { animation-delay: 800ms; }
+
+/* ============================================
+   RECEPTION PORTRAIT CARDS
+   ============================================ */
+.reception-card {
+  opacity: 0;
+  transform: translateY(20px);
+  transition: opacity 0.5s ease, transform 0.5s ease;
+}
+
+.reception-card.revealed {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+
+@keyframes staggerReveal {
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* ============================================
+   ELEVATOR CONTROL PANEL BUTTONS
+   ============================================ */
+.floor-button {
+  width: 42px;
+  height: 42px;
+  border-radius: 9999px;
+  border: 2px solid var(--teal-medium);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.8rem;
+  font-weight: 700;
+  font-family: 'JetBrains Mono', monospace;
+  color: var(--teal-light);
+  background: radial-gradient(circle, #0e4045, #051d20);
+  cursor: pointer;
+  box-shadow: inset 0 2px 4px rgba(255,255,255,0.05), 0 4px 8px rgba(0,0,0,0.4);
+  transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+}
+
+.floor-button:hover {
+  border-color: var(--cyan);
+  color: var(--cyan);
+  box-shadow: 0 0 12px rgba(0, 240, 255, 0.4), inset 0 1px 2px rgba(255,255,255,0.1);
+}
+
+.floor-button.active {
+  background: radial-gradient(circle, #00f0ff, #008fa0);
+  border-color: var(--cyan-light);
+  color: #082c30;
+  box-shadow: 0 0 20px var(--cyan), 0 0 5px rgba(0, 240, 255, 0.5);
+  text-shadow: 0 1px 2px rgba(255,255,255,0.5);
+}
+
+/* ============================================
+   SCROLLBAR STYLING
+   ============================================ */
+::-webkit-scrollbar {
+  width: 10px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--teal-dark);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--teal-medium);
+  border: 2px solid var(--teal-dark);
+  border-radius: 5px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--cyan);
+}
+
+/* ============================================
+   REDUCED MOTION
+   ============================================ */
+@media (prefers-reduced-motion: reduce) {
+  .luxury-frame-wrap:hover .swing-target {
+    animation: none;
+  }
+
+  .card-3d {
+    transition: none;
+  }
+
+  .room-door {
+    transition: none;
+  }
+
+  .room-door-frame:hover .room-door {
+    transform: none;
+  }
+
+  .animate-subtitle,
+  .animate-flipcard,
+  .animate-content,
+  .stagger-card {
+    opacity: 1;
+    transform: none;
+    animation: none;
+  }
+}
