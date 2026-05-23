@@ -1,10 +1,9 @@
 import { useEffect, useState } from 'react';
 
 const navLinks = [
-  { label: 'The Challenge', href: '#problem' },
-  { label: 'Our Solution', href: '#solution' },
-  { label: 'Our Team', href: '#team' },
-  { label: 'Market', href: '#market' },
+  { label: 'Work', href: '#solution' },
+  { label: 'About', href: '#team' },
+  { label: 'Contact', href: '#footer' },
 ];
 
 export default function Header() {
@@ -12,7 +11,7 @@ export default function Header() {
 
   useEffect(() => {
     const onScroll = () => {
-      setScrolled(window.scrollY > 100);
+      setScrolled(window.scrollY > 50);
     };
     window.addEventListener('scroll', onScroll, { passive: true });
     return () => window.removeEventListener('scroll', onScroll);
@@ -33,36 +32,49 @@ export default function Header() {
   return (
     <header
       className={`
-        fixed top-0 left-0 right-0 z-40 transition-all duration-500
-        ${scrolled ? 'bg-warden-teal-deep/95 backdrop-blur-md border-b border-warden-cyan/20 shadow-[0_4px_20px_rgba(0,240,255,0.08)]' : 'bg-transparent border-b border-transparent'}
+        fixed top-0 left-0 right-0 z-50 transition-all duration-500
+        ${scrolled ? 'py-4' : 'py-6 md:py-8'}
       `}
+      style={{ 
+        backgroundColor: scrolled ? 'rgba(10, 10, 10, 0.95)' : 'transparent',
+        backdropFilter: scrolled ? 'blur(10px)' : 'none',
+      }}
     >
-      <div className="max-w-[1200px] mx-auto px-6 py-4 flex justify-between items-center">
-        {/* Logo */}
-        <div className="font-serif text-2xl text-warden-beige tracking-wider font-bold">
-          WARDEN <span className="text-xs font-mono text-warden-cyan uppercase tracking-normal ml-1 text-cyan-glow">Hotel</span>
-        </div>
+      <div className="w-full px-8 md:px-16 lg:px-24 flex justify-between items-center">
+        {/* Logo - left side */}
+        <a 
+          href="#hero"
+          onClick={(e) => handleNavClick(e, '#hero')}
+          className="font-display text-lg md:text-xl tracking-[0.2em] uppercase font-bold transition-colors duration-300 hover:opacity-70"
+          style={{ color: '#c9b99a' }}
+        >
+          Warden
+        </a>
 
-        {/* Nav links - desktop only */}
-        <nav className="hidden md:flex gap-10">
+        {/* Nav links - right side, minimal */}
+        <nav className="hidden md:flex items-center gap-10">
           {navLinks.map((link) => (
             <a
               key={link.href}
               href={link.href}
               onClick={(e) => handleNavClick(e, link.href)}
-              className="text-sm text-warden-beige/80 hover:text-warden-cyan transition-colors duration-300 font-medium"
+              className="text-xs tracking-[0.2em] uppercase font-mono transition-all duration-300 hover:opacity-100"
+              style={{ color: 'rgba(201, 185, 154, 0.6)' }}
+              onMouseEnter={(e) => { e.currentTarget.style.color = '#c9b99a'; }}
+              onMouseLeave={(e) => { e.currentTarget.style.color = 'rgba(201, 185, 154, 0.6)'; }}
             >
               {link.label}
             </a>
           ))}
         </nav>
 
-        {/* CTA button */}
-        <button
-          onClick={(e) => handleNavClick(e as unknown as React.MouseEvent<HTMLAnchorElement>, '#hero')}
-          className="hidden md:block px-5 py-2 border border-warden-cyan text-warden-cyan rounded hover:bg-warden-cyan hover:text-warden-teal-deep transition-all duration-300 text-sm font-semibold tracking-wide shadow-[0_0_15px_rgba(0,240,255,0.15)] hover:shadow-[0_0_25px_rgba(0,240,255,0.5)]"
+        {/* Mobile menu indicator */}
+        <button 
+          className="md:hidden text-xs tracking-[0.2em] uppercase font-mono"
+          style={{ color: 'rgba(201, 185, 154, 0.6)' }}
+          aria-label="Menu"
         >
-          Check-In Desk
+          Menu
         </button>
       </div>
     </header>

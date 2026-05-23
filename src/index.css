@@ -43,6 +43,15 @@
     --ink:         #0A2E33;
     --ink-mute:    #46686C;
 
+    /* ── Agency dark palette ── */
+    --agency-black: #0a0a0a;
+    --agency-dark: #111111;
+    --agency-gray: #1a1a1a;
+    --agency-muted: #2a2a2a;
+    --agency-sand: #c9b99a;
+    --agency-sand-light: #d9cdb2;
+    --agency-sand-muted: #a09078;
+
     /* Legacy aliases used by existing component CSS */
     --teal-medium: var(--teal);
     --beige-dark:  var(--beige-warm);
@@ -52,8 +61,8 @@
 
   body {
     font-family: 'Inter', sans-serif;
-    background-color: var(--teal-deep);
-    color: var(--beige);
+    background-color: var(--agency-black);
+    color: var(--agency-sand);
     overflow-x: hidden;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
@@ -103,8 +112,15 @@
    ORBITRON DISPLAY FONT — for big wordmarks & cinematic numerals
    ============================================ */
 .font-display {
-  font-family: 'Orbitron', 'Inter', sans-serif;
-  letter-spacing: 0.04em;
+  font-family: 'Playfair Display', serif;
+  letter-spacing: -0.02em;
+}
+
+/* Agency display - distressed serif style */
+.font-agency-display {
+  font-family: 'Playfair Display', serif;
+  letter-spacing: -0.02em;
+  font-weight: 900;
 }
 
 /* Status indicator (terminal green) */
