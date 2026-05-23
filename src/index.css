@@ -184,6 +184,28 @@
 }
 
 /* ============================================
+   HERO ENTRANCE — CSS-only fade-in
+   (replaces the old useState/useEffect mounted pattern,
+    which violated react-hooks/set-state-in-effect)
+   ============================================ */
+@keyframes heroUp {
+  from { opacity: 0; transform: translateY(1.5rem); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+@keyframes heroFade {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+.hero-up {
+  opacity: 0;
+  animation: heroUp 900ms cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+.hero-fade {
+  opacity: 0;
+  animation: heroFade 700ms ease both;
+}
+
+/* ============================================
    CINEMATIC PORTRAIT (NAV//X-style)
    ============================================ */
 .cine-portrait {
