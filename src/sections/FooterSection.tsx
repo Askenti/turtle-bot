@@ -1,6 +1,6 @@
 export default function FooterSection() {
   return (
-    <footer className="bg-warden-teal-deep py-12 border-t border-warden-cyan/15 relative overflow-hidden">
+    <footer id="footer" className="bg-warden-teal-deep py-12 border-t border-warden-cyan/15 relative overflow-hidden">
       <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[300px] h-px bg-gradient-to-r from-transparent via-warden-cyan to-transparent" />
 
       <div className="max-w-[1200px] mx-auto px-6 text-center relative z-10">

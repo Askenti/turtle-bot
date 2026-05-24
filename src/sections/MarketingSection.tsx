@@ -1,5 +1,6 @@
 import { useEffect, useRef } from 'react';
-import FluidShader, { type ShaderPalette } from '../components/FluidShader';
+import FluidShader from '../components/FluidShader';
+import type { ShaderPalette } from '../data/shader-palettes';
 
 /** Warmer marketing-section palette — slightly more amber than the
  *  default BEIGE_PALETTE so the section reads as a step warmer
