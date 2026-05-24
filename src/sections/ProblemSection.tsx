@@ -1,5 +1,6 @@
 import { useEffect, useRef } from 'react';
 import BlueprintOverlay from '../components/BlueprintOverlay';
+import WardenCard from '../components/WardenCard';
 
 const problems = [
   {
@@ -15,6 +16,7 @@ const problems = [
     title: 'Hidden Camera Epidemic',
     description:
       "Severe spycam ('Molka') threats in hospitality spaces across South Korea and expanding globally. Guest privacy is at critical risk.",
+    label: 'THREAT_CRITICAL',
   },
   {
     icon: (
@@ -27,6 +29,7 @@ const problems = [
     title: 'Manual Inspection Failures',
     description:
       'Human-error prone manual checks by overloaded hotel staff. Inconsistent quality and missed threats compromise guest safety.',
+    label: 'SYS_FAILURE',
   },
   {
     icon: (
@@ -40,6 +43,7 @@ const problems = [
     title: 'Delayed Response Times',
     description:
       'Disconnect between security discovery and immediate response. Critical incidents lack real-time communication systems.',
+    label: 'LATENCY_HIGH',
   },
 ];
 
@@ -105,17 +109,19 @@ export default function ProblemSection() {
           The Problem Hotels <span className="italic text-warden-cyan-dim">Face Today</span>
         </h2>
 
-        {/* Cards */}
+        {/* Cards - now using WardenCard */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-10">
-          {problems.map((problem) => (
-            <div
+          {problems.map((problem, i) => (
+            <WardenCard
               key={problem.title}
-              className="stagger-card bg-warden-beige-warm rounded-xl p-8 border border-warden-beige-soft shadow-lg shadow-warden-teal-deep/5 hover:-translate-y-1 hover:border-warden-cyan/50 hover:shadow-[0_10px_30px_rgba(0,240,255,0.15)] transition-all duration-300"
+              label={problem.label}
+              className="stagger-card"
+              scanInterval={6000 + i * 2000}
             >
               <div className="mb-5">{problem.icon}</div>
               <h3 className="font-serif text-xl text-warden-ink mb-3">{problem.title}</h3>
               <p className="text-sm text-warden-ink-mute leading-relaxed">{problem.description}</p>
-            </div>
+            </WardenCard>
           ))}
         </div>
       </div>

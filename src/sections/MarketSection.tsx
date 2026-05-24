@@ -1,23 +1,24 @@
 import { useEffect, useRef } from 'react';
 import BlueprintOverlay from '../components/BlueprintOverlay';
+import WardenCard from '../components/WardenCard';
 
 const marketCards = [
   {
-    label: 'Beachhead Market',
+    label: 'TARGET_ZONE',
     title: 'Incheon Business Hotels',
     description:
       'Strategic focus on 3-5★ hotels in Songdo and Incheon Airport zone. Initial deployment target: approximately 140 hotels.',
     featured: false,
   },
   {
-    label: 'Global Market Size',
+    label: 'MARKET_DATA',
     title: '$24.38B',
     description:
       'Projected hospitality robotics market volume with 17.89% CAGR through 2032.',
     featured: true,
   },
   {
-    label: 'Value Drivers',
+    label: 'VALUE_PROP',
     title: 'WARDEN Verified Badge',
     description:
       'Enhanced guest trust through privacy verification and automatic integration on booking aggregators.',
@@ -109,19 +110,18 @@ export default function MarketSection() {
           Market Opportunity & <span className="italic text-warden-cyan-dim">Strategy</span>
         </h2>
 
-        {/* Market cards */}
+        {/* Market cards - now using WardenCard */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-16">
-          {marketCards.map((card) => (
-            <div
+          {marketCards.map((card, i) => (
+            <WardenCard
               key={card.label}
-              className={`
-                stagger-card bg-warden-beige-warm rounded-xl p-8 border border-warden-beige-soft
-                hover:-translate-y-0.5 hover:border-warden-cyan/50 hover:shadow-[0_8px_25px_rgba(0,240,255,0.12)] transition-all duration-300
-                ${card.featured ? 'border-l-4 border-l-warden-cyan' : ''}
-              `}
+              label={card.label}
+              featured={card.featured}
+              className="stagger-card"
+              scanInterval={7000 + i * 1500}
             >
               <p className="font-mono text-xs text-warden-cyan-dim uppercase tracking-widest mb-3">
-                {card.label}
+                {card.label.replace('_', ' ')}
               </p>
               <h3 className={`font-serif mb-3 ${card.featured ? 'text-3xl text-warden-ink' : 'text-lg text-warden-ink'}`}>
                 {card.title}
@@ -129,16 +129,40 @@ export default function MarketSection() {
               <p className="text-sm text-warden-ink-mute leading-relaxed">
                 {card.description}
               </p>
-            </div>
+            </WardenCard>
           ))}
         </div>
 
-        {/* Comparison Table */}
+        {/* Comparison Table - also wrapped in glassmorphic style */}
         <div className="animate-content overflow-x-auto">
-          <div className="bg-warden-beige-warm rounded-xl border border-warden-beige-soft shadow-sm overflow-hidden min-w-[600px]">
-            <table className="w-full">
+          <div
+            className="warden-card rounded-xl overflow-hidden min-w-[600px]"
+            style={{
+              background: 'rgba(237, 227, 208, 0.06)',
+              backdropFilter: 'blur(12px)',
+              WebkitBackdropFilter: 'blur(12px)',
+              border: '1px solid rgba(226, 215, 190, 0.12)',
+              boxShadow: `
+                inset 1px 1px 0 rgba(255, 255, 255, 0.06),
+                inset -1px -1px 0 rgba(0, 0, 0, 0.08),
+                0 4px 20px rgba(0, 0, 0, 0.12)
+              `,
+            }}
+          >
+            {/* Corner brackets for table */}
+            <div className="absolute top-2 left-2 w-4 h-4 border-t-2 border-l-2 border-warden-cyan/20 pointer-events-none" />
+            <div className="absolute top-2 right-2 w-4 h-4 border-t-2 border-r-2 border-warden-cyan/20 pointer-events-none" />
+            <div className="absolute bottom-2 left-2 w-4 h-4 border-b-2 border-l-2 border-warden-cyan/20 pointer-events-none" />
+            <div className="absolute bottom-2 right-2 w-4 h-4 border-b-2 border-r-2 border-warden-cyan/20 pointer-events-none" />
+
+            {/* Technical label */}
+            <span className="absolute top-3 right-8 font-mono text-[9px] tracking-[0.15em] uppercase text-warden-beige-mute/50">
+              [COMPETITIVE_ANALYSIS]
+            </span>
+
+            <table className="w-full relative z-10">
               <thead>
-                <tr className="bg-warden-beige-soft/60">
+                <tr style={{ background: 'rgba(226, 215, 190, 0.08)' }}>
                   <th className="text-left p-4 font-mono text-xs text-warden-ink-mute uppercase tracking-wider">
                     Feature / Parameter
                   </th>
@@ -148,14 +172,14 @@ export default function MarketSection() {
                   <th className="text-center p-4 font-mono text-xs text-warden-ink-mute uppercase tracking-wider">
                     Keenon T10
                   </th>
-                  <th className="text-center p-4 font-mono text-xs text-warden-cyan-dim uppercase tracking-wider bg-warden-cyan/[0.08]">
+                  <th className="text-center p-4 font-mono text-xs text-warden-cyan-dim uppercase tracking-wider" style={{ background: 'rgba(0, 240, 255, 0.06)' }}>
                     WARDEN (Our Solution)
                   </th>
                 </tr>
               </thead>
               <tbody>
                 {comparisonRows.map((row, i) => (
-                  <tr key={row.feature} className={i % 2 === 0 ? 'bg-warden-beige-warm' : 'bg-warden-beige/50'}>
+                  <tr key={row.feature} style={{ background: i % 2 === 0 ? 'rgba(237, 227, 208, 0.04)' : 'transparent' }}>
                     <td className="p-4 text-sm font-semibold text-warden-ink">{row.feature}</td>
                     <td className="text-center p-4">
                       {typeof row.puda === 'boolean' ? (
@@ -173,7 +197,7 @@ export default function MarketSection() {
                         <span className="text-sm text-warden-ink-mute">{row.keenon}</span>
                       )}
                     </td>
-                    <td className="text-center p-4 bg-warden-cyan/[0.06]">
+                    <td className="text-center p-4" style={{ background: 'rgba(0, 240, 255, 0.04)' }}>
                       {row.wardenText ? (
                         <span className="text-sm font-semibold text-warden-ink">{row.wardenText}</span>
                       ) : (
