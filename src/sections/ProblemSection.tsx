@@ -1,4 +1,5 @@
 import { useEffect, useRef } from 'react';
+import BlueprintOverlay from '../components/BlueprintOverlay';
 
 const problems = [
   {
@@ -80,6 +81,9 @@ export default function ProblemSection() {
           backgroundSize: '32px 32px',
         }}
       />
+
+      {/* Hotel floor-plan blueprint — faint cyan lines at very low opacity */}
+      <BlueprintOverlay opacity={0.045} />
 
       <div className="max-w-[1200px] mx-auto relative z-10">
         {/* Floor indicator */}

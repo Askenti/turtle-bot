@@ -4,24 +4,22 @@ import { useEffect, useState } from 'react';
  * PageLoader — a hotel revolving door that spins while the page boots.
  *
  * Phases:
- *   loading (0–1500ms)   — door spins continuously
- *   opening (1500–2200ms) — door speeds up, fades out, status text dissolves
- *   done    (2200ms+)     — calls onComplete; parent unmounts the loader
+ *   loading (0–1800ms)   — door spins continuously
+ *   opening (1800–2800ms) — door speeds up, zooms through
+ *   done    (2800ms+)     — calls onComplete; parent unmounts the loader
  *
- * The 3D geometry lives in CSS (see .door-rig in index.css). Four glass
- * panels are arranged at 0°/90°/180°/270° around a center pole; the
- * whole rig rotates on the Y axis under perspective, so panels glide in
- * and out of view the way a real revolving door does.
+ * The 3D geometry is a classic 4-panel revolving door with proper perspective,
+ * glass panels, and frame elements that create an immersive hotel entrance.
  */
 export default function PageLoader({ onComplete }: { onComplete?: () => void }) {
   const [phase, setPhase] = useState<'loading' | 'opening' | 'done'>('loading');
 
   useEffect(() => {
-    const t1 = window.setTimeout(() => setPhase('opening'), 1500);
+    const t1 = window.setTimeout(() => setPhase('opening'), 1800);
     const t2 = window.setTimeout(() => {
       setPhase('done');
       onComplete?.();
-    }, 2200);
+    }, 2800);
     return () => {
       window.clearTimeout(t1);
       window.clearTimeout(t2);
@@ -31,34 +29,72 @@ export default function PageLoader({ onComplete }: { onComplete?: () => void }) 
   if (phase === 'done') return null;
 
   return (
-    <div className={`page-loader ${phase}`} aria-hidden="true">
-      {/* Subtle floor reflection halo */}
-      <div className="loader-halo" />
+    <div className={`page-loader-v2 ${phase}`} aria-hidden="true">
+      {/* Background atmosphere */}
+      <div className="loader-atmosphere" />
+      
+      {/* Floor reflection */}
+      <div className="loader-floor-reflection" />
 
-      {/* The revolving door rig */}
-      <div className="door-rig">
-        <div className="door-spinner">
-          <div className="door-panel"><span className="door-mullion" /></div>
-          <div className="door-panel"><span className="door-mullion" /></div>
-          <div className="door-panel"><span className="door-mullion" /></div>
-          <div className="door-panel"><span className="door-mullion" /></div>
+      {/* The revolving door assembly */}
+      <div className="revolving-door-wrapper">
+        {/* Outer frame / housing */}
+        <div className="door-housing">
+          {/* Left curved wall */}
+          <div className="door-wall door-wall-left" />
+          {/* Right curved wall */}
+          <div className="door-wall door-wall-right" />
+          {/* Top arc frame */}
+          <div className="door-frame-top" />
         </div>
-        {/* Center pole behind the panels */}
-        <div className="door-pole" />
-        {/* Floor disk under the door */}
-        <div className="door-floor" />
+
+        {/* The spinning door rig */}
+        <div className="revolving-door-rig">
+          <div className="revolving-door-spinner">
+            {/* Four glass panels */}
+            <div className="revolving-panel panel-1">
+              <div className="panel-glass">
+                <div className="panel-frame" />
+                <div className="panel-reflection" />
+              </div>
+            </div>
+            <div className="revolving-panel panel-2">
+              <div className="panel-glass">
+                <div className="panel-frame" />
+                <div className="panel-reflection" />
+              </div>
+            </div>
+            <div className="revolving-panel panel-3">
+              <div className="panel-glass">
+                <div className="panel-frame" />
+                <div className="panel-reflection" />
+              </div>
+            </div>
+            <div className="revolving-panel panel-4">
+              <div className="panel-glass">
+                <div className="panel-frame" />
+                <div className="panel-reflection" />
+              </div>
+            </div>
+            {/* Center pole */}
+            <div className="revolving-center-pole" />
+          </div>
+        </div>
+
+        {/* Floor circle */}
+        <div className="door-floor-circle" />
       </div>
 
       {/* Status readout */}
-      <div className="loader-status">
-        <span className="loader-dot" />
-        <span className="loader-label">
-          {phase === 'opening' ? 'Access Granted' : 'Securing Entry'}
+      <div className="loader-status-v2">
+        <span className="status-indicator" />
+        <span className="status-text">
+          {phase === 'opening' ? 'Welcome' : 'Preparing Entry'}
         </span>
       </div>
 
-      {/* Faint brand wordmark in the corner */}
-      <div className="loader-brand">[ WARDEN ]</div>
+      {/* Brand mark */}
+      <div className="loader-brand-v2">WARDEN</div>
     </div>
   );
 }
