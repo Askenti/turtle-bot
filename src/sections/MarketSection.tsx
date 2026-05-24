@@ -1,4 +1,5 @@
 import { useEffect, useRef } from 'react';
+import BlueprintOverlay from '../components/BlueprintOverlay';
 
 const marketCards = [
   {
@@ -87,6 +88,9 @@ export default function MarketSection() {
           backgroundSize: '32px 32px',
         }}
       />
+
+      {/* Hotel floor-plan blueprint — faint cyan lines at very low opacity */}
+      <BlueprintOverlay opacity={0.04} />
 
       <div className="max-w-[1200px] mx-auto relative z-10">
         <div className="animate-subtitle flex items-center gap-4 mb-3">
