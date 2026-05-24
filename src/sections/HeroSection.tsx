@@ -1,17 +1,3 @@
-/**
- * Glitch-bar parameters — randomized ONCE at module load, not on every
- * render. The previous version called Math.random() inside the JSX,
- * which violates react-hooks/purity and produces a different set of
- * bars on every re-render (visual jitter you can sometimes catch).
- */
-const GLITCH_BARS = Array.from({ length: 25 }, (_, i) => ({
-  left:     (i * 4) + Math.random() * 2,
-  width:    1 + Math.random() * 2,
-  opacity:  0.15 + Math.random() * 0.25,
-  duration: 3 + Math.random() * 2,
-  delay:    Math.random() * 3,
-}));
-
 export default function HeroSection() {
   const handleExplore = (e: React.MouseEvent<HTMLAnchorElement>) => {
     e.preventDefault();
@@ -26,25 +12,24 @@ export default function HeroSection() {
   return (
     <section
       id="hero"
-      className="min-h-screen relative flex items-center overflow-hidden"
-      style={{ backgroundColor: '#0a0a0a' }}
+      className="hero-shader min-h-screen relative flex items-center overflow-hidden"
     >
-      {/* Vertical glitch bars overlay - subtle and tasteful */}
-      <div className="absolute inset-0 pointer-events-none z-20 overflow-hidden">
-        {GLITCH_BARS.map((bar, i) => (
-          <div
-            key={i}
-            className="absolute top-0 bottom-0"
-            style={{
-              left: `${bar.left}%`,
-              width: `${bar.width}px`,
-              backgroundColor: '#0a0a0a',
-              opacity: bar.opacity,
-              animation: `glitch-bar ${bar.duration}s ease-in-out infinite`,
-              animationDelay: `${bar.delay}s`,
-            }}
-          />
-        ))}
+      {/* ── Wave shader background ──
+          Three stacked SVG sine-waves drifting at different speeds.
+          Each layer uses a wider-than-viewport path and translates
+          horizontally; when the translation equals one period the
+          loop is visually seamless. Different blur values give the
+          layers a sense of depth, like looking through water. */}
+      <div className="hero-waves absolute inset-0 pointer-events-none z-0" aria-hidden="true">
+        <svg className="hero-wave hero-wave-1" viewBox="0 0 2880 320" preserveAspectRatio="none">
+          <path d="M0,160 C240,80 480,240 720,160 C960,80 1200,240 1440,160 C1680,80 1920,240 2160,160 C2400,80 2640,240 2880,160 L2880,320 L0,320 Z" />
+        </svg>
+        <svg className="hero-wave hero-wave-2" viewBox="0 0 2880 320" preserveAspectRatio="none">
+          <path d="M0,200 C240,120 480,280 720,200 C960,120 1200,280 1440,200 C1680,120 1920,280 2160,200 C2400,120 2640,280 2880,200 L2880,320 L0,320 Z" />
+        </svg>
+        <svg className="hero-wave hero-wave-3" viewBox="0 0 2880 320" preserveAspectRatio="none">
+          <path d="M0,240 C240,180 480,300 720,240 C960,180 1200,300 1440,240 C1680,180 1920,300 2160,240 C2400,180 2640,300 2880,240 L2880,320 L0,320 Z" />
+        </svg>
       </div>
 
       {/* Content container */}
