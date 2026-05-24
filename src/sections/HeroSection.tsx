@@ -65,44 +65,6 @@ export default function HeroSection() {
         ))}
       </div>
 
-      {/* ── Robot image ── */}
-      <div
-        className={`absolute right-0 top-1/2 -translate-y-1/2 w-[55vw] h-[90vh] transition-all duration-1000 ease-out ${
-          mounted ? 'opacity-100 translate-x-[15%]' : 'opacity-0 translate-x-[25%]'
-        }`}
-        style={{ transitionDelay: '0.3s', zIndex: 15 }}
-      >
-        <img
-          src="/hero-robot.jpg"
-          alt="WARDEN Hotel Guardian Robot"
-          className="w-full h-full object-cover object-center"
-          style={{
-            filter: 'grayscale(20%) contrast(1.1) brightness(0.85)',
-            maskImage:
-              'linear-gradient(to left, transparent 0%, rgba(0,0,0,0.6) 20%, black 45%)',
-            WebkitMaskImage:
-              'linear-gradient(to left, transparent 0%, rgba(0,0,0,0.6) 20%, black 45%)',
-          }}
-        />
-        {/* Cyan teal tint overlay on image */}
-        <div
-          className="absolute inset-0 pointer-events-none"
-          style={{
-            background:
-              'linear-gradient(135deg, rgba(0,60,60,0.25) 0%, transparent 60%)',
-            mixBlendMode: 'multiply',
-          }}
-        />
-        {/* Scan lines on robot */}
-        <div
-          className="absolute inset-0 pointer-events-none opacity-[0.12]"
-          style={{
-            backgroundImage:
-              'repeating-linear-gradient(0deg, transparent 0px, transparent 3px, rgba(0,229,204,0.15) 3px, rgba(0,229,204,0.15) 4px)',
-          }}
-        />
-      </div>
-
       {/* ── Content ── */}
       <div className="relative z-30 w-full px-8 md:px-16 lg:px-24">
         <div className="max-w-[1400px]">
