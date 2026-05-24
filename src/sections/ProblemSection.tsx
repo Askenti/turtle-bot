@@ -1,6 +1,7 @@
 import { useEffect, useRef } from 'react';
 import BlueprintOverlay from '../components/BlueprintOverlay';
-import FluidShader, { BEIGE_PALETTE } from '../components/FluidShader';
+import FluidShader from '../components/FluidShader';
+import { BEIGE_PALETTE } from '../data/shader-palettes';
 
 const problems = [
   {

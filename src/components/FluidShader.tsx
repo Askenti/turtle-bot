@@ -1,19 +1,5 @@
 import { useEffect, useRef } from 'react';
-
-/**
- * RGB triplet in 0..1 space (GLSL-ready).
- */
-export type ShaderRGB = readonly [number, number, number];
-
-/**
- * Three-colour palette: a base, a mid-tone the fluid drifts toward, and a
- * "streak" colour for the highlight veins.
- */
-export interface ShaderPalette {
-  deep:      ShaderRGB;
-  mid:       ShaderRGB;
-  highlight: ShaderRGB;
-}
+import { TEAL_PALETTE, type ShaderPalette } from '../data/shader-palettes';
 
 interface FluidShaderProps {
   className?: string;
@@ -26,20 +12,6 @@ interface FluidShaderProps {
   /** Solid CSS fallback when WebGL is unavailable. */
   fallbackBackground?: string;
 }
-
-// ─── Default palettes (export so sections can compose) ───────────────────────
-export const TEAL_PALETTE: ShaderPalette = {
-  deep:      [0.016, 0.118, 0.118], // #041e1e
-  mid:       [0.039, 0.200, 0.200], // #0a3333
-  highlight: [0.000, 0.898, 0.800], // #00e5cc cyan streak
-};
-
-/** Warm cream-and-sand for beige sections — "luxury hotel marble" feel. */
-export const BEIGE_PALETTE: ShaderPalette = {
-  deep:      [0.961, 0.941, 0.902], // #F5F0E6 — section base
-  mid:       [0.910, 0.859, 0.761], // #E8DBC2 — soft sand
-  highlight: [0.722, 0.596, 0.373], // #B8985F — warm honey vein
-};
 
 /**
  * FluidShader — WebGL canvas rendering a flowing two-tone fluid with a
@@ -200,16 +172,28 @@ export default function FluidShader({
     gl.uniform1f(uStreakOpacity, streakOpacity);
     gl.uniform1f(uVignette,      vignetteStrength);
 
+    // ── DPR cap — mobile gets 1×, desktop up to 1.5× ──
+    // Cuts mobile pixel cost by ~55% with no visible quality loss for fluid noise.
+    const dprCap = window.innerWidth < 768 ? 1.0 : 1.5;
+
     const resize = () => {
-      canvas.width  = canvas.offsetWidth  * Math.min(window.devicePixelRatio, 1.5);
-      canvas.height = canvas.offsetHeight * Math.min(window.devicePixelRatio, 1.5);
+      const dpr = Math.min(window.devicePixelRatio, dprCap);
+      canvas.width  = canvas.offsetWidth  * dpr;
+      canvas.height = canvas.offsetHeight * dpr;
       gl!.viewport(0, 0, canvas.width, canvas.height);
     };
     const ro = new ResizeObserver(resize);
     ro.observe(canvas);
     resize();
 
+    // ── Visibility-gated render loop ──
+    // Pauses the WebGL render whenever the canvas leaves the viewport — the
+    // single biggest perf win when 4 shaders coexist on one page. Rapid
+    // scrolling no longer makes off-screen canvases burn the GPU.
+    let isVisible = false;
+    let isTabVisible = !document.hidden;
     const start = performance.now();
+
     const render = () => {
       const t = (performance.now() - start) / 1000;
       gl!.uniform1f(uTime, t);
@@ -217,11 +201,41 @@ export default function FluidShader({
       gl!.drawArrays(gl!.TRIANGLES, 0, 6);
       rafRef.current = requestAnimationFrame(render);
     };
-    rafRef.current = requestAnimationFrame(render);
+
+    const startLoop = () => {
+      if (rafRef.current) return; // already running
+      rafRef.current = requestAnimationFrame(render);
+    };
+    const stopLoop = () => {
+      if (!rafRef.current) return;
+      cancelAnimationFrame(rafRef.current);
+      rafRef.current = 0;
+    };
+
+    // Watch the canvas's viewport visibility
+    const io = new IntersectionObserver(
+      ([entry]) => {
+        isVisible = entry.isIntersecting;
+        if (isVisible && isTabVisible) startLoop();
+        else                            stopLoop();
+      },
+      { threshold: 0 }
+    );
+    io.observe(canvas);
+
+    // Also pause when the browser tab is hidden — saves battery on idle tabs.
+    const onTabVisibility = () => {
+      isTabVisible = !document.hidden;
+      if (isVisible && isTabVisible) startLoop();
+      else                            stopLoop();
+    };
+    document.addEventListener('visibilitychange', onTabVisibility);
 
     return () => {
-      cancelAnimationFrame(rafRef.current);
+      stopLoop();
+      io.disconnect();
       ro.disconnect();
+      document.removeEventListener('visibilitychange', onTabVisibility);
       gl!.deleteProgram(prog);
     };
     // Re-run when palette or intensity changes.
