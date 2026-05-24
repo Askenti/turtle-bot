@@ -1,5 +1,6 @@
 import { useEffect, useRef } from 'react';
 import BlueprintOverlay from '../components/BlueprintOverlay';
+import FluidShader, { BEIGE_PALETTE } from '../components/FluidShader';
 
 const problems = [
   {
@@ -73,6 +74,17 @@ export default function ProblemSection() {
       id="problem"
       className="relative bg-warden-beige py-24 px-6 overflow-hidden"
     >
+      {/* Cream-marble fluid shader — warm cream → sand → honey vein.
+          opacity-60 lets the section's beige show through so the marble
+          feels like a watermark instead of taking over. */}
+      <FluidShader
+        className="absolute inset-0 w-full h-full opacity-60 pointer-events-none"
+        palette={BEIGE_PALETTE}
+        streakOpacity={0.05}
+        vignetteStrength={0.5}
+        fallbackBackground="linear-gradient(160deg, #F5F0E6 0%, #EDE3D0 50%, #F5F0E6 100%)"
+      />
+
       {/* Soft beige texture */}
       <div
         className="absolute inset-0 opacity-50 pointer-events-none"

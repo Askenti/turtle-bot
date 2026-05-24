@@ -1,11 +1,61 @@
 import { useEffect, useRef } from 'react';
 
 /**
- * FluidShader — WebGL canvas rendering a deep-teal ocean surface with
- * slow-moving light-interference streaks. Falls back gracefully to a CSS
- * animated gradient if WebGL is unavailable.
+ * RGB triplet in 0..1 space (GLSL-ready).
  */
-export default function FluidShader({ className }: { className?: string }) {
+export type ShaderRGB = readonly [number, number, number];
+
+/**
+ * Three-colour palette: a base, a mid-tone the fluid drifts toward, and a
+ * "streak" colour for the highlight veins.
+ */
+export interface ShaderPalette {
+  deep:      ShaderRGB;
+  mid:       ShaderRGB;
+  highlight: ShaderRGB;
+}
+
+interface FluidShaderProps {
+  className?: string;
+  /** Palette of three colours. Defaults to the deep-teal hero palette. */
+  palette?: ShaderPalette;
+  /** Opacity multiplier for the streak/vein highlight (0..1). Defaults to 0.15. */
+  streakOpacity?: number;
+  /** Strength of the corner vignette (0..1). Defaults to 0.9. */
+  vignetteStrength?: number;
+  /** Solid CSS fallback when WebGL is unavailable. */
+  fallbackBackground?: string;
+}
+
+// ─── Default palettes (export so sections can compose) ───────────────────────
+export const TEAL_PALETTE: ShaderPalette = {
+  deep:      [0.016, 0.118, 0.118], // #041e1e
+  mid:       [0.039, 0.200, 0.200], // #0a3333
+  highlight: [0.000, 0.898, 0.800], // #00e5cc cyan streak
+};
+
+/** Warm cream-and-sand for beige sections — "luxury hotel marble" feel. */
+export const BEIGE_PALETTE: ShaderPalette = {
+  deep:      [0.961, 0.941, 0.902], // #F5F0E6 — section base
+  mid:       [0.910, 0.859, 0.761], // #E8DBC2 — soft sand
+  highlight: [0.722, 0.596, 0.373], // #B8985F — warm honey vein
+};
+
+/**
+ * FluidShader — WebGL canvas rendering a flowing two-tone fluid with a
+ * highlight "streak" colour drifting across it. Falls back to a CSS
+ * gradient if WebGL is unavailable.
+ *
+ * The palette is driven by uniforms so the same engine renders both the
+ * deep-teal hero background and the warm cream marble of beige sections.
+ */
+export default function FluidShader({
+  className,
+  palette = TEAL_PALETTE,
+  streakOpacity = 0.15,
+  vignetteStrength = 0.9,
+  fallbackBackground = 'linear-gradient(160deg, #041e1e 0%, #062a2a 40%, #0a3333 70%, #041e1e 100%)',
+}: FluidShaderProps) {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const rafRef = useRef<number>(0);
 
@@ -14,7 +64,7 @@ export default function FluidShader({ className }: { className?: string }) {
     if (!canvas) return;
 
     const gl = canvas.getContext('webgl') || canvas.getContext('experimental-webgl') as WebGLRenderingContext | null;
-    if (!gl) return; // CSS fallback handles it
+    if (!gl) return;
 
     // ── Vertex shader ──────────────────────────────────────────────────────
     const vsSource = `
@@ -25,21 +75,25 @@ export default function FluidShader({ className }: { className?: string }) {
     `;
 
     // ── Fragment shader ────────────────────────────────────────────────────
-    // Simulates slow ocean-surface light diffusion with layered sin waves.
-    // Three colour bands: deep teal base, mid teal swirl, cyan streak at ~15%.
+    // Flowing fBm-warped noise, blended between three palette colours.
+    // Colours and intensities come in via uniforms so this same shader
+    // serves both the teal hero and the beige marble panels.
     const fsSource = `
       precision highp float;
 
       uniform float u_time;
       uniform vec2  u_resolution;
+      uniform vec3  u_deep;
+      uniform vec3  u_mid;
+      uniform vec3  u_streak;
+      uniform float u_streakOpacity;
+      uniform float u_vignette;
 
-      // ── Noise helpers ──────────────────────────────────────────────────
       vec2 hash2(vec2 p) {
         p = vec2(dot(p, vec2(127.1, 311.7)), dot(p, vec2(269.5, 183.3)));
         return fract(sin(p) * 43758.5453);
       }
 
-      // Smooth value noise [0,1]
       float noise(vec2 p) {
         vec2 i = floor(p);
         vec2 f = fract(p);
@@ -53,7 +107,6 @@ export default function FluidShader({ className }: { className?: string }) {
         return 0.5 + 0.5 * mix(mix(a, b, u.x), mix(c, d, u.x), u.y);
       }
 
-      // Fractal Brownian Motion — 4 octaves
       float fbm(vec2 p) {
         float v = 0.0;
         float amp = 0.5;
@@ -68,12 +121,10 @@ export default function FluidShader({ className }: { className?: string }) {
 
       void main() {
         vec2 uv = gl_FragCoord.xy / u_resolution;
-        // Aspect-correct and centre the UVs
         vec2 st = uv * vec2(u_resolution.x / u_resolution.y, 1.0);
 
-        float t = u_time * 0.055; // very slow drift
+        float t = u_time * 0.055;
 
-        // ── Base fluid warp ───────────────────────────────────────────────
         vec2 q = vec2(fbm(st + vec2(0.0, 0.0)),
                       fbm(st + vec2(5.2, 1.3)));
 
@@ -82,20 +133,11 @@ export default function FluidShader({ className }: { className?: string }) {
 
         float f = fbm(st + 4.0 * r);
 
-        // ── Palette ───────────────────────────────────────────────────────
-        // deep teal dark  #041e1e  → (0.016, 0.118, 0.118)
-        // mid teal        #0a3333  → (0.039, 0.200, 0.200)
-        // cyan streak     #00e5cc  → (0.000, 0.898, 0.800)
-        vec3 deepTeal = vec3(0.016, 0.118, 0.118);
-        vec3 midTeal  = vec3(0.039, 0.200, 0.200);
-        vec3 cyanStreak = vec3(0.000, 0.898, 0.800);
+        // Base blend deep ↔ mid
+        vec3 col = mix(u_deep, u_mid, clamp(f * f * 4.0, 0.0, 1.0));
+        col = mix(col, u_mid * 1.4, clamp(f * 2.0, 0.0, 1.0));
 
-        // Base colour from fluid warp
-        vec3 col = mix(deepTeal, midTeal, clamp(f * f * 4.0, 0.0, 1.0));
-        col = mix(col, midTeal * 1.4, clamp(f * 2.0, 0.0, 1.0));
-
-        // ── Light streak (cyan at ≈15% opacity) ───────────────────────────
-        // A slow diagonal wave of cyan light interference
+        // Streak / vein highlight
         float streak1 = smoothstep(0.72, 0.78,
           sin(st.x * 2.8 - st.y * 1.2 + t * 1.3 + 0.0) * 0.5 + 0.5);
         float streak2 = smoothstep(0.74, 0.79,
@@ -103,19 +145,18 @@ export default function FluidShader({ className }: { className?: string }) {
         float streak3 = smoothstep(0.70, 0.76,
           sin(st.x * 3.5 - st.y * 0.8 + t * 1.7 + 1.6) * 0.5 + 0.5);
 
-        float streakMix = (streak1 + streak2 * 0.6 + streak3 * 0.4) * 0.15;
-        col = mix(col, cyanStreak, streakMix);
+        float streakMix = (streak1 + streak2 * 0.6 + streak3 * 0.4) * u_streakOpacity;
+        col = mix(col, u_streak, streakMix);
 
-        // ── Subtle vignette ───────────────────────────────────────────────
+        // Vignette
         vec2 center = uv - 0.5;
-        float vignette = 1.0 - dot(center, center) * 0.9;
+        float vignette = 1.0 - dot(center, center) * u_vignette;
         col *= vignette;
 
         gl_FragColor = vec4(col, 1.0);
       }
     `;
 
-    // ── Compile shaders ────────────────────────────────────────────────────
     function compile(type: number, src: string) {
       const s = gl!.createShader(type)!;
       gl!.shaderSource(s, src);
@@ -131,7 +172,6 @@ export default function FluidShader({ className }: { className?: string }) {
     gl.linkProgram(prog);
     gl.useProgram(prog);
 
-    // ── Full-screen quad ───────────────────────────────────────────────────
     const buf = gl.createBuffer();
     gl.bindBuffer(gl.ARRAY_BUFFER, buf);
     gl.bufferData(
@@ -143,11 +183,23 @@ export default function FluidShader({ className }: { className?: string }) {
     gl.enableVertexAttribArray(posLoc);
     gl.vertexAttribPointer(posLoc, 2, gl.FLOAT, false, 0, 0);
 
-    // ── Uniforms ───────────────────────────────────────────────────────────
-    const uTime = gl.getUniformLocation(prog, 'u_time');
-    const uRes  = gl.getUniformLocation(prog, 'u_resolution');
+    // ── Uniform locations ──────────────────────────────────────────────────
+    const uTime          = gl.getUniformLocation(prog, 'u_time');
+    const uRes           = gl.getUniformLocation(prog, 'u_resolution');
+    const uDeep          = gl.getUniformLocation(prog, 'u_deep');
+    const uMid           = gl.getUniformLocation(prog, 'u_mid');
+    const uStreak        = gl.getUniformLocation(prog, 'u_streak');
+    const uStreakOpacity = gl.getUniformLocation(prog, 'u_streakOpacity');
+    const uVignette      = gl.getUniformLocation(prog, 'u_vignette');
 
-    // ── Resize observer ────────────────────────────────────────────────────
+    // Palette + intensity uniforms are constant for the lifetime of this
+    // instance — set them once outside the render loop.
+    gl.uniform3f(uDeep,   ...palette.deep);
+    gl.uniform3f(uMid,    ...palette.mid);
+    gl.uniform3f(uStreak, ...palette.highlight);
+    gl.uniform1f(uStreakOpacity, streakOpacity);
+    gl.uniform1f(uVignette,      vignetteStrength);
+
     const resize = () => {
       canvas.width  = canvas.offsetWidth  * Math.min(window.devicePixelRatio, 1.5);
       canvas.height = canvas.offsetHeight * Math.min(window.devicePixelRatio, 1.5);
@@ -157,8 +209,7 @@ export default function FluidShader({ className }: { className?: string }) {
     ro.observe(canvas);
     resize();
 
-    // ── Render loop ────────────────────────────────────────────────────────
-    let start = performance.now();
+    const start = performance.now();
     const render = () => {
       const t = (performance.now() - start) / 1000;
       gl!.uniform1f(uTime, t);
@@ -173,17 +224,15 @@ export default function FluidShader({ className }: { className?: string }) {
       ro.disconnect();
       gl!.deleteProgram(prog);
     };
-  }, []);
+    // Re-run when palette or intensity changes.
+  }, [palette, streakOpacity, vignetteStrength]);
 
   return (
     <canvas
       ref={canvasRef}
       aria-hidden="true"
       className={className}
-      style={{
-        // CSS fallback — visible only when WebGL is unavailable (canvas stays transparent)
-        background: 'linear-gradient(160deg, #041e1e 0%, #062a2a 40%, #0a3333 70%, #041e1e 100%)',
-      }}
+      style={{ background: fallbackBackground }}
     />
   );
 }

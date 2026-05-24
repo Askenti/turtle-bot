@@ -1,4 +1,14 @@
 import { useEffect, useRef } from 'react';
+import FluidShader, { type ShaderPalette } from '../components/FluidShader';
+
+/** Warmer marketing-section palette — slightly more amber than the
+ *  default BEIGE_PALETTE so the section reads as a step warmer
+ *  than the Problem/Market panels that bracket it. */
+const WARM_BEIGE_PALETTE: ShaderPalette = {
+  deep:      [0.929, 0.890, 0.816], // #EDE3D0 — section base
+  mid:       [0.882, 0.820, 0.706], // #E1D1B4 — deeper sand
+  highlight: [0.690, 0.541, 0.310], // #B08A4F — amber thread
+};
 
 const strategies = [
   { number: '01', title: 'Media Outreach', description: 'Demonstration of AI scanning capabilities on LinkedIn and B2B networks.', accent: false },
@@ -37,6 +47,15 @@ export default function MarketingSection() {
       id="marketing"
       className="relative bg-warden-beige-warm py-24 px-6 overflow-hidden"
     >
+      {/* Warm sand fluid shader — a half-step warmer than the surrounding panels */}
+      <FluidShader
+        className="absolute inset-0 w-full h-full opacity-55 pointer-events-none"
+        palette={WARM_BEIGE_PALETTE}
+        streakOpacity={0.05}
+        vignetteStrength={0.5}
+        fallbackBackground="linear-gradient(160deg, #EDE3D0 0%, #E1D1B4 50%, #EDE3D0 100%)"
+      />
+
       <div
         className="absolute inset-0 opacity-40 pointer-events-none"
         style={{
