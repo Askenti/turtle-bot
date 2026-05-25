@@ -28,6 +28,22 @@ module.exports = {
           'ink':         '#0A2E33',
           'ink-mute':    '#46686C',
         },
+        // ── Spectra: Luxury Smart Hospitality palette ──
+        // Premium hotel + Apple minimalism. Cream is intentionally neutral
+        // (avoiding yellow drift); mist-blue carries the "smart tech" notes.
+        spectra: {
+          'cream':       '#F4EFE7',  // primary light bg — neutral, slight gray undertone
+          'cream-deep':  '#EBE4D6',  // section variant for soft alternation
+          'pearl':       '#FBFAF7',  // near-white with cream warmth
+          'mist':        '#D6E1E8',  // soft pale blue — cards, dashboards
+          'mist-deep':   '#B4C6D2',  // accented blue for highlights
+          'mist-glass':  'rgba(214, 225, 232, 0.6)',
+          'ink':         '#0A0E12',  // softened black with blue undertone
+          'ink-soft':    '#1A1F25',
+          'ink-mute':    '#3A4045',  // secondary body text
+          'ink-faint':   '#7A8088',  // tertiary / captions
+          'hairline':    'rgba(10, 14, 18, 0.08)',  // 1px divider on cream
+        },
         // ── Agency dark palette ──
         agency: {
           'black':       '#0a0a0a',
@@ -95,6 +111,7 @@ module.exports = {
       },
       fontFamily: {
         'display': ['"Playfair Display"', 'serif'],
+        'editorial': ['"Fraunces"', 'Georgia', 'serif'],  // luxury hospitality headlines
         'sans': ['Inter', 'sans-serif'],
         'mono': ['"JetBrains Mono"', 'monospace'],
       },

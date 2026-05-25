@@ -45,40 +45,55 @@ export default function FloorPanel() {
   return (
     <div
       className={`
-        fixed right-6 top-1/2 -translate-y-1/2 z-40
-        bg-[#082C30] p-4 rounded-3xl
-        flex-col gap-4 items-center
-        shadow-[0_15px_35px_rgba(0,0,0,0.5)] border-2 border-[#166E78]/40
+        fixed right-5 top-1/2 -translate-y-1/2 z-40
+        bg-spectra-pearl/90 backdrop-blur-md p-3 rounded-3xl
+        flex-col gap-3 items-center
+        shadow-[0_20px_50px_-15px_rgba(10,14,18,0.25),0_6px_15px_-5px_rgba(10,14,18,0.10)]
+        border border-spectra-hairline
         transition-all duration-500
-        ${visible ? 'opacity-100 scale-100' : 'opacity-0 scale-80'}
+        ${visible ? 'opacity-100 scale-100' : 'opacity-0 scale-90'}
         hidden md:flex
       `}
     >
       {/* Elevator digital display */}
-      <div className="flex flex-col items-center">
-        <span className="text-[8px] uppercase tracking-[0.2em] text-[#00F0FF]/60 font-bold font-mono text-center mb-1">
+      <div className="flex flex-col items-center pt-1">
+        <span className="text-[8px] uppercase tracking-[0.3em] text-spectra-ink-faint font-mono text-center mb-1.5">
           Floor
         </span>
-        <div className="w-[54px] h-[26px] bg-[#031517] border border-[#00F0FF]/25 rounded flex items-center justify-center font-mono text-[10px] text-[#00F0FF] font-semibold tracking-widest shadow-[inset_0_0_6px_rgba(0,240,255,0.25)] select-none">
+        <div className="w-[58px] h-[24px] bg-spectra-ink rounded-md flex items-center justify-center
+                        font-mono text-[10px] text-spectra-cream font-medium tracking-[0.15em]
+                        shadow-[inset_0_1px_2px_rgba(255,255,255,0.06)] select-none">
           {activeFloorName}
         </div>
       </div>
 
+      {/* Divider */}
+      <div className="w-full h-px bg-spectra-hairline mt-1" />
+
       {/* Floor buttons */}
-      <div className="flex flex-col gap-3 items-center mt-2">
-        {FLOORS.map((floor, index) => (
-          <div key={floor.id} className="flex flex-col items-center gap-3">
-            {index > 0 && <div className="w-[2px] h-[8px] bg-[#0d3b41]" />}
+      <div className="flex flex-col gap-2 items-center">
+        {FLOORS.map((floor) => {
+          const isActive = activeFloor === floor.id;
+          return (
             <button
+              key={floor.id}
               onClick={() => navigateToFloor(floor.id)}
-              className={`floor-button ${activeFloor === floor.id ? 'active' : ''}`}
+              className={`
+                w-9 h-9 rounded-full flex items-center justify-center
+                font-mono text-[10px] tracking-tight
+                transition-all duration-300
+                ${isActive
+                  ? 'bg-spectra-ink text-spectra-cream shadow-[0_4px_10px_-2px_rgba(10,14,18,0.35)]'
+                  : 'text-spectra-ink-mute hover:bg-spectra-ink/8 hover:text-spectra-ink'
+                }
+              `}
               aria-label={`Navigate to ${floor.description}`}
-              aria-current={activeFloor === floor.id ? 'true' : undefined}
+              aria-current={isActive ? 'true' : undefined}
             >
               {floor.label}
             </button>
-          </div>
-        ))}
+          );
+        })}
       </div>
     </div>
   );

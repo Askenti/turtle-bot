@@ -1,27 +1,46 @@
 /**
- * Single source of truth for the WARDEN elevator's floor list.
+ * Single source of truth for the WARDEN site's section structure.
  * Used by FloorPanel (desktop right-rail) and MobileMenu (mobile drawer)
  * so the two stay in lockstep.
+ *
+ * The site narrative reads top-to-bottom as a hotel tour:
+ *   L     Lobby / Hero
+ *   01    The Problem  — why hotels need this
+ *   02    Ecosystem    — what WARDEN is
+ *   03    How it Works — the pipeline
+ *   04    Detection    — multi-factor hidden-camera defense
+ *   05    AI & Tech    — CV, SLAM, Edge AI
+ *   06    Dashboard    — real-time reporting
+ *   07    Security     — privacy-first architecture
+ *   08    Business     — value + WARDEN Verified
+ *   09    RaaS         — deployment model
+ *   10    Roadmap      — what's next
+ *   C     Contact      — demo + team
  */
 export interface Floor {
   /** DOM id of the matching <section> */
   id: string;
-  /** Single-character label shown on the round button */
+  /** Short label shown on the round elevator button */
   label: string;
-  /** 6-character readout for the digital display */
+  /** ~6-char readout for the digital display */
   name: string;
   /** Human-readable name used by the mobile menu */
   description: string;
 }
 
 export const FLOORS: Floor[] = [
-  { id: 'hero',      label: 'L', name: 'LOBBY',  description: 'Lobby' },
-  { id: 'problem',   label: '1', name: 'FLR 1',  description: 'The Challenge' },
-  { id: 'solution',  label: '2', name: 'FLR 2',  description: 'The Solution' },
-  { id: 'team',      label: 'R', name: 'RCPTN',  description: 'Reception · Team' },
-  { id: 'market',    label: '4', name: 'FLR 4',  description: 'Market' },
-  { id: 'marketing', label: '5', name: 'FLR 5',  description: 'Go-to-Market' },
-  { id: 'roadmap',   label: '★', name: 'FUTURE', description: 'Future · Roadmap' },
+  { id: 'hero',       label: 'L',  name: 'LOBBY',  description: 'Lobby' },
+  { id: 'problem',    label: '01', name: 'FLR 01', description: 'The Problem' },
+  { id: 'ecosystem',  label: '02', name: 'FLR 02', description: 'Ecosystem' },
+  { id: 'how',        label: '03', name: 'FLR 03', description: 'How It Works' },
+  { id: 'detection',  label: '04', name: 'FLR 04', description: 'Detection' },
+  { id: 'ai',         label: '05', name: 'FLR 05', description: 'AI & Technology' },
+  { id: 'dashboard',  label: '06', name: 'FLR 06', description: 'Dashboard' },
+  { id: 'security',   label: '07', name: 'FLR 07', description: 'Security' },
+  { id: 'business',   label: '08', name: 'FLR 08', description: 'Business Value' },
+  { id: 'raas',       label: '09', name: 'FLR 09', description: 'RaaS Model' },
+  { id: 'roadmap',    label: '10', name: 'FLR 10', description: 'Roadmap' },
+  { id: 'contact',    label: 'C',  name: 'CTACT',  description: 'Demo & Contact' },
 ];
 
 /**

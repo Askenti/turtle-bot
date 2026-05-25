@@ -924,6 +924,73 @@
   50%      { opacity: 1; }
 }
 
+/* ============================================
+   SPECTRA SECTION REVEAL — used by Phase-2+ sections.
+   Driven by [data-revealed="true"] set by useScrollReveal().
+   ============================================ */
+@keyframes spectraUp {
+  from { opacity: 0; transform: translateY(28px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+@keyframes spectraFade {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+@keyframes spectraSlideIn {
+  from { opacity: 0; transform: translateX(-20px); }
+  to   { opacity: 1; transform: translateX(0); }
+}
+
+/* Children opt in via .s-up / .s-fade / .s-slide. Hidden until parent reveals. */
+.s-up, .s-fade, .s-slide {
+  opacity: 0;
+  animation-duration: 900ms;
+  animation-timing-function: cubic-bezier(0.22, 1, 0.36, 1);
+  animation-fill-mode: both;
+  animation-play-state: paused;
+}
+.s-up    { animation-name: spectraUp; }
+.s-fade  { animation-name: spectraFade; }
+.s-slide { animation-name: spectraSlideIn; }
+
+[data-revealed="true"] .s-up,
+[data-revealed="true"] .s-fade,
+[data-revealed="true"] .s-slide {
+  animation-play-state: running;
+}
+
+.s-d1 { animation-delay: 100ms; }
+.s-d2 { animation-delay: 200ms; }
+.s-d3 { animation-delay: 300ms; }
+.s-d4 { animation-delay: 400ms; }
+.s-d5 { animation-delay: 500ms; }
+.s-d6 { animation-delay: 600ms; }
+.s-d7 { animation-delay: 700ms; }
+.s-d8 { animation-delay: 800ms; }
+
+/* Subtle pulse on diagram nodes */
+@keyframes spectraNodePulse {
+  0%, 100% { box-shadow: 0 0 0 0 rgba(10, 14, 18, 0.10); }
+  50%      { box-shadow: 0 0 0 14px rgba(10, 14, 18, 0); }
+}
+.spectra-pulse {
+  animation: spectraNodePulse 2.4s ease-in-out infinite;
+}
+
+/* Connection-line draw animation for ecosystem diagram */
+@keyframes spectraDraw {
+  from { stroke-dashoffset: 100; }
+  to   { stroke-dashoffset: 0; }
+}
+[data-revealed="true"] .spectra-line {
+  animation: spectraDraw 1.4s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+.spectra-line {
+  stroke-dasharray: 100;
+  stroke-dashoffset: 100;
+  animation-play-state: paused;
+}
+
 /* Respect reduced motion */
 @media (prefers-reduced-motion: reduce) {
   .revolving-door-spinner,
@@ -933,5 +1000,11 @@
   .status-indicator,
   .status-text {
     animation: none;
+  }
+  .s-up, .s-fade, .s-slide,
+  .spectra-pulse, .spectra-line {
+    animation: none;
+    opacity: 1;
+    transform: none;
   }
 }

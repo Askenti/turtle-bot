@@ -1,21 +1,31 @@
 export default function FooterSection() {
   return (
-    <footer id="footer" className="bg-warden-teal-deep py-12 border-t border-warden-cyan/15 relative overflow-hidden">
-      <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[300px] h-px bg-gradient-to-r from-transparent via-warden-cyan to-transparent" />
+    <footer
+      id="footer"
+      className="relative bg-spectra-cream border-t border-spectra-hairline py-16 px-6 md:px-12 lg:px-20"
+    >
+      <div className="max-w-[1400px] mx-auto">
+        <div className="grid grid-cols-12 gap-8 items-end">
 
-      <div className="max-w-[1200px] mx-auto px-6 text-center relative z-10">
-        <div className="inline-block mb-4">
-          <div className="font-serif text-xl text-warden-beige tracking-wider font-bold mb-1">
-            WARDEN <span className="text-xs font-mono text-warden-cyan uppercase tracking-normal ml-1">Hotel</span>
+          <div className="col-span-12 md:col-span-7">
+            <p className="font-editorial italic text-spectra-ink leading-[1.25] tracking-tight"
+               style={{ fontSize: 'clamp(1.5rem, 3vw, 2.25rem)' }}>
+              WARDEN — Smart Hotel Ecosystem.
+            </p>
+            <p className="mt-4 max-w-md text-[14px] leading-[1.65] text-spectra-ink-mute">
+              AI-powered autonomous hospitality platform focused on privacy,
+              operational intelligence, and trusted guest experiences.
+            </p>
           </div>
-          <div className="h-px w-full bg-warden-cyan/30" />
+
+          <div className="col-span-12 md:col-span-5 flex md:justify-end">
+            <div className="font-mono text-[10px] tracking-[0.35em] uppercase text-spectra-ink-faint leading-[2]">
+              <p>© 2026 Spectra · Team 1</p>
+              <p>Inha University · IBT / ISE Capstone</p>
+              <p>Incheon · Korea</p>
+            </div>
+          </div>
         </div>
-        <p className="text-warden-beige/60 text-sm mb-2">
-          &copy; 2026 WARDEN Autonomous Security. All rights reserved.
-        </p>
-        <p className="text-xs font-mono text-warden-cyan-soft/50 uppercase tracking-[0.25em]">
-          Inha University · IBT / ISE Capstone Design · Team 1 Spectra
-        </p>
       </div>
     </footer>
   );

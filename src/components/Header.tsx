@@ -27,34 +27,26 @@ export default function Header() {
       <header
         className={`
           fixed top-0 left-0 right-0 z-30 transition-all duration-500
-          ${scrolled ? 'py-4' : 'py-6 md:py-8'}
+          ${scrolled ? 'py-4 bg-spectra-cream/85 backdrop-blur-md border-b border-spectra-hairline' : 'py-6 md:py-8 bg-transparent'}
         `}
-        style={{
-          backgroundColor: scrolled ? 'rgba(10, 10, 10, 0.95)' : 'transparent',
-          backdropFilter: scrolled ? 'blur(10px)' : 'none',
-        }}
       >
-        <div className="w-full px-6 md:px-16 lg:px-24 flex justify-between items-center">
+        <div className="w-full px-6 md:px-12 lg:px-20 flex justify-between items-center">
           {/* Logo */}
           <button
             onClick={() => goTo('hero')}
-            className="font-display text-lg md:text-xl tracking-[0.2em] uppercase font-bold transition-opacity duration-300 hover:opacity-70 active:opacity-50"
-            style={{ color: '#c9b99a' }}
+            className="font-editorial text-spectra-ink text-xl md:text-2xl tracking-tight transition-opacity duration-300 hover:opacity-70 active:opacity-50"
             aria-label="Back to top"
           >
-            Warden
+            Warden<span className="font-mono text-[10px] tracking-[0.3em] uppercase text-spectra-ink-faint ml-2 align-middle">Spectra</span>
           </button>
 
           {/* Desktop nav links */}
-          <nav className="hidden md:flex items-center gap-10">
+          <nav className="hidden md:flex items-center gap-8 lg:gap-10">
             {navLinks.map((link) => (
               <button
                 key={link.targetId}
                 onClick={() => goTo(link.targetId)}
-                className="text-xs tracking-[0.2em] uppercase font-mono transition-colors duration-300"
-                style={{ color: 'rgba(201, 185, 154, 0.6)' }}
-                onMouseEnter={(e) => { e.currentTarget.style.color = '#c9b99a'; }}
-                onMouseLeave={(e) => { e.currentTarget.style.color = 'rgba(201, 185, 154, 0.6)'; }}
+                className="text-xs tracking-[0.2em] uppercase font-mono text-spectra-ink-mute hover:text-spectra-ink transition-colors duration-300"
               >
                 {link.label}
               </button>
@@ -65,15 +57,14 @@ export default function Header() {
           <button
             onClick={() => setMenuOpen(true)}
             className="md:hidden w-11 h-11 -mr-2 flex flex-col items-center justify-center gap-[5px] rounded-full
-                       active:bg-[rgba(201,185,154,0.08)] transition-colors"
-            style={{ color: '#c9b99a' }}
+                       text-spectra-ink active:bg-spectra-ink/5 transition-colors"
             aria-label="Open menu"
             aria-expanded={menuOpen}
             aria-controls="mobile-menu"
           >
-            <span className="block w-5 h-px" style={{ backgroundColor: 'currentColor' }} />
-            <span className="block w-5 h-px" style={{ backgroundColor: 'currentColor' }} />
-            <span className="block w-5 h-px" style={{ backgroundColor: 'currentColor' }} />
+            <span className="block w-5 h-px bg-current" />
+            <span className="block w-5 h-px bg-current" />
+            <span className="block w-5 h-px bg-current" />
           </button>
         </div>
       </header>
