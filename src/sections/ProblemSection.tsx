@@ -1,135 +1,178 @@
-import { useEffect, useRef } from 'react';
-import BlueprintOverlay from '../components/BlueprintOverlay';
-import FluidShader from '../components/FluidShader';
-import { BEIGE_PALETTE } from '../data/shader-palettes';
+import { useScrollReveal } from '../lib/useScrollReveal';
 
-const problems = [
+interface ProblemCard {
+  number: string;
+  title: string;
+  description: string;
+}
+
+const PROBLEMS: ProblemCard[] = [
   {
-    icon: (
-      <svg width="48" height="48" viewBox="0 0 48 48" fill="none" className="text-warden-cyan-dim">
-        <circle cx="24" cy="24" r="22" stroke="currentColor" strokeWidth="2" fill="currentColor" fillOpacity="0.1" />
-        <circle cx="24" cy="20" r="6" stroke="currentColor" strokeWidth="2" />
-        <path d="M12 38C12 32 17 28 24 28C31 28 36 32 36 38" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
-        <line x1="28" y1="16" x2="32" y2="12" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
-        <circle cx="32" cy="12" r="2" fill="currentColor" />
-      </svg>
-    ),
-    title: 'Hidden Camera Epidemic',
+    number: '01',
+    title: 'Hidden Camera Risks',
     description:
-      "Severe spycam ('Molka') threats in hospitality spaces across South Korea and expanding globally. Guest privacy is at critical risk.",
+      'Growing concerns over illegal surveillance devices and privacy violations inside hotel rooms.',
   },
   {
-    icon: (
-      <svg width="48" height="48" viewBox="0 0 48 48" fill="none" className="text-warden-cyan-dim">
-        <path d="M24 6L6 42H42L24 6Z" stroke="currentColor" strokeWidth="2" fill="currentColor" fillOpacity="0.1" />
-        <line x1="24" y1="18" x2="24" y2="30" stroke="currentColor" strokeWidth="3" strokeLinecap="round" />
-        <circle cx="24" cy="36" r="2" fill="currentColor" />
-      </svg>
-    ),
-    title: 'Manual Inspection Failures',
+    number: '02',
+    title: 'Inconsistent Manual Inspections',
     description:
-      'Human-error prone manual checks by overloaded hotel staff. Inconsistent quality and missed threats compromise guest safety.',
+      'Human-based inspections are time-consuming, subjective, and difficult to standardize across staff shifts.',
   },
   {
-    icon: (
-      <svg width="48" height="48" viewBox="0 0 48 48" fill="none" className="text-warden-cyan-dim">
-        <circle cx="24" cy="24" r="20" stroke="currentColor" strokeWidth="2" fill="currentColor" fillOpacity="0.1" />
-        <line x1="24" y1="12" x2="24" y2="24" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
-        <line x1="24" y1="24" x2="32" y2="28" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
-        <circle cx="24" cy="24" r="2" fill="currentColor" />
-      </svg>
-    ),
-    title: 'Delayed Response Times',
+    number: '03',
+    title: 'Fragmented Hotel Operations',
     description:
-      'Disconnect between security discovery and immediate response. Critical incidents lack real-time communication systems.',
+      'Disconnected monitoring, reporting, and communication systems reduce operational efficiency.',
+  },
+  {
+    number: '04',
+    title: 'Labor & Response Challenges',
+    description:
+      'Hotels face increasing labor shortages and delayed response coordination across daily operations.',
+  },
+];
+
+interface Stat {
+  value: string;
+  label: string;
+  caption: string;
+}
+
+const STATS: Stat[] = [
+  {
+    value: '7,801',
+    label: 'Recorded',
+    caption: 'Molka-related cases reported in South Korea (2025/2026).',
+  },
+  {
+    value: '↑ 17.9%',
+    label: 'CAGR',
+    caption: 'Projected growth of the smart hospitality robotics market through 2032.',
+  },
+  {
+    value: '∞',
+    label: 'Guest Trust',
+    caption: 'Rising guest expectations for privacy, safety, and operational transparency.',
   },
 ];
 
 export default function ProblemSection() {
-  const sectionRef = useRef<HTMLElement>(null);
-
-  useEffect(() => {
-    const section = sectionRef.current;
-    if (!section) return;
-
-    const observer = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((entry) => {
-          if (entry.isIntersecting) {
-            const elements = section.querySelectorAll('.animate-subtitle, .animate-flipcard, .stagger-card');
-            elements.forEach((el) => el.classList.add('revealed'));
-            observer.unobserve(entry.target);
-          }
-        });
-      },
-      { threshold: 0.15 }
-    );
-
-    observer.observe(section);
-    return () => observer.disconnect();
-  }, []);
+  const [ref, revealed] = useScrollReveal<HTMLElement>();
 
   return (
     <section
-      ref={sectionRef}
+      ref={ref}
       id="problem"
-      className="relative bg-warden-beige py-24 px-6 overflow-hidden"
+      data-revealed={revealed}
+      className="relative bg-spectra-cream py-28 md:py-40 px-6 md:px-12 lg:px-20 overflow-hidden"
     >
-      {/* Cream-marble fluid shader — warm cream → sand → honey vein.
-          opacity-60 lets the section's beige show through so the marble
-          feels like a watermark instead of taking over. */}
-      <FluidShader
-        className="absolute inset-0 w-full h-full opacity-60 pointer-events-none"
-        palette={BEIGE_PALETTE}
-        streakOpacity={0.05}
-        vignetteStrength={0.5}
-        fallbackBackground="linear-gradient(160deg, #F5F0E6 0%, #EDE3D0 50%, #F5F0E6 100%)"
-      />
+      {/* Hairline at top of section for the rhythm */}
+      <div className="absolute top-0 left-6 md:left-12 lg:left-20 right-6 md:right-12 lg:right-20 h-px bg-spectra-hairline" />
 
-      {/* Soft beige texture */}
-      <div
-        className="absolute inset-0 opacity-50 pointer-events-none"
-        style={{
-          backgroundImage: 'radial-gradient(rgba(168,154,130,0.18) 1px, transparent 1px)',
-          backgroundSize: '32px 32px',
-        }}
-      />
+      <div className="max-w-[1400px] mx-auto">
 
-      {/* Hotel floor-plan blueprint — faint cyan lines at very low opacity */}
-      <BlueprintOverlay opacity={0.045} />
+        {/* ── Section header ── */}
+        <div className="grid grid-cols-12 gap-8 mb-20 md:mb-28">
+          <div className="col-span-12 lg:col-span-3">
+            <div className="s-up flex items-center gap-3 mb-6 lg:mb-0">
+              <span className="w-6 h-px bg-spectra-ink/40" />
+              <span className="font-mono text-[10px] tracking-[0.4em] uppercase text-spectra-ink-mute">
+                01 · The Problem
+              </span>
+            </div>
+          </div>
 
-      <div className="max-w-[1200px] mx-auto relative z-10">
-        {/* Floor indicator */}
-        <div className="animate-subtitle flex items-center gap-4 mb-3">
-          <div className="h-px flex-1 bg-warden-beige-mute/40" />
-          <span className="font-mono text-[10px] tracking-[0.4em] text-warden-cyan-dim uppercase">
-            Floor 1 · The Challenge
-          </span>
-          <div className="h-px flex-1 bg-warden-beige-mute/40" />
+          <div className="col-span-12 lg:col-span-9">
+            <h2 className="s-up s-d1 font-editorial font-light text-spectra-ink leading-[1.05] tracking-[-0.02em] mb-6"
+                style={{ fontSize: 'clamp(2.25rem, 5vw, 4rem)' }}>
+              The Growing Trust Crisis<br />
+              <span className="italic text-spectra-ink-soft">in Modern Hospitality.</span>
+            </h2>
+            <p className="s-up s-d2 max-w-2xl text-base md:text-[17px] leading-[1.7] text-spectra-ink-mute">
+              As hotels adopt smarter technologies, guest privacy and operational
+              security are becoming increasingly difficult to manage through
+              fragmented systems and inconsistent manual inspections.
+            </p>
+          </div>
         </div>
 
-        {/* Subtitle */}
-        <span className="animate-subtitle block text-warden-cyan-dim text-xs font-semibold tracking-[0.2em] uppercase text-center mb-3">
-          Critical Industry Challenge
-        </span>
-
-        {/* Title */}
-        <h2 className="animate-flipcard font-serif text-3xl md:text-4xl text-warden-ink tracking-tight text-center mb-16">
-          The Problem Hotels <span className="italic text-warden-cyan-dim">Face Today</span>
-        </h2>
-
-        {/* Cards */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-10">
-          {problems.map((problem) => (
-            <div
-              key={problem.title}
-              className="stagger-card bg-warden-beige-warm rounded-xl p-8 border border-warden-beige-soft shadow-lg shadow-warden-teal-deep/5 hover:-translate-y-1 hover:border-warden-cyan/50 hover:shadow-[0_10px_30px_rgba(0,240,255,0.15)] transition-all duration-300"
+        {/* ── Problem cards ── */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5 md:gap-6 mb-24 md:mb-32">
+          {PROBLEMS.map((p, i) => (
+            <article
+              key={p.number}
+              className={`s-up s-d${Math.min(i + 2, 5)}
+                          group relative bg-spectra-pearl rounded-2xl p-7 md:p-8
+                          border border-spectra-hairline
+                          transition-all duration-500 ease-[cubic-bezier(0.22,1,0.36,1)]
+                          hover:-translate-y-1
+                          hover:shadow-[0_18px_40px_-12px_rgba(10,14,18,0.18),0_4px_10px_-4px_rgba(10,14,18,0.06)]
+                          hover:border-spectra-mist-deep/40`}
             >
-              <div className="mb-5">{problem.icon}</div>
-              <h3 className="font-serif text-xl text-warden-ink mb-3">{problem.title}</h3>
-              <p className="text-sm text-warden-ink-mute leading-relaxed">{problem.description}</p>
-            </div>
+              {/* Card number */}
+              <div className="flex items-center gap-3 mb-8">
+                <span className="font-mono text-[10px] tracking-[0.35em] uppercase text-spectra-ink-faint">
+                  {p.number}
+                </span>
+                <span className="flex-1 h-px bg-spectra-hairline" />
+              </div>
+
+              {/* Title */}
+              <h3 className="font-editorial text-xl md:text-[22px] leading-[1.2] text-spectra-ink mb-4 tracking-tight">
+                {p.title}
+              </h3>
+
+              {/* Description */}
+              <p className="text-[14px] leading-[1.65] text-spectra-ink-mute">
+                {p.description}
+              </p>
+
+              {/* Hover dot indicator */}
+              <span className="absolute top-7 right-7 w-1.5 h-1.5 rounded-full bg-spectra-ink/20
+                               transition-all duration-500 group-hover:bg-spectra-mist-deep group-hover:scale-150" />
+            </article>
           ))}
+        </div>
+
+        {/* ── Statistics strip ── */}
+        <div className="s-fade s-d6 relative">
+          {/* Mist-blue panel */}
+          <div
+            className="rounded-3xl border border-spectra-hairline overflow-hidden"
+            style={{
+              background:
+                'linear-gradient(135deg, #FBFAF7 0%, #EAF1F6 60%, #DBE7EE 100%)',
+            }}
+          >
+            <div className="px-6 md:px-12 lg:px-16 py-12 md:py-16">
+              {/* Eyebrow */}
+              <div className="flex items-center gap-3 mb-10">
+                <span className="w-6 h-px bg-spectra-ink/30" />
+                <span className="font-mono text-[10px] tracking-[0.4em] uppercase text-spectra-ink-mute">
+                  Industry Signals
+                </span>
+              </div>
+
+              {/* 3-up stat grid */}
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-12 md:gap-8">
+                {STATS.map((stat, i) => (
+                  <div key={stat.label} className={`s-up s-d${i + 3} flex flex-col`}>
+                    <span className="font-editorial font-light text-spectra-ink leading-none mb-4 tracking-[-0.02em]"
+                          style={{ fontSize: 'clamp(2.75rem, 5.5vw, 4.5rem)' }}>
+                      {stat.value}
+                    </span>
+                    <span className="font-mono text-[10px] tracking-[0.35em] uppercase text-spectra-ink-mute mb-3">
+                      {stat.label}
+                    </span>
+                    <p className="text-[13.5px] leading-[1.6] text-spectra-ink-mute max-w-xs">
+                      {stat.caption}
+                    </p>
+                  </div>
+                ))}
+              </div>
+            </div>
+          </div>
         </div>
       </div>
     </section>

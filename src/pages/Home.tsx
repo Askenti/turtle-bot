@@ -5,16 +5,36 @@ import Header from '../components/Header';
 import PageLoader from '../components/PageLoader';
 import HeroSection from '../sections/HeroSection';
 import ProblemSection from '../sections/ProblemSection';
-import SolutionSection from '../sections/SolutionSection';
-import TeamSection from '../sections/TeamSection';
-import MarketSection from '../sections/MarketSection';
-import MarketingSection from '../sections/MarketingSection';
+import EcosystemSection from '../sections/EcosystemSection';
+import HowItWorksSection from '../sections/HowItWorksSection';
+import DetectionSection from '../sections/DetectionSection';
+import AITechSection from '../sections/AITechSection';
+import DashboardSection from '../sections/DashboardSection';
+import SecuritySection from '../sections/SecuritySection';
+import BusinessSection from '../sections/BusinessSection';
+import RaaSSection from '../sections/RaaSSection';
 import RoadmapSection from '../sections/RoadmapSection';
+import ContactSection from '../sections/ContactSection';
 import FooterSection from '../sections/FooterSection';
 
+/**
+ * Home — Spectra redesign.
+ *
+ *   L   Hero
+ *   01  Problem
+ *   02  Ecosystem
+ *   03  How It Works
+ *   04  Detection
+ *   05  AI & Technology
+ *   06  Dashboard
+ *   07  Security
+ *   08  Business
+ *   09  RaaS
+ *   10  Roadmap
+ *   11  Contact + Team
+ *       Footer
+ */
 export default function Home() {
-  // The page content only mounts after the revolving door finishes,
-  // so the hero's boot-sequence animations start fresh on reveal.
   const [booted, setBooted] = useState(false);
 
   const handleTransitionStart = useCallback(() => {
@@ -31,27 +51,28 @@ export default function Home() {
 
       {booted && (
         <div className="page-reveal">
-          {/* Elevator shutter overlay */}
           <ElevatorShutter
             onTransitionStart={handleTransitionStart}
             onTransitionEnd={handleTransitionEnd}
           />
 
-          {/* Fixed floor navigation panel */}
           <FloorPanel />
-
-          {/* Fixed header */}
           <Header />
 
-          {/* Page sections */}
           <main>
             <HeroSection />
             <ProblemSection />
-            <SolutionSection />
-            <TeamSection />
-            <MarketSection />
-            <MarketingSection />
+            <EcosystemSection />
+            <HowItWorksSection />
+            <DetectionSection />
+            <AITechSection />
+            <DashboardSection />
+            <SecuritySection />
+            <BusinessSection />
+            <RaaSSection />
             <RoadmapSection />
+            <ContactSection />
+
             <FooterSection />
           </main>
         </div>

@@ -1,193 +1,197 @@
-import { useEffect, useRef, useState } from 'react';
-import FluidShader from '../components/FluidShader';
+import { navigateToFloor } from '../data/floors';
 
+/**
+ * Hero — Luxury Smart Hospitality.
+ *
+ * Bright cream canvas, editorial Fraunces headline, generous whitespace.
+ * No glitch bars, no scan lines, no robot. The "tech" is delivered via a
+ * floating diagram panel on the right (Apple-style product page).
+ */
 export default function HeroSection() {
-  const [mounted, setMounted] = useState(false);
-  const glitchRef = useRef<{ left: string; width: string; opacity: number; delay: string; duration: string }[]>([]);
-
-  // Generate glitch bars only once to avoid hydration flicker
-  if (glitchRef.current.length === 0) {
-    glitchRef.current = Array.from({ length: 20 }).map((_, i) => ({
-      left:     `${(i * 5) + 0.5}%`,
-      width:    `${1 + ((i * 7) % 3)}px`,
-      opacity:  0.04 + ((i * 13) % 10) * 0.006,
-      delay:    `${((i * 17) % 30) / 10}s`,
-      duration: `${4 + ((i * 11) % 4)}s`,
-    }));
-  }
-
-  useEffect(() => { setMounted(true); }, []);
-
   return (
     <section
       id="hero"
-      className="min-h-screen relative flex items-center overflow-hidden"
+      className="min-h-screen relative flex items-center overflow-hidden bg-spectra-cream"
     >
-      {/* ── WebGL fluid background ── */}
-      <FluidShader className="absolute inset-0 w-full h-full" />
-
-      {/* ── Noise vignette — darkens edges so text pops ── */}
+      {/* Subtle radial light from upper-left (luxury hospitality glow) */}
       <div
-        className="absolute inset-0 pointer-events-none z-10"
+        className="absolute inset-0 pointer-events-none"
         style={{
           background:
-            'radial-gradient(ellipse 70% 80% at 30% 50%, transparent 30%, rgba(4,16,16,0.65) 100%)',
+            'radial-gradient(ellipse 60% 50% at 18% 25%, rgba(214,225,232,0.55) 0%, transparent 60%)',
         }}
       />
+      {/* Faint horizon line at the bottom */}
+      <div className="absolute bottom-0 left-0 right-0 h-px bg-spectra-hairline" />
 
-      {/* ── Scan-line overlay ── */}
-      <div
-        className="absolute inset-0 pointer-events-none z-10 opacity-[0.04]"
-        style={{
-          backgroundImage:
-            'repeating-linear-gradient(0deg, rgba(0,229,204,0.6) 0px, rgba(0,229,204,0.6) 1px, transparent 1px, transparent 4px)',
-        }}
-      />
+      <div className="relative z-10 w-full px-6 md:px-12 lg:px-20 py-32 md:py-40">
+        <div className="max-w-[1400px] mx-auto grid grid-cols-12 gap-8 md:gap-12 items-center">
 
-      {/* ── Subtle vertical glitch bars ── */}
-      <div className="absolute inset-0 pointer-events-none z-20 overflow-hidden">
-        {glitchRef.current.map((bar, i) => (
-          <div
-            key={i}
-            className="absolute top-0 bottom-0"
-            style={{
-              left:            bar.left,
-              width:           bar.width,
-              backgroundColor: '#041e1e',
-              opacity:         bar.opacity,
-              animationName:   'glitch-bar',
-              animationDuration: bar.duration,
-              animationDelay:   bar.delay,
-              animationTimingFunction: 'ease-in-out',
-              animationIterationCount: 'infinite',
-            }}
-          />
-        ))}
-      </div>
+          {/* ── Left: identity + copy + CTAs ── */}
+          <div className="col-span-12 lg:col-span-7">
 
-      {/* ── Content ── */}
-      <div className="relative z-30 w-full px-8 md:px-16 lg:px-24">
-        <div className="max-w-[1400px]">
+            {/* Eyebrow */}
+            <div className="hero-fade flex items-center gap-3 mb-10" style={{ animationDelay: '120ms' }}>
+              <span className="w-8 h-px bg-spectra-ink/40" />
+              <span className="font-mono text-[10px] tracking-[0.4em] uppercase text-spectra-ink-mute">
+                Spectra · Smart Hospitality
+              </span>
+            </div>
 
-          {/* Floor/system tag */}
-          <div
-            className={`mb-6 transition-all duration-700 ${
-              mounted ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'
-            }`}
-            style={{ transitionDelay: '0.4s' }}
-          >
-            <span
-              className="inline-flex items-center gap-2 font-mono text-[10px] tracking-[0.4em] uppercase"
-              style={{ color: 'rgba(0,229,204,0.7)' }}
-            >
-              <span
-                className="w-1.5 h-1.5 rounded-full animate-pulse"
-                style={{
-                  backgroundColor: '#00e5cc',
-                  boxShadow: '0 0 6px rgba(0,229,204,0.8)',
-                }}
-              />
-              Autonomous Security System · v2.4
-            </span>
-          </div>
-
-          {/* WARDEN wordmark */}
-          <h1
-            className={`font-display font-black uppercase leading-[0.85] tracking-tight transition-all duration-1000 ease-out ${
-              mounted ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'
-            }`}
-            style={{
-              color:      '#c9b99a',
-              fontSize:   'clamp(5rem, 18vw, 16rem)',
-              textShadow: '0 0 120px rgba(201,185,154,0.12), 0 2px 4px rgba(0,0,0,0.6)',
-              transitionDelay: '0.1s',
-            }}
-          >
-            <span className="block animate-text-flicker">WAR</span>
-            <span className="block -mt-4 md:-mt-8 lg:-mt-12">DEN</span>
-          </h1>
-
-          {/* Cyan divider */}
-          <div
-            className={`mt-6 w-16 h-[2px] transition-all duration-700 ${
-              mounted ? 'opacity-100' : 'opacity-0'
-            }`}
-            style={{
-              backgroundColor: '#00e5cc',
-              boxShadow: '0 0 10px rgba(0,229,204,0.6)',
-              transitionDelay: '0.7s',
-            }}
-          />
-
-          {/* Subtitle */}
-          <div
-            className={`mt-6 max-w-md transition-all duration-700 ${
-              mounted ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'
-            }`}
-            style={{ transitionDelay: '0.8s' }}
-          >
-            <p
-              className="text-sm md:text-base tracking-[0.3em] uppercase font-mono"
-              style={{ color: '#00e5cc' }}
-            >
-              Your Silent Hotel Guardian
-            </p>
-            <p
-              className="mt-3 text-sm leading-relaxed"
-              style={{ color: 'rgba(201,185,154,0.55)' }}
-            >
-              Autonomous AI-powered robotic ecosystem. Detects threats,
-              monitors conditions, interacts with guests.
-            </p>
-          </div>
-
-          {/* CTA */}
-          <div
-            className={`mt-10 transition-all duration-700 ${
-              mounted ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'
-            }`}
-            style={{ transitionDelay: '1s' }}
-          >
-            <a
-              href="#solution"
-              onClick={(e) => {
-                e.preventDefault();
-                const nav = (window as unknown as Record<string, unknown>).elevatorNavigate as
-                  | ((id: string) => void)
-                  | undefined;
-                nav ? nav('solution') : document.getElementById('solution')?.scrollIntoView({ behavior: 'smooth' });
+            {/* Wordmark */}
+            <h1
+              className="hero-up font-editorial font-light text-spectra-ink leading-[0.92] tracking-[-0.025em] mb-6"
+              style={{
+                fontSize: 'clamp(4.5rem, 14vw, 11rem)',
+                animationDuration: '1.1s',
+                fontVariationSettings: '"SOFT" 50',
               }}
-              className="inline-flex items-center gap-3 text-xs tracking-[0.25em] uppercase font-mono group"
-              style={{ color: '#00e5cc' }}
             >
-              <span>Explore System</span>
-              <span
-                className="h-[1px] transition-all duration-300 group-hover:w-12 w-8"
-                style={{
-                  backgroundColor: '#00e5cc',
-                  boxShadow: '0 0 6px rgba(0,229,204,0.5)',
-                }}
+              WARDEN
+            </h1>
+
+            {/* Tagline — italic editorial */}
+            <h2
+              className="hero-up font-editorial italic text-spectra-ink-soft leading-tight tracking-tight mb-8"
+              style={{
+                fontSize: 'clamp(1.5rem, 3vw, 2.25rem)',
+                animationDelay: '300ms',
+                animationDuration: '900ms',
+              }}
+            >
+              The Future of Trusted Hospitality.
+            </h2>
+
+            {/* Description */}
+            <p
+              className="hero-up max-w-xl text-base md:text-[17px] leading-[1.7] text-spectra-ink-mute mb-12"
+              style={{ animationDelay: '500ms' }}
+            >
+              An autonomous smart hospitality ecosystem designed to enhance hotel
+              security, operational awareness, and guest trust through AI-powered
+              room inspection and multi-sensor threat detection.
+            </p>
+
+            {/* CTAs */}
+            <div
+              className="hero-up flex flex-wrap items-center gap-4"
+              style={{ animationDelay: '700ms' }}
+            >
+              <button
+                onClick={() => navigateToFloor('contact')}
+                className="group inline-flex items-center gap-3 px-6 py-3.5
+                           bg-spectra-ink text-spectra-cream rounded-full
+                           text-sm tracking-[0.15em] uppercase font-mono
+                           transition-all duration-300
+                           hover:bg-spectra-ink-soft hover:-translate-y-0.5 hover:shadow-[0_12px_30px_rgba(10,14,18,0.18)]
+                           active:translate-y-0"
+              >
+                <span>Watch Demo</span>
+                <svg width="14" height="14" viewBox="0 0 14 14" fill="none" className="transition-transform group-hover:translate-x-0.5">
+                  <path d="M3 7H11M11 7L7 3M11 7L7 11" stroke="currentColor" strokeWidth="1.2" strokeLinecap="round" strokeLinejoin="round" />
+                </svg>
+              </button>
+
+              <button
+                onClick={() => navigateToFloor('ai')}
+                className="group inline-flex items-center gap-3 px-6 py-3.5
+                           border border-spectra-ink/20 rounded-full
+                           text-sm tracking-[0.15em] uppercase font-mono text-spectra-ink
+                           transition-all duration-300
+                           hover:border-spectra-ink hover:-translate-y-0.5
+                           active:translate-y-0"
+              >
+                <span>Explore Technology</span>
+              </button>
+            </div>
+          </div>
+
+          {/* ── Right: floating tech ornament panel ── */}
+          <div className="col-span-12 lg:col-span-5 hidden lg:block">
+            <div
+              className="hero-fade relative aspect-[3/4] max-w-[420px] ml-auto"
+              style={{ animationDelay: '900ms', animationDuration: '1.4s' }}
+            >
+              {/* Panel — soft glass card with mist-blue overlay */}
+              <div className="absolute inset-0 rounded-[24px] bg-spectra-pearl shadow-[0_30px_80px_-20px_rgba(10,14,18,0.18),0_8px_20px_-8px_rgba(10,14,18,0.08)] border border-spectra-hairline overflow-hidden">
+
+                {/* Soft mist-blue gradient overlay */}
+                <div
+                  className="absolute inset-0"
+                  style={{
+                    background:
+                      'linear-gradient(155deg, rgba(214,225,232,0.65) 0%, rgba(214,225,232,0) 55%, rgba(180,198,210,0.25) 100%)',
+                  }}
+                />
+
+                {/* Top bar — fake dashboard chrome */}
+                <div className="absolute top-0 left-0 right-0 flex items-center gap-2 px-5 py-4 border-b border-spectra-hairline">
+                  <span className="w-1.5 h-1.5 rounded-full bg-spectra-ink/15" />
+                  <span className="w-1.5 h-1.5 rounded-full bg-spectra-ink/15" />
+                  <span className="w-1.5 h-1.5 rounded-full bg-spectra-ink/15" />
+                  <span className="ml-auto font-mono text-[9px] tracking-[0.3em] uppercase text-spectra-ink-faint">
+                    Inspection · Live
+                  </span>
+                </div>
+
+                {/* Center — system silhouette */}
+                <div className="absolute inset-0 flex flex-col items-center justify-center px-8">
+                  {/* Concentric circles indicating "scanning" */}
+                  <div className="relative w-44 h-44 mb-8">
+                    <span className="absolute inset-0 rounded-full border border-spectra-ink/10" />
+                    <span className="absolute inset-4 rounded-full border border-spectra-ink/12" />
+                    <span className="absolute inset-10 rounded-full border border-spectra-ink/14 bg-spectra-mist/40" />
+                    <span className="absolute inset-16 rounded-full border border-spectra-ink/18 bg-spectra-mist-deep/25" />
+                    {/* Pulse dot in center */}
+                    <span className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-2 h-2 rounded-full bg-spectra-ink shadow-[0_0_0_8px_rgba(10,14,18,0.06)]" />
+                  </div>
+
+                  {/* Stat rows */}
+                  <div className="w-full space-y-3">
+                    {[
+                      { label: 'Optical',  value: 'Clear' },
+                      { label: 'Thermal',  value: 'Stable' },
+                      { label: 'RF Scan',  value: 'Nominal' },
+                    ].map((row) => (
+                      <div key={row.label} className="flex items-center justify-between">
+                        <span className="font-mono text-[10px] tracking-[0.25em] uppercase text-spectra-ink-faint">
+                          {row.label}
+                        </span>
+                        <span className="font-mono text-[10px] tracking-[0.2em] uppercase text-spectra-ink-soft">
+                          ◦ {row.value}
+                        </span>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+
+                {/* Bottom — quiet label */}
+                <div className="absolute bottom-0 left-0 right-0 px-5 py-4 border-t border-spectra-hairline flex items-center justify-between">
+                  <span className="font-editorial italic text-xs text-spectra-ink-mute">
+                    Room 412 · Clear
+                  </span>
+                  <span className="font-mono text-[9px] tracking-[0.3em] uppercase text-spectra-ink-faint">
+                    Verified
+                  </span>
+                </div>
+              </div>
+
+              {/* Floating mini-card behind the main one */}
+              <div
+                className="absolute -z-10 -bottom-6 -left-8 w-44 h-28 rounded-2xl bg-spectra-mist-deep/30 border border-spectra-hairline"
+                style={{ backdropFilter: 'blur(2px)' }}
               />
-            </a>
+            </div>
           </div>
         </div>
       </div>
 
-      {/* ── Bottom accent line ── */}
-      <div
-        className="absolute bottom-0 left-0 right-0 h-[1px] z-30"
-        style={{
-          background:
-            'linear-gradient(to right, transparent, rgba(0,229,204,0.25) 30%, rgba(0,229,204,0.25) 70%, transparent)',
-        }}
-      />
-
-      {/* ── Corner marker ── */}
-      <div
-        className="absolute bottom-8 right-8 md:right-16 text-xs font-mono tracking-widest z-30"
-        style={{ color: 'rgba(0,229,204,0.3)' }}
-      >
-        01
+      {/* Quiet scroll cue */}
+      <div className="absolute bottom-10 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2 pointer-events-none">
+        <span className="font-mono text-[9px] tracking-[0.4em] uppercase text-spectra-ink-faint">
+          Scroll
+        </span>
+        <span className="w-px h-8 bg-spectra-ink/20" />
       </div>
     </section>
   );

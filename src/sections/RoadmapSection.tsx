@@ -1,223 +1,205 @@
-import { useEffect, useRef } from 'react';
+import { useScrollReveal } from '../lib/useScrollReveal';
 
 interface Milestone {
   year: string;
-  chapter: string;
+  phase: string;
   title: string;
   description: string;
-  status: string;
-  /** 1 = dimmest (present), 4 = brightest (future horizon) */
+  /** 1 = nearest / dimmest, 4 = furthest / most luminous */
   intensity: 1 | 2 | 3 | 4;
 }
 
-const milestones: Milestone[] = [
+const MILESTONES: Milestone[] = [
   {
     year: '2026',
-    chapter: 'Chapter I',
+    phase: 'Phase I',
     title: 'Pilot Deployment',
-    description: '2–5 partner hotels in Incheon. Multi-sensor calibration. Continuous data refinement.',
-    status: 'In Progress',
+    description: 'Pilot hotel deployment and continuous system optimisation in Incheon.',
     intensity: 1,
   },
   {
     year: '2027',
-    chapter: 'Chapter II',
-    title: 'Commercial Scaling',
-    description: 'Hotel-chain rollout. PMS and booking-system integrations. Multi-tenant dashboard.',
-    status: 'Planned',
+    phase: 'Phase II',
+    title: 'AI Automation & PMS',
+    description: 'Expanded AI automation, hotel-chain rollout, and property-management-system integration.',
     intensity: 2,
   },
   {
     year: '2028',
-    chapter: 'Chapter III',
+    phase: 'Phase III',
     title: 'Smart Hotel Network',
-    description: 'Platform partnerships. WARDEN Verified standard. Predictive hotel analytics.',
-    status: 'Strategic',
+    description: 'Networked properties with predictive analytics and the WARDEN Verified standard.',
     intensity: 3,
   },
   {
     year: '2029+',
-    chapter: 'Beyond',
+    phase: 'Beyond',
     title: 'Cross-Industry Expansion',
-    description: 'Public institutions. Education. Healthcare. The autonomous guardian, everywhere.',
-    status: 'Visionary',
+    description: 'Public institutions, healthcare facilities, and smart-building deployments worldwide.',
     intensity: 4,
   },
 ];
 
-/** Tailwind classes scaled by milestone intensity */
-const intensityStyle = {
+/** Per-intensity card classes — softens nearer milestones, brightens distant ones. */
+const intensityStyles: Record<Milestone['intensity'], {
+  card:   string;
+  year:   string;
+  node:   string;
+  yearSize: string;
+  glow:   string;
+}> = {
   1: {
-    card:    'border-warden-cyan/15 bg-warden-teal-deep/60',
-    year:    'text-warden-cyan-soft/60',
-    glow:    'shadow-[0_0_15px_rgba(0,240,255,0.10)]',
-    dot:     'bg-warden-cyan-dim shadow-[0_0_8px_rgba(26,139,148,0.6)]',
-    chapter: 'text-warden-cyan-dim',
+    card:   'bg-spectra-pearl border-spectra-hairline',
+    year:   'text-spectra-ink-soft',
+    node:   'bg-spectra-ink/20',
+    yearSize: 'clamp(2.5rem, 5vw, 4rem)',
+    glow:   '',
   },
   2: {
-    card:    'border-warden-cyan/25 bg-warden-teal-deep/70',
-    year:    'text-warden-cyan-soft/80',
-    glow:    'shadow-[0_0_25px_rgba(0,240,255,0.18)]',
-    dot:     'bg-warden-cyan-soft shadow-[0_0_10px_rgba(61,217,230,0.7)]',
-    chapter: 'text-warden-cyan-soft',
+    card:   'bg-spectra-pearl border-spectra-ink/15',
+    year:   'text-spectra-ink',
+    node:   'bg-spectra-ink/40',
+    yearSize: 'clamp(2.75rem, 5.5vw, 4.5rem)',
+    glow:   '',
   },
   3: {
-    card:    'border-warden-cyan/45 bg-warden-teal-dark/80',
-    year:    'text-warden-cyan',
-    glow:    'shadow-[0_0_35px_rgba(0,240,255,0.28)]',
-    dot:     'bg-warden-cyan shadow-[0_0_14px_rgba(0,240,255,0.85)]',
-    chapter: 'text-warden-cyan',
+    card:   'bg-spectra-pearl border-spectra-mist-deep/55',
+    year:   'text-spectra-ink',
+    node:   'bg-spectra-mist-deep',
+    yearSize: 'clamp(3rem, 6vw, 5rem)',
+    glow:   'shadow-[0_20px_50px_-15px_rgba(10,14,18,0.15)]',
   },
   4: {
-    card:    'border-warden-cyan/70 bg-gradient-to-br from-warden-teal-dark/80 to-warden-cyan/10',
-    year:    'text-warden-cyan text-cyan-glow',
-    glow:    'shadow-[0_0_55px_rgba(0,240,255,0.45)]',
-    dot:     'bg-warden-cyan shadow-[0_0_20px_rgba(0,240,255,1)] animate-pulse',
-    chapter: 'text-warden-cyan text-cyan-glow',
+    card:   'bg-gradient-to-br from-spectra-pearl to-spectra-mist/45 border-spectra-mist-deep',
+    year:   'text-spectra-ink',
+    node:   'bg-spectra-ink',
+    yearSize: 'clamp(3.25rem, 6.5vw, 5.5rem)',
+    glow:   'shadow-[0_30px_70px_-20px_rgba(10,14,18,0.30),0_8px_20px_-5px_rgba(180,198,210,0.4)]',
   },
-} as const;
+};
 
 export default function RoadmapSection() {
-  const sectionRef = useRef<HTMLElement>(null);
-
-  useEffect(() => {
-    const section = sectionRef.current;
-    if (!section) return;
-
-    const observer = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((entry) => {
-          if (entry.isIntersecting) {
-            const els = section.querySelectorAll('.animate-subtitle, .animate-flipcard, .animate-content, .stagger-card');
-            els.forEach((el) => el.classList.add('revealed'));
-            observer.unobserve(entry.target);
-          }
-        });
-      },
-      { threshold: 0.08 }
-    );
-
-    observer.observe(section);
-    return () => observer.disconnect();
-  }, []);
+  const [ref, revealed] = useScrollReveal<HTMLElement>();
 
   return (
     <section
-      ref={sectionRef}
+      ref={ref}
       id="roadmap"
-      className="relative min-h-screen px-6 py-24 overflow-hidden"
-      style={{
-        background:
-          'linear-gradient(180deg, #051E22 0%, #0A2E33 35%, #103E42 75%, #155A60 100%)',
-      }}
+      data-revealed={revealed}
+      className="relative bg-spectra-cream-deep py-28 md:py-40 px-6 md:px-12 lg:px-20 overflow-hidden"
     >
-      {/* Scan-line ambience */}
+      {/* Soft glow that brightens toward the right — the "future" direction */}
       <div
-        className="absolute inset-0 pointer-events-none opacity-[0.04]"
+        className="absolute inset-0 pointer-events-none"
         style={{
-          backgroundImage:
-            'repeating-linear-gradient(0deg, rgba(0,240,255,0.6) 0px, rgba(0,240,255,0.6) 1px, transparent 1px, transparent 3px)',
+          background:
+            'radial-gradient(ellipse 50% 40% at 95% 55%, rgba(180,198,210,0.55) 0%, transparent 65%)',
         }}
       />
+      <div className="absolute top-0 left-6 md:left-12 lg:left-20 right-6 md:right-12 lg:right-20 h-px bg-spectra-hairline" />
 
-      {/* Horizon halo — the glow toward "what's next" */}
-      <div className="absolute -bottom-32 left-1/2 -translate-x-1/2 w-[1200px] h-[400px] bg-warden-cyan/[0.15] blur-3xl rounded-full pointer-events-none" />
-      <div className="absolute -bottom-10 left-1/2 -translate-x-1/2 w-[700px] h-[120px] bg-warden-cyan/25 blur-3xl rounded-full pointer-events-none" />
+      <div className="relative max-w-[1400px] mx-auto">
 
-      <div className="max-w-[1200px] mx-auto relative z-10">
-
-        {/* ── Chapter marker ── */}
-        <div className="animate-subtitle flex items-center gap-4 mb-6">
-          <div className="h-px flex-1 bg-gradient-to-r from-transparent to-warden-cyan/40" />
-          <div className="flex items-center gap-2">
-            <span className="w-1.5 h-1.5 rounded-full bg-warden-cyan animate-pulse shadow-[0_0_8px_rgba(0,240,255,0.8)]" />
-            <span className="font-mono text-[10px] tracking-[0.5em] text-warden-cyan/70 uppercase">
-              Transmission · Penthouse
-            </span>
-            <span className="w-1.5 h-1.5 rounded-full bg-warden-cyan animate-pulse shadow-[0_0_8px_rgba(0,240,255,0.8)]" />
+        {/* ── Header ── */}
+        <div className="grid grid-cols-12 gap-8 mb-20 md:mb-24">
+          <div className="col-span-12 lg:col-span-3">
+            <div className="s-up flex items-center gap-3 mb-6 lg:mb-0">
+              <span className="w-6 h-px bg-spectra-ink/40" />
+              <span className="font-mono text-[10px] tracking-[0.4em] uppercase text-spectra-ink-mute">
+                10 · Roadmap
+              </span>
+            </div>
           </div>
-          <div className="h-px flex-1 bg-gradient-to-l from-transparent to-warden-cyan/40" />
-        </div>
 
-        {/* ── Title ── */}
-        <h2 className="animate-flipcard font-serif text-4xl md:text-6xl text-warden-beige text-center tracking-tight leading-[1.05] mb-4">
-          What Comes <span className="italic text-warden-cyan text-cyan-glow">Next</span>
-        </h2>
-        <p className="animate-content text-center text-warden-beige/60 max-w-2xl mx-auto mb-16 text-sm leading-relaxed">
-          WARDEN is not a one-room product. It's a four-year arc — from a single hotel corridor in Incheon
-          to a standard that follows guests across every door they open.
-        </p>
+          <div className="col-span-12 lg:col-span-9">
+            <h2 className="s-up s-d1 font-editorial font-light text-spectra-ink leading-[1.05] tracking-[-0.02em] mb-6"
+                style={{ fontSize: 'clamp(2.25rem, 5vw, 4rem)' }}>
+              Expanding the Future<br />
+              <span className="italic text-spectra-ink-soft">of Trusted Hospitality.</span>
+            </h2>
+            <p className="s-up s-d2 max-w-2xl text-base md:text-[17px] leading-[1.7] text-spectra-ink-mute">
+              From a single pilot hotel in Incheon to cross-industry deployments —
+              a four-year arc, then the open horizon.
+            </p>
+          </div>
+        </div>
 
         {/* ── Timeline ── */}
         <div className="relative">
-          {/* Connecting beam — runs across the middle of the cards (desktop) */}
-          <div className="hidden md:block absolute top-[88px] left-[6%] right-[6%] h-px bg-gradient-to-r from-warden-cyan-dim/40 via-warden-cyan/60 to-warden-cyan shadow-[0_0_10px_rgba(0,240,255,0.4)] pointer-events-none" />
 
-          <div className="grid grid-cols-1 md:grid-cols-4 gap-6 md:gap-4">
-            {milestones.map((m, idx) => {
-              const s = intensityStyle[m.intensity];
+          {/* Desktop horizontal rail */}
+          <div
+            className="hidden lg:block absolute top-[42px] left-[6%] right-[6%] h-px pointer-events-none"
+            aria-hidden="true"
+          >
+            <div className="relative h-full">
+              <div className="absolute inset-0"
+                   style={{
+                     background:
+                       'linear-gradient(to right, rgba(10,14,18,0.25), rgba(10,14,18,0.4) 35%, rgba(180,198,210,0.75) 70%, rgba(10,14,18,0.15) 100%)',
+                   }} />
+            </div>
+          </div>
+
+          {/* Cards */}
+          <ol className="relative grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 lg:gap-5">
+            {MILESTONES.map((m, i) => {
+              const s = intensityStyles[m.intensity];
               return (
-                <div
-                  key={m.year}
-                  className={`stagger-card relative rounded-lg border backdrop-blur-sm p-6 transition-all duration-500 hover:-translate-y-1 ${s.card} ${s.glow}`}
-                >
-                  {/* Timeline dot */}
-                  <div className="hidden md:flex absolute -top-2 left-1/2 -translate-x-1/2 w-4 h-4 rounded-full ring-4 ring-warden-teal-deep items-center justify-center">
-                    <span className={`w-2 h-2 rounded-full ${s.dot}`} />
+                <li key={m.year} className={`s-up s-d${i + 3} relative`}>
+
+                  {/* Node — desktop only */}
+                  <div className="hidden lg:flex absolute -top-[11px] left-1/2 -translate-x-1/2 items-center justify-center z-10">
+                    <span className={`block w-3.5 h-3.5 rounded-full ${s.node} ring-4 ring-spectra-cream-deep`} />
                   </div>
 
-                  {/* Status badge */}
-                  <div className="flex items-center justify-between mb-4">
-                    <span className={`font-mono text-[9px] tracking-[0.3em] uppercase ${s.chapter}`}>
-                      {m.chapter}
-                    </span>
-                    <span className="font-mono text-[8px] tracking-widest uppercase text-warden-beige/40">
-                      {String(idx + 1).padStart(2, '0')} / 04
-                    </span>
-                  </div>
+                  {/* Card */}
+                  <article
+                    className={`group h-full rounded-2xl p-6 pt-10 lg:pt-12 ${s.card} ${s.glow}
+                               border transition-all duration-500 ease-[cubic-bezier(0.22,1,0.36,1)]
+                               hover:-translate-y-1`}
+                  >
+                    {/* Phase eyebrow */}
+                    <p className="font-mono text-[9px] tracking-[0.35em] uppercase text-spectra-ink-faint mb-4">
+                      {m.phase} {m.intensity === 4 && '· ◇'}
+                    </p>
 
-                  {/* Year */}
-                  <div className={`font-mono text-5xl md:text-6xl font-bold tracking-tight mb-3 ${s.year}`}>
-                    {m.year}
-                  </div>
+                    {/* Year */}
+                    <p className={`font-editorial font-light leading-none tracking-[-0.02em] mb-5 ${s.year}`}
+                       style={{ fontSize: s.yearSize }}>
+                      {m.year}
+                    </p>
 
-                  {/* Title */}
-                  <h3 className="font-serif text-xl text-warden-beige mb-3 leading-tight">
-                    {m.title}
-                  </h3>
+                    {/* Title */}
+                    <h3 className="font-editorial text-[17px] text-spectra-ink mb-3 tracking-tight leading-tight">
+                      {m.title}
+                    </h3>
 
-                  {/* Description */}
-                  <p className="text-warden-beige/65 text-xs leading-relaxed mb-4">
-                    {m.description}
-                  </p>
+                    {/* Description */}
+                    <p className="text-[13px] leading-[1.65] text-spectra-ink-mute">
+                      {m.description}
+                    </p>
 
-                  {/* Status pill */}
-                  <div className="pt-3 border-t border-warden-cyan/15">
-                    <span className={`font-mono text-[9px] tracking-widest uppercase ${s.chapter}`}>
-                      ◆ {m.status}
-                    </span>
-                  </div>
-                </div>
+                    {/* Intensity-4 special detail — distant horizon hint */}
+                    {m.intensity === 4 && (
+                      <p className="mt-6 pt-4 border-t border-spectra-ink/15 font-mono text-[9px] tracking-[0.3em] uppercase text-spectra-ink-mute">
+                        Open Horizon
+                      </p>
+                    )}
+                  </article>
+                </li>
               );
             })}
-          </div>
+          </ol>
         </div>
 
-        {/* ── Closing teaser ── */}
-        <div className="animate-content mt-20 text-center">
-          <div className="inline-flex items-center gap-3 mb-3">
-            <span className="w-8 h-px bg-warden-cyan/40" />
-            <span className="font-mono text-[10px] tracking-[0.5em] text-warden-cyan/70 uppercase">
-              Signal continues
-            </span>
-            <span className="w-8 h-px bg-warden-cyan/40" />
-          </div>
-          <p className="font-serif italic text-warden-cyan text-cyan-glow text-lg md:text-xl tracking-wide">
-            "Every guest, every door, every floor — quietly watched over."
-          </p>
-          <p className="mt-3 font-mono text-[10px] tracking-[0.3em] text-warden-beige/40 uppercase">
-            Warden · 2026 → ∞
-          </p>
+        {/* Closing — extends the rail visually with a → off-page suggestion */}
+        <div className="s-fade s-d8 mt-16 md:mt-20 flex items-center justify-center gap-3">
+          <span className="font-mono text-[10px] tracking-[0.4em] uppercase text-spectra-ink-mute">
+            The road continues
+          </span>
+          <span className="w-12 h-px bg-gradient-to-r from-spectra-ink/30 to-transparent" />
+          <span className="w-1 h-1 rounded-full bg-spectra-ink/20" />
         </div>
       </div>
     </section>
