@@ -1,4 +1,5 @@
 import { navigateToFloor } from '../data/floors';
+import ParticleField from '../components/ParticleField';
 
 /**
  * Hero — Luxury Smart Hospitality.
@@ -13,6 +14,9 @@ export default function HeroSection() {
       id="hero"
       className="min-h-screen relative flex items-center overflow-hidden bg-spectra-cream"
     >
+      {/* Three.js floating dust-mote particles */}
+      <ParticleField count={80} />
+
       {/* Subtle radial light from upper-left (luxury hospitality glow) */}
       <div
         className="absolute inset-0 pointer-events-none"

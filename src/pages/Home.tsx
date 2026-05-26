@@ -1,4 +1,5 @@
 import { useCallback, useState } from 'react';
+import CursorGlow from '../components/CursorGlow';
 import ElevatorShutter from '../components/ElevatorShutter';
 import FloorPanel from '../components/FloorPanel';
 import Header from '../components/Header';
@@ -51,6 +52,7 @@ export default function Home() {
 
       {booted && (
         <div className="page-reveal">
+          <CursorGlow />
           <ElevatorShutter
             onTransitionStart={handleTransitionStart}
             onTransitionEnd={handleTransitionEnd}

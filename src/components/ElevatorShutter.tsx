@@ -225,7 +225,7 @@ export default function ElevatorShutter({ onTransitionStart, onTransitionEnd }: 
         ref={motionBlurRef}
         className="absolute inset-0 z-30 pointer-events-none opacity-0"
         style={{
-          background: 'linear-gradient(180deg, transparent 0%, rgba(0,240,255,0.03) 20%, rgba(0,240,255,0.05) 50%, rgba(0,240,255,0.03) 80%, transparent 100%)',
+          background: 'linear-gradient(180deg, transparent 0%, rgba(180,180,180,0.02) 20%, rgba(180,180,180,0.04) 50%, rgba(180,180,180,0.02) 80%, transparent 100%)',
           backdropFilter: 'blur(2px)',
         }}
       />
@@ -238,12 +238,12 @@ export default function ElevatorShutter({ onTransitionStart, onTransitionEnd }: 
         {/* Back layer - furthest, moves fastest */}
         <div className="shaft-layer-back absolute inset-0">
           {Array.from({ length: 20 }, (_, i) => (
-            <div 
+            <div
               key={`back-${i}`}
               className="absolute left-0 right-0 h-[1px]"
               style={{
                 top: `${i * 5}%`,
-                background: 'linear-gradient(90deg, rgba(0,240,255,0.15) 0%, rgba(0,240,255,0.05) 20%, transparent 50%, rgba(0,240,255,0.05) 80%, rgba(0,240,255,0.15) 100%)',
+                background: 'linear-gradient(90deg, rgba(180,180,180,0.12) 0%, rgba(180,180,180,0.04) 20%, transparent 50%, rgba(180,180,180,0.04) 80%, rgba(180,180,180,0.12) 100%)',
               }}
             />
           ))}
@@ -254,12 +254,12 @@ export default function ElevatorShutter({ onTransitionStart, onTransitionEnd }: 
           {/* Left shaft wall */}
           <div className="absolute left-0 top-0 bottom-0 w-20">
             {Array.from({ length: 15 }, (_, i) => (
-              <div 
+              <div
                 key={`mid-left-${i}`}
                 className="absolute left-0 w-full h-[2px]"
                 style={{
                   top: `${i * 7}%`,
-                  background: 'linear-gradient(90deg, rgba(0,240,255,0.25) 0%, rgba(0,240,255,0.08) 60%, transparent 100%)',
+                  background: 'linear-gradient(90deg, rgba(200,200,200,0.2) 0%, rgba(200,200,200,0.06) 60%, transparent 100%)',
                 }}
               />
             ))}
@@ -267,12 +267,12 @@ export default function ElevatorShutter({ onTransitionStart, onTransitionEnd }: 
           {/* Right shaft wall */}
           <div className="absolute right-0 top-0 bottom-0 w-20">
             {Array.from({ length: 15 }, (_, i) => (
-              <div 
+              <div
                 key={`mid-right-${i}`}
                 className="absolute right-0 w-full h-[2px]"
                 style={{
                   top: `${i * 7}%`,
-                  background: 'linear-gradient(270deg, rgba(0,240,255,0.25) 0%, rgba(0,240,255,0.08) 60%, transparent 100%)',
+                  background: 'linear-gradient(270deg, rgba(200,200,200,0.2) 0%, rgba(200,200,200,0.06) 60%, transparent 100%)',
                 }}
               />
             ))}
@@ -281,31 +281,30 @@ export default function ElevatorShutter({ onTransitionStart, onTransitionEnd }: 
 
         {/* Front layer - closest, moves slowest */}
         <div className="shaft-layer-front absolute inset-0">
-          {/* Floor marker beams */}
           {Array.from({ length: 8 }, (_, i) => (
-            <div 
+            <div
               key={`front-${i}`}
-              className="absolute left-1/4 right-1/4 h-[3px]"
+              className="absolute left-1/4 right-1/4 h-[2px]"
               style={{
                 top: `${10 + i * 12}%`,
-                background: 'linear-gradient(90deg, transparent 0%, rgba(0,240,255,0.3) 30%, rgba(0,240,255,0.4) 50%, rgba(0,240,255,0.3) 70%, transparent 100%)',
-                boxShadow: '0 0 10px rgba(0,240,255,0.3)',
+                background: 'linear-gradient(90deg, transparent 0%, rgba(220,220,220,0.25) 30%, rgba(220,220,220,0.35) 50%, rgba(220,220,220,0.25) 70%, transparent 100%)',
+                boxShadow: '0 0 8px rgba(200,200,200,0.15)',
               }}
             />
           ))}
         </div>
 
         {/* Vertical guide rails */}
-        <div 
-          className="absolute left-8 top-0 bottom-0 w-[2px]"
+        <div
+          className="absolute left-8 top-0 bottom-0 w-[1px]"
           style={{
-            background: 'linear-gradient(180deg, transparent 0%, rgba(0,240,255,0.2) 20%, rgba(0,240,255,0.2) 80%, transparent 100%)',
+            background: 'linear-gradient(180deg, transparent 0%, rgba(200,200,200,0.15) 20%, rgba(200,200,200,0.15) 80%, transparent 100%)',
           }}
         />
-        <div 
-          className="absolute right-8 top-0 bottom-0 w-[2px]"
+        <div
+          className="absolute right-8 top-0 bottom-0 w-[1px]"
           style={{
-            background: 'linear-gradient(180deg, transparent 0%, rgba(0,240,255,0.2) 20%, rgba(0,240,255,0.2) 80%, transparent 100%)',
+            background: 'linear-gradient(180deg, transparent 0%, rgba(200,200,200,0.15) 20%, rgba(200,200,200,0.15) 80%, transparent 100%)',
           }}
         />
       </div>
@@ -316,15 +315,15 @@ export default function ElevatorShutter({ onTransitionStart, onTransitionEnd }: 
         className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 z-40 opacity-0"
       >
         <div className="relative">
-          {/* Indicator frame */}
-          <div className="w-24 h-24 rounded-lg border-2 border-[#00F0FF]/40 bg-[#041518]/90 flex items-center justify-center backdrop-blur-sm">
-            <span className="indicator-text font-mono text-4xl text-[#00F0FF] font-bold tracking-wider">
+          {/* Indicator frame — matte black with silver border */}
+          <div className="w-20 h-20 rounded border border-[rgba(200,200,200,0.25)] bg-[#0f0f0f]/95 flex items-center justify-center backdrop-blur-sm">
+            <span className="indicator-text font-mono text-3xl text-[rgba(220,220,220,0.9)] font-light tracking-wider">
               L
             </span>
           </div>
-          {/* Glow effect */}
-          <div className="absolute inset-0 rounded-lg" style={{
-            boxShadow: '0 0 30px rgba(0,240,255,0.3), inset 0 0 20px rgba(0,240,255,0.1)',
+          {/* Subtle silver glow */}
+          <div className="absolute inset-0 rounded" style={{
+            boxShadow: '0 0 20px rgba(200,200,200,0.08), inset 0 0 12px rgba(200,200,200,0.04)',
           }} />
         </div>
       </div>
@@ -336,29 +335,29 @@ export default function ElevatorShutter({ onTransitionStart, onTransitionEnd }: 
         className="w-1/2 h-full relative z-30"
         style={{ transform: 'translateX(-100%)' }}
       >
-        {/* Main door panel */}
-        <div className="absolute inset-0 bg-gradient-to-r from-[#031012] via-[#051a1e] to-[#072428]">
+        {/* Main door panel — matte black */}
+        <div className="absolute inset-0 bg-gradient-to-r from-[#0a0a0a] via-[#111111] to-[#141414]">
           {/* Brushed metal texture */}
-          <div className="absolute inset-0 opacity-20" style={{
-            backgroundImage: 'repeating-linear-gradient(90deg, transparent, transparent 2px, rgba(0,240,255,0.03) 2px, rgba(0,240,255,0.03) 4px)',
+          <div className="absolute inset-0 opacity-30" style={{
+            backgroundImage: 'repeating-linear-gradient(90deg, transparent, transparent 3px, rgba(200,200,200,0.015) 3px, rgba(200,200,200,0.015) 6px)',
           }} />
         </div>
-        
-        {/* Door edge highlight */}
-        <div className="absolute right-0 top-0 bottom-0 w-[3px] bg-gradient-to-b from-[#00F0FF]/10 via-[#00F0FF]/30 to-[#00F0FF]/10" />
-        
+
+        {/* Door edge highlight — silver */}
+        <div className="absolute right-0 top-0 bottom-0 w-[2px] bg-gradient-to-b from-transparent via-[rgba(200,200,200,0.35)] to-transparent" />
+
         {/* Interior panel lines */}
-        <div className="absolute inset-4 border border-[#00F0FF]/10 rounded-sm">
-          <div className="absolute inset-2 border border-[#00F0FF]/5 rounded-sm" />
+        <div className="absolute inset-4 border border-[rgba(200,200,200,0.08)] rounded-sm">
+          <div className="absolute inset-3 border border-[rgba(200,200,200,0.04)] rounded-sm" />
         </div>
-        
-        {/* Door handle */}
+
+        {/* Door handle — brushed silver */}
         <div className="absolute right-6 top-1/2 -translate-y-1/2">
-          <div className="w-1.5 h-24 rounded-full bg-gradient-to-b from-[#00F0FF]/20 via-[#00F0FF]/40 to-[#00F0FF]/20 shadow-[0_0_10px_rgba(0,240,255,0.3)]" />
+          <div className="w-1 h-20 rounded-full bg-gradient-to-b from-[rgba(200,200,200,0.15)] via-[rgba(200,200,200,0.35)] to-[rgba(200,200,200,0.15)]" style={{ boxShadow: '0 0 6px rgba(200,200,200,0.12)' }} />
         </div>
-        
+
         {/* Safety edge sensor */}
-        <div className="absolute right-0 top-1/4 bottom-1/4 w-1 bg-gradient-to-b from-transparent via-[#00F0FF]/20 to-transparent" />
+        <div className="absolute right-0 top-1/4 bottom-1/4 w-[1px] bg-gradient-to-b from-transparent via-[rgba(200,200,200,0.18)] to-transparent" />
       </div>
 
       {/* Right Door */}
@@ -368,29 +367,29 @@ export default function ElevatorShutter({ onTransitionStart, onTransitionEnd }: 
         className="w-1/2 h-full relative z-30"
         style={{ transform: 'translateX(100%)' }}
       >
-        {/* Main door panel */}
-        <div className="absolute inset-0 bg-gradient-to-l from-[#031012] via-[#051a1e] to-[#072428]">
+        {/* Main door panel — matte black */}
+        <div className="absolute inset-0 bg-gradient-to-l from-[#0a0a0a] via-[#111111] to-[#141414]">
           {/* Brushed metal texture */}
-          <div className="absolute inset-0 opacity-20" style={{
-            backgroundImage: 'repeating-linear-gradient(90deg, transparent, transparent 2px, rgba(0,240,255,0.03) 2px, rgba(0,240,255,0.03) 4px)',
+          <div className="absolute inset-0 opacity-30" style={{
+            backgroundImage: 'repeating-linear-gradient(90deg, transparent, transparent 3px, rgba(200,200,200,0.015) 3px, rgba(200,200,200,0.015) 6px)',
           }} />
         </div>
-        
-        {/* Door edge highlight */}
-        <div className="absolute left-0 top-0 bottom-0 w-[3px] bg-gradient-to-b from-[#00F0FF]/10 via-[#00F0FF]/30 to-[#00F0FF]/10" />
-        
+
+        {/* Door edge highlight — silver */}
+        <div className="absolute left-0 top-0 bottom-0 w-[2px] bg-gradient-to-b from-transparent via-[rgba(200,200,200,0.35)] to-transparent" />
+
         {/* Interior panel lines */}
-        <div className="absolute inset-4 border border-[#00F0FF]/10 rounded-sm">
-          <div className="absolute inset-2 border border-[#00F0FF]/5 rounded-sm" />
+        <div className="absolute inset-4 border border-[rgba(200,200,200,0.08)] rounded-sm">
+          <div className="absolute inset-3 border border-[rgba(200,200,200,0.04)] rounded-sm" />
         </div>
-        
-        {/* Door handle */}
+
+        {/* Door handle — brushed silver */}
         <div className="absolute left-6 top-1/2 -translate-y-1/2">
-          <div className="w-1.5 h-24 rounded-full bg-gradient-to-b from-[#00F0FF]/20 via-[#00F0FF]/40 to-[#00F0FF]/20 shadow-[0_0_10px_rgba(0,240,255,0.3)]" />
+          <div className="w-1 h-20 rounded-full bg-gradient-to-b from-[rgba(200,200,200,0.15)] via-[rgba(200,200,200,0.35)] to-[rgba(200,200,200,0.15)]" style={{ boxShadow: '0 0 6px rgba(200,200,200,0.12)' }} />
         </div>
-        
+
         {/* Safety edge sensor */}
-        <div className="absolute left-0 top-1/4 bottom-1/4 w-1 bg-gradient-to-b from-transparent via-[#00F0FF]/20 to-transparent" />
+        <div className="absolute left-0 top-1/4 bottom-1/4 w-[1px] bg-gradient-to-b from-transparent via-[rgba(200,200,200,0.18)] to-transparent" />
       </div>
     </div>
   );
