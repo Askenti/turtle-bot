@@ -9,7 +9,7 @@ const VERIFIED_PILLARS = [
 // ── The WARDEN Verified medallion ─────────────────────────────────────────────
 function VerifiedMedallion() {
   return (
-    <div className="relative w-[260px] h-[260px] md:w-[320px] md:h-[320px] mx-auto">
+    <div className="relative w-full max-w-[260px] md:max-w-[320px] aspect-square mx-auto">
       {/* Outer ring — text-on-circle effect */}
       <svg viewBox="0 0 320 320" className="absolute inset-0 w-full h-full" aria-hidden="true">
         {/* Outer faint ring */}

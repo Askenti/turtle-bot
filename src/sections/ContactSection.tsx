@@ -196,21 +196,6 @@ export default function ContactSection() {
             AI-powered hospitality operations.
           </p>
 
-          {/* CTAs */}
-          <div className="s-up s-d3 flex flex-wrap items-center justify-center gap-4">
-            <button
-              onClick={() => navigateToFloor('dashboard')}
-              className="inline-flex items-center gap-3 px-6 py-3.5
-                         border border-spectra-ink/20 rounded-full
-                         text-sm tracking-[0.15em] uppercase font-mono text-spectra-ink
-                         transition-all duration-300
-                         hover:border-spectra-ink hover:-translate-y-0.5"
-            >
-              Watch Demo
-            </button>
-          </div>
-        </div>
-
         {/* ── Video placeholder (browser-framed, [data-video-slot]) ── */}
         <div className="s-up s-d4 relative rounded-3xl overflow-hidden border border-spectra-hairline bg-spectra-pearl
                         shadow-[0_40px_100px_-30px_rgba(10,14,18,0.25),0_12px_30px_-10px_rgba(10,14,18,0.10)]

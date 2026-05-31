@@ -139,7 +139,7 @@ export default function SecuritySection() {
         </div>
 
         {/* ── Three pillar cards ── */}
-        <div className="grid grid-cols-2 md:grid-cols-3 gap-3 md:gap-5 md:gap-6 mb-14 md:mb-32">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-4 md:gap-5 mb-14 md:mb-32">
           {PILLARS.map((p, i) => (
             <article
               key={p.number}
@@ -222,7 +222,7 @@ export default function SecuritySection() {
               <ol className="grid grid-cols-1 md:grid-cols-4 gap-5 md:gap-6 relative">
                 {FLOW.map((node, i) => (
                   <li key={node.label}
-                      className={`s-slide s-d${i + 3} flex md:flex-col items-center md:items-center gap-4 md:gap-0`}>
+                      className={`s-slide s-d${i + 3} relative flex md:flex-col items-center md:items-center gap-4 md:gap-0`}>
                     {/* Node disc */}
                     <span className="shrink-0 relative z-10 w-[84px] h-[84px] rounded-full
                                      bg-spectra-pearl border border-spectra-ink/25
