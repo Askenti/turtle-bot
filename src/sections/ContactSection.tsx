@@ -1,7 +1,5 @@
 import { useState } from 'react';
 import { useScrollReveal } from '../lib/useScrollReveal';
-import { navigateToFloor } from '../data/floors';
-
 const YT_ID = 'L_ObudI3Nzo';
 
 /** Thumbnail + custom play button. Swaps to the iframe only on click. */
@@ -195,7 +193,7 @@ export default function ContactSection() {
             Explore the WARDEN ecosystem and experience the next generation of
             AI-powered hospitality operations.
           </p>
-
+        </div>
         {/* ── Video placeholder (browser-framed, [data-video-slot]) ── */}
         <div className="s-up s-d4 relative rounded-3xl overflow-hidden border border-spectra-hairline bg-spectra-pearl
                         shadow-[0_40px_100px_-30px_rgba(10,14,18,0.25),0_12px_30px_-10px_rgba(10,14,18,0.10)]
@@ -210,7 +208,7 @@ export default function ContactSection() {
             </div>
             <div className="flex-1 mx-4 max-w-xl mx-auto bg-spectra-pearl rounded-md border border-spectra-hairline px-3 py-1
                             font-mono text-[10px] tracking-[0.18em] text-spectra-ink-faint text-center">
-              warden.app · demo · 03 min 24 sec
+              warden.app · demo · 08 min 53 sec
             </div>
             <span className="font-mono text-[9px] tracking-[0.3em] uppercase text-spectra-ink-faint hidden sm:inline">
               ◦ Demo
