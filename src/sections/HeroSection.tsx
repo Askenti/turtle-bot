@@ -143,7 +143,7 @@ export default function HeroSection() {
                     playsInline
                     className="w-full h-full object-cover"
                   >
-                    <source src="/videos/warden-showcase.mp4" type="video/mp4" />
+                    <source src="/videos/model.mp4" type="video/mp4" />
                     Your browser does not support the video tag.
                   </video>
                 </div>

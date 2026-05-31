@@ -5,18 +5,22 @@ interface Member {
   name: string;
   role: string;
   isLead?: boolean;
+  /** Path relative to /public, e.g. '/images/team-asfendiyar.jpg' */
+  photo?: string;
 }
 
+// Available photos in public/images/: team-asfendiyar.jpg, team-cv.jpg
+// Assign photo: '/images/team-<name>.jpg' to the matching member below.
 const TEAM: Member[] = [
-  { name: 'Pivavar Darya',        role: 'Project Lead & Business Development', isLead: true },
-  { name: 'Saydullaeva Aziza',    role: 'Data Research & Market Analysis' },
-  { name: 'Nurillaeva Zarina',    role: 'Product Strategy & Documentation' },
-  { name: 'Tologonova Datkaiym',  role: 'UI/UX Designer & Front-End Developer' },
-  { name: 'Hakimova Hadicha',     role: 'Systems Integration Engineer' },
-  { name: 'Kodirova Zahrokhon',   role: 'AI & Data Analysis Engineer' },
-  { name: 'Norov Mirsaid',        role: 'Robotics & Embedded Systems Engineer' },
-  { name: 'Nimatilaev Javokhir',  role: 'Robotics Software Engineer' },
-  { name: 'Amaan',                role: 'Backend & Cloud Systems Engineer' },
+  { name: 'Pivavar Darya',        role: 'Project Lead & Business Development', isLead: true, photo:'/images/dasha.PNG' },
+  { name: 'Saydullaeva Aziza',    role: 'Data Research & Market Analysis',photo:'/images/aziza.png' },
+  { name: 'Nurillaeva Zarina',    role: 'Product Strategy & Documentation' ,photo:'/images/zarina.png'},
+  { name: 'Tologonova Datkaiym',  role: 'UI/UX Designer & Front-End Developer',photo:'/images/datka.png' },
+  { name: 'Hakimova Hadicha',     role: 'Systems Integration Engineer',photo:'/images/cha.png' },
+  { name: 'Kodirova Zahrokhon',   role: 'AI & Data Analysis Engineer',photo:'/images/zahron.png' },
+  { name: 'Norov Mirsaid',        role: 'Robotics & Embedded Systems Engineer',photo:'/images/mirsaid.png' },
+  { name: 'Nimatilaev Javokhir',  role: 'Robotics Software Engineer' ,photo:'/images/java.PNG'},
+  { name: 'Amaan',                role: 'Backend & Cloud Systems Engineer' ,photo:'/images/amman.png'},
 ];
 
 function initialsOf(name: string) {
@@ -58,19 +62,27 @@ function MemberCard({ member, index }: { member: Member; index: number }) {
         )}
       </div>
 
-      {/* Portrait initials disc */}
+      {/* Portrait */}
       <div className="flex flex-col items-center text-center">
         <div
-          className={`relative w-24 h-24 rounded-full mb-5 flex items-center justify-center
+          className={`relative w-24 h-24 rounded-full mb-5 overflow-hidden
                       bg-gradient-to-br from-spectra-cream to-spectra-mist/50
                       border border-spectra-ink/15
                       transition-all duration-500
                       ${member.isLead ? 'ring-2 ring-offset-2 ring-offset-spectra-pearl ring-spectra-ink/20' : ''}`}
         >
-          <span className="font-editorial italic text-spectra-ink text-[26px] tracking-tight"
-                style={{ fontVariationSettings: '"SOFT" 40' }}>
-            {initials}
-          </span>
+          {member.photo ? (
+            <img
+              src={member.photo}
+              alt={member.name}
+              className="w-full h-full object-cover"
+            />
+          ) : (
+            <span className="absolute inset-0 flex items-center justify-center font-editorial italic text-spectra-ink text-[26px] tracking-tight"
+                  style={{ fontVariationSettings: '"SOFT" 40' }}>
+              {initials}
+            </span>
+          )}
         </div>
 
         {/* Name */}
@@ -166,43 +178,12 @@ export default function ContactSection() {
             </span>
           </div>
 
-          {/* Swap the entire div below with <video src=… autoPlay muted loop playsInline /> when ready */}
-          <div data-video-slot
-               className="relative aspect-video bg-gradient-to-br from-spectra-pearl via-spectra-mist/30 to-spectra-cream-deep
-                          flex items-center justify-center">
-
-            {/* Diagonal soft accent lines */}
-            <svg className="absolute inset-0 w-full h-full opacity-30" aria-hidden="true">
-              <line x1="0" y1="100%" x2="50%" y2="0" stroke="rgba(10,14,18,0.1)" strokeWidth="0.5" />
-              <line x1="50%" y1="100%" x2="100%" y2="0" stroke="rgba(10,14,18,0.1)" strokeWidth="0.5" />
-            </svg>
-
-            {/* Play button */}
-            <button
-              type="button"
-              className="group relative z-10 flex flex-col items-center gap-4 px-8 py-6 rounded-2xl
-                         hover:scale-105 transition-transform duration-300"
-              aria-label="Play demo video"
-            >
-              <span className="w-20 h-20 rounded-full bg-spectra-ink text-spectra-cream
-                               flex items-center justify-center
-                               shadow-[0_18px_40px_-10px_rgba(10,14,18,0.35)]
-                               group-hover:shadow-[0_22px_55px_-10px_rgba(10,14,18,0.50)]
-                               transition-shadow duration-300">
-                <svg width="22" height="22" viewBox="0 0 22 22" fill="none" aria-hidden="true">
-                  <path d="M7 4 L 18 11 L 7 18 Z" fill="currentColor" />
-                </svg>
-              </span>
-              <span className="font-mono text-[11px] tracking-[0.25em] uppercase bg-spectra-ink text-spectra-cream px-3 py-1.5 rounded-md font-semibold">
-                Play Demo · 3:24
-              </span>
-            </button>
-
-            {/* Helper hint at the bottom */}
-            <p className="absolute bottom-4 left-1/2 -translate-x-1/2 font-mono text-[9px] tracking-[0.3em] uppercase text-spectra-ink-faint">
-              ◦ Replace [data-video-slot] with the real footage when ready
-            </p>
-          </div>
+          <video
+            src="/videos/demo.mp4"
+            controls
+            playsInline
+            className="w-full aspect-video bg-spectra-ink"
+          />
         </div>
 
         {/* ── Team ── */}
