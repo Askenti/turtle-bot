@@ -43,10 +43,10 @@ interface Stat {
 
 const STATS: Stat[] = [
   {
-    value: <CountUp to={58} suffix="%" />,
-    label: 'Traveler Concern',
+    value: <CountUp to={7801} />,
+    label: 'Recorded',
     caption:
-      'Of travelers expressed concerns about the presence of hidden cameras in their commercial accommodation (Sharma, 2026). An increase of over 600% since 2010.',
+      'Since 2010, reported spycam (molka) crimes in South Korea have skyrocketed by over 600% as of 2026.',
   },
   {
     value: <CountUp to={17.9} decimals={1} prefix="↑ " suffix="%" />,
@@ -55,9 +55,9 @@ const STATS: Stat[] = [
       'Projected growth of the smart hospitality robotics market through 2032 (Hospitality Robot Market Report, 2025).',
   },
   {
-    value: '∞',
-    label: 'Guest Trust',
-    caption: 'Rising guest expectations for privacy, safety, and operational transparency.',
+    value: <CountUp to={58} suffix="%" />,
+    label: 'Traveler Concern',
+    caption: 'travelers expressed concerns about the presence of hidden cameras in their commercial accommodation (Sharma, 2026)',
   },
 ];
 
@@ -154,7 +154,7 @@ export default function ProblemSection() {
               <div className="flex items-center gap-3 mb-10">
                 <span className="w-6 h-px bg-spectra-ink/30" />
                 <span className="font-mono text-[11px] tracking-[0.25em] uppercase bg-spectra-ink text-spectra-cream px-3 py-1.5 rounded-md font-semibold">
-                  Industry Signals
+                  try Signals
                 </span>
               </div>
 

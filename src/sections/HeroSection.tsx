@@ -131,56 +131,26 @@ export default function HeroSection() {
                   }}
                 />
 
-                {/* Top bar — fake dashboard chrome */}
-                <div className="absolute top-0 left-0 right-0 flex items-center gap-2 px-5 py-4 border-b border-spectra-hairline">
-                  <span className="w-1.5 h-1.5 rounded-full bg-spectra-ink/15" />
-                  <span className="w-1.5 h-1.5 rounded-full bg-spectra-ink/15" />
-                  <span className="w-1.5 h-1.5 rounded-full bg-spectra-ink/15" />
-                  <span className="ml-auto font-mono text-[9px] tracking-[0.3em] uppercase text-spectra-ink-faint">
-                    Inspection · Live
-                  </span>
+                {/* Top bar — minimal chrome */}
+                <div className="absolute top-0 left-0 right-0 h-12 border-b border-spectra-hairline" />
+
+                {/* Center — Warden robot video */}
+                <div className="absolute inset-0 top-12 bottom-12 flex items-center justify-center">
+                  <video
+                    autoPlay
+                    muted
+                    loop
+                    playsInline
+                    className="w-full h-full object-cover"
+                  >
+                    <source src="/videos/warden-showcase.mp4" type="video/mp4" />
+                    Your browser does not support the video tag.
+                  </video>
                 </div>
 
-                {/* Center — system silhouette */}
-                <div className="absolute inset-0 flex flex-col items-center justify-center px-8">
-                  {/* Concentric circles indicating "scanning" */}
-                  <div className="relative w-44 h-44 mb-8">
-                    <span className="absolute inset-0 rounded-full border border-spectra-ink/10" />
-                    <span className="absolute inset-4 rounded-full border border-spectra-ink/12" />
-                    <span className="absolute inset-10 rounded-full border border-spectra-ink/14 bg-spectra-mist/40" />
-                    <span className="absolute inset-16 rounded-full border border-spectra-ink/18 bg-spectra-mist-deep/25" />
-                    {/* Pulse dot in center */}
-                    <span className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-2 h-2 rounded-full bg-spectra-ink shadow-[0_0_0_8px_rgba(10,14,18,0.06)]" />
-                  </div>
+                {/* Bottom — clean label removed, kept structure */}
+                <div className="absolute bottom-0 left-0 right-0 px-5 py-4 border-t border-spectra-hairline" />
 
-                  {/* Stat rows */}
-                  <div className="w-full space-y-3">
-                    {[
-                      { label: 'Optical',  value: 'Clear' },
-                      { label: 'Thermal',  value: 'Stable' },
-                      { label: 'RF Scan',  value: 'Nominal' },
-                    ].map((row) => (
-                      <div key={row.label} className="flex items-center justify-between">
-                        <span className="font-mono text-[10px] tracking-[0.25em] uppercase text-spectra-ink-faint">
-                          {row.label}
-                        </span>
-                        <span className="font-mono text-[10px] tracking-[0.2em] uppercase text-spectra-ink-soft">
-                          ◦ {row.value}
-                        </span>
-                      </div>
-                    ))}
-                  </div>
-                </div>
-
-                {/* Bottom — quiet label */}
-                <div className="absolute bottom-0 left-0 right-0 px-5 py-4 border-t border-spectra-hairline flex items-center justify-between">
-                  <span className="font-editorial italic text-xs text-spectra-ink-mute">
-                    Room 412 · Clear
-                  </span>
-                  <span className="font-mono text-[9px] tracking-[0.3em] uppercase text-spectra-ink-faint">
-                    Verified
-                  </span>
-                </div>
               </div>
 
               {/* Floating mini-card behind the main one */}
