@@ -1,4 +1,3 @@
-import { useEffect, useRef } from 'react';
 import { useScrollReveal } from '../lib/useScrollReveal';
 import { navigateToFloor } from '../data/floors';
 
@@ -103,15 +102,6 @@ function MemberCard({ member, index }: { member: Member; index: number }) {
 export default function ContactSection() {
   const [ref, revealed] = useScrollReveal<HTMLElement>();
 
-  // React doesn't reliably set the muted DOM property via JSX props —
-  // force it off imperatively so the browser plays audio.
-  const videoRef = useRef<HTMLVideoElement>(null);
-  useEffect(() => {
-    if (videoRef.current) {
-      videoRef.current.muted = false;
-    }
-  }, []);
-
   return (
     <section
       ref={ref}
@@ -188,13 +178,15 @@ export default function ContactSection() {
             </span>
           </div>
 
-          <video
-            ref={videoRef}
-            src="https://github.com/Askenti/turtle-bot/releases/download/v1.0-demo-assets/demo.mp4"
-            controls
-            playsInline
-            className="w-full aspect-video bg-spectra-ink"
-          />
+          <div className="aspect-video bg-spectra-ink">
+            <iframe
+              src="https://www.youtube-nocookie.com/embed/L_ObudI3Nzo?rel=0&modestbranding=1&color=white"
+              title="WARDEN Demo"
+              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+              allowFullScreen
+              className="w-full h-full"
+            />
+          </div>
         </div>
 
         {/* ── Team ── */}
