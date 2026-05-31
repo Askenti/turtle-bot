@@ -60,3 +60,4 @@ coverage
 
 # ─── Large media (hosted on GitHub Releases CDN) ───────────────────────────
 public/videos/demo.mp4
+public/videos/demo_small.mp4
