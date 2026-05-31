@@ -115,7 +115,7 @@ export default function SecuritySection() {
       <div className="max-w-[1400px] mx-auto">
 
         {/* ── Header ── */}
-        <div className="grid grid-cols-12 gap-8 mb-12 md:mb-24">
+        <div className="grid grid-cols-12 gap-y-6 md:gap-8 mb-12 md:mb-24">
           <div className="col-span-12 lg:col-span-3">
             <div className="s-up flex items-center gap-3 mb-6 lg:mb-0">
               <span className="w-6 h-px bg-spectra-ink/40" />
@@ -186,7 +186,7 @@ export default function SecuritySection() {
         {/* ── Data-flow diagram ── */}
         <div className="s-up s-d6 relative rounded-3xl overflow-hidden border border-spectra-hairline"
              style={{ background: 'linear-gradient(180deg, #FBFAF7 0%, #EAF1F6 100%)' }}>
-          <div className="px-6 md:px-10 lg:px-16 py-10 md:py-20">
+          <div className="px-6 md:px-10 lg:px-16 pt-16 pb-10 md:py-20">
 
             {/* Heading */}
             <div className="text-center mb-12 md:mb-16">

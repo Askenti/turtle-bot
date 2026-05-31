@@ -221,7 +221,7 @@ export default function ContactSection() {
         {/* ── Team ── */}
         <div id="contact-team" className="mb-12 md:mb-24 scroll-mt-32">
 
-          <div className="grid grid-cols-12 gap-8 mb-12 md:mb-16">
+          <div className="grid grid-cols-12 gap-y-6 md:gap-8 mb-12 md:mb-16">
             <div className="col-span-12 lg:col-span-3">
               <div className="s-up flex items-center gap-3 mb-6 lg:mb-0">
                 <span className="w-6 h-px bg-spectra-ink/40" />
@@ -243,7 +243,7 @@ export default function ContactSection() {
           </div>
 
           {/* 3×3 grid */}
-          <div className="grid grid-cols-2 sm:grid-cols-3 gap-4 md:gap-5">
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 md:gap-5">
             {TEAM.map((m, i) => (
               <div key={m.name} className={`s-up s-d${Math.min(i + 3, 8)}`}>
                 <MemberCard member={m} index={i} />
