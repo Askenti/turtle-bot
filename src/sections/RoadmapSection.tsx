@@ -59,7 +59,7 @@ const intensityStyles: Record<Milestone['intensity'], {
     card:   'bg-spectra-pearl border-spectra-ink/15',
     year:   'text-spectra-ink',
     node:   'bg-spectra-ink/40',
-    yearSize: 'clamp(2.75rem, 5.5vw, 4.5rem)',
+    yearSize: 'clamp(2rem, 5.5vw, 4.5rem)',
     glow:   '',
   },
   3: {
@@ -86,7 +86,7 @@ export default function RoadmapSection() {
       ref={ref}
       id="roadmap"
       data-revealed={revealed}
-      className="relative bg-spectra-cream-deep py-28 md:py-40 px-6 md:px-12 lg:px-20 overflow-hidden"
+      className="relative bg-spectra-cream-deep py-16 md:py-40 px-6 md:px-12 lg:px-20 overflow-hidden"
     >
       {/* Soft glow that brightens toward the right — the "future" direction */}
       <div
@@ -101,11 +101,11 @@ export default function RoadmapSection() {
       <div className="relative max-w-[1400px] mx-auto">
 
         {/* ── Header ── */}
-        <div className="grid grid-cols-12 gap-8 mb-20 md:mb-24">
+        <div className="grid grid-cols-12 gap-8 mb-12 md:mb-24">
           <div className="col-span-12 lg:col-span-3">
             <div className="s-up flex items-center gap-3 mb-6 lg:mb-0">
               <span className="w-6 h-px bg-spectra-ink/40" />
-              <span className="font-mono text-[10px] tracking-[0.4em] uppercase text-spectra-ink-mute">
+              <span className="font-mono text-[11px] tracking-[0.25em] uppercase bg-spectra-ink text-spectra-cream px-3 py-1.5 rounded-md font-semibold">
                 10 · Roadmap
               </span>
             </div>
@@ -113,7 +113,7 @@ export default function RoadmapSection() {
 
           <div className="col-span-12 lg:col-span-9">
             <h2 className="s-up s-d1 font-editorial font-light text-spectra-ink leading-[1.05] tracking-[-0.02em] mb-6"
-                style={{ fontSize: 'clamp(2.25rem, 5vw, 4rem)' }}>
+                style={{ fontSize: 'clamp(1.75rem, 5vw, 4rem)' }}>
               Expanding the Future<br />
               <span className="italic text-spectra-ink-soft">of Trusted Hospitality.</span>
             </h2>
@@ -156,7 +156,7 @@ export default function RoadmapSection() {
                   {/* Card */}
                   <article
                     className={`group h-full rounded-2xl p-6 pt-10 lg:pt-12 ${s.card} ${s.glow}
-                               border transition-all duration-500 ease-[cubic-bezier(0.22,1,0.36,1)]
+                               border transition-all duration-500 ease-smooth
                                hover:-translate-y-1`}
                   >
                     {/* Phase eyebrow */}
@@ -195,7 +195,7 @@ export default function RoadmapSection() {
 
         {/* Closing — extends the rail visually with a → off-page suggestion */}
         <div className="s-fade s-d8 mt-16 md:mt-20 flex items-center justify-center gap-3">
-          <span className="font-mono text-[10px] tracking-[0.4em] uppercase text-spectra-ink-mute">
+          <span className="font-mono text-[11px] tracking-[0.25em] uppercase bg-spectra-ink text-spectra-cream px-3 py-1.5 rounded-md font-semibold">
             The road continues
           </span>
           <span className="w-12 h-px bg-gradient-to-r from-spectra-ink/30 to-transparent" />

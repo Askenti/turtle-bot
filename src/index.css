@@ -67,6 +67,14 @@
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
   }
+
+  /* Cormorant Garamond ships old-style figures by default — force lining
+     tabular numerals on every editorial heading so digits look modern. */
+  .font-editorial,
+  .font-display {
+    font-variant-numeric: lining-nums tabular-nums;
+    font-feature-settings: "lnum" 1, "tnum" 1;
+  }
 }
 
 /* ============================================
@@ -112,15 +120,20 @@
    ORBITRON DISPLAY FONT — for big wordmarks & cinematic numerals
    ============================================ */
 .font-display {
-  font-family: 'Playfair Display', serif;
+  font-family: 'Cormorant Garamond', serif;
   letter-spacing: -0.02em;
+  /* Use lining tabular figures so digits read modern, not old-style */
+  font-variant-numeric: lining-nums tabular-nums;
+  font-feature-settings: "lnum" 1, "tnum" 1;
 }
 
 /* Agency display - distressed serif style */
 .font-agency-display {
-  font-family: 'Playfair Display', serif;
+  font-family: 'Cormorant Garamond', serif;
   letter-spacing: -0.02em;
   font-weight: 900;
+  font-variant-numeric: lining-nums tabular-nums;
+  font-feature-settings: "lnum" 1, "tnum" 1;
 }
 
 /* Status indicator (terminal green) */
@@ -319,7 +332,7 @@
 
 /* Serif & Mono Fonts */
 .font-serif {
-  font-family: 'Playfair Display', serif;
+  font-family: 'Cormorant Garamond', serif;
 }
 
 .font-mono {
@@ -897,7 +910,7 @@
 .loader-brand-v2 {
   position: absolute;
   bottom: 2rem;
-  font-family: 'Playfair Display', serif;
+  font-family: 'Cormorant Garamond', serif;
   font-size: 11px;
   letter-spacing: 0.7em;
   color: rgba(10, 14, 18, 0.22);
@@ -988,6 +1001,220 @@
   animation-play-state: paused;
 }
 
+/* Recurring luxe shimmer sweep across the hero wordmark.
+   A diagonal cream-to-mist-to-cream gradient is clipped to the glyph shape
+   via background-clip:text, sweeps across, pauses, repeats. Hover speeds it up. */
+@keyframes spectraShimmer {
+  /* Sweep occupies ~30% of the cycle; the rest is dwell time. */
+  0%   { background-position: 200% center; }
+  30%  { background-position: -200% center; }
+  100% { background-position: -200% center; }
+}
+.spectra-shimmer {
+  background-image: linear-gradient(
+    100deg,
+    #0A0E12 0%,
+    #0A0E12 38%,
+    rgba(180,198,210,0.95) 50%,
+    #0A0E12 62%,
+    #0A0E12 100%
+  );
+  background-size: 200% 100%;
+  background-position: 200% center;
+  -webkit-background-clip: text;
+          background-clip: text;
+  -webkit-text-fill-color: transparent;
+          color: transparent;
+  animation: spectraShimmer 5.5s cubic-bezier(0.23, 1, 0.32, 1) 0.6s infinite;
+}
+/* Hover replays faster + immediately. Touch devices ignore via @media. */
+@media (hover: hover) and (pointer: fine) {
+  .spectra-shimmer:hover {
+    animation-duration: 1.4s;
+    animation-delay: 0s;
+  }
+}
+
+/* Expanding broadcast pulse — concentric circles bloom outward from a center.
+   Used on Ecosystem Core to convey radiating intelligence rather than directional flow.
+   Pure transform + opacity, fully composited. */
+@keyframes spectraBroadcast {
+  0%   { transform: scale(0.4); opacity: 0; }
+  10%  { opacity: 0.5; }
+  100% { transform: scale(1.6); opacity: 0; }
+}
+.broadcast-ring {
+  position: absolute;
+  inset: 0;
+  border-radius: 9999px;
+  border: 1px solid rgba(10, 14, 18, 0.5);
+  transform: scale(0.4);
+  opacity: 0;
+  will-change: transform, opacity;
+  animation: spectraBroadcast 4s cubic-bezier(0.23, 1, 0.32, 1) infinite;
+}
+
+/* Dashed-line flow for AI Tech schematics — small paths with existing
+   stroke-dasharray attribute get a slow continuous offset shift so the
+   dashes appear to march along. Loop is intentionally long so paint cost
+   stays low (a few small offsets per second). */
+@keyframes spectraMarch {
+  from { stroke-dashoffset: 0;   }
+  to   { stroke-dashoffset: -30; }
+}
+.dashed-flow {
+  animation: spectraMarch 3s linear infinite;
+}
+
+/* Signal pulse riding along a horizontal rail (HowItWorks stepper).
+   Pure translateX = composited. The pseudo carries a soft ink-to-transparent
+   gradient so it reads as a comet trail. */
+@keyframes spectraRail {
+  0%   { transform: translate3d(-100%, 0, 0); opacity: 0; }
+  10%  { opacity: 1; }
+  90%  { opacity: 1; }
+  100% { transform: translate3d(2000%, 0, 0); opacity: 0; }
+}
+.signal-rail {
+  position: absolute;
+  top: -1px;
+  left: 0;
+  width: 80px;
+  height: 3px;
+  border-radius: 999px;
+  background: linear-gradient(
+    90deg,
+    transparent 0%,
+    rgba(10, 14, 18, 0.55) 60%,
+    rgba(10, 14, 18, 0.95) 100%
+  );
+  will-change: transform;
+  animation: spectraRail 4.4s cubic-bezier(0.645, 0.045, 0.355, 1) infinite;
+}
+.signal-rail-2 { animation-delay: -2.2s; }
+
+/* ============================================
+   GLOBAL AMBIENT BACKGROUND — appears on every section/floor
+   ============================================ */
+
+/* Drifting soft mist-blue blobs behind every section's content.
+   Pure transform animation, pointer-events none, sits below content. */
+@keyframes atmosDrift {
+  0%   { transform: translate3d(0, 0, 0) scale(1); }
+  50%  { transform: translate3d(2.5%, -2%, 0) scale(1.08); }
+  100% { transform: translate3d(-1.5%, 2%, 0) scale(1.04); }
+}
+main > section::before {
+  content: '';
+  position: absolute;
+  inset: -5%;
+  z-index: 0;
+  pointer-events: none;
+  background:
+    radial-gradient(38% 30% at 16% 22%, rgba(180,198,210,0.20), transparent 70%),
+    radial-gradient(34% 26% at 84% 72%, rgba(214,225,232,0.18), transparent 70%),
+    radial-gradient(28% 22% at 60% 50%, rgba(180,198,210,0.10), transparent 75%);
+  will-change: transform;
+  animation: atmosDrift 22s ease-in-out infinite;
+}
+/* Keep real content above the ambient layer */
+main > section > * {
+  position: relative;
+  z-index: 1;
+}
+
+/* Fixed film-grain overlay — subtle editorial texture across the whole page. */
+.grain-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 60;
+  pointer-events: none;
+  opacity: 0.04;
+  mix-blend-mode: multiply;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  background-size: 160px 160px;
+}
+
+/* Barely-there silk/textile layer — low-frequency turbulence with directional
+   warp so it reads as soft fabric folds, not noise. CSS variables --mx/--my
+   are set by JS to a normalized cursor position (-1..1), giving a gentle
+   parallax drift toward the mouse. */
+@keyframes textileDrift {
+  0%   { background-position: 0% 0%, 0% 0%; }
+  50%  { background-position: 6% -4%, -3% 5%; }
+  100% { background-position: 0% 0%, 0% 0%; }
+}
+/* Outer wrapper: cursor parallax. Transform is set inline from JS to avoid
+   custom-property/calc cascade quirks; CSS owns the smooth transition. */
+.textile-layer[aria-hidden="true"] {
+  position: fixed;
+  inset: -4%;
+  z-index: 0;
+  pointer-events: none;
+  will-change: transform;
+  transition: transform 600ms cubic-bezier(0.23, 1, 0.32, 1);
+}
+/* Inner: the actual fabric texture + ambient drift animation. */
+.textile-layer::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  opacity: 0.18;
+  mix-blend-mode: multiply;
+  background-image:
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='600' height='600'%3E%3Cfilter id='f'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.012 0.04' numOctaves='2' seed='7' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 0.04 0 0 0 0 0.06 0 0 0 0 0.07 0 0 0 0.8 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23f)'/%3E%3C/svg%3E"),
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='900' height='900'%3E%3Cfilter id='f2'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.006 0.018' numOctaves='1' seed='3' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 0.7 0 0 0 0 0.74 0 0 0 0 0.78 0 0 0 0.65 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23f2)'/%3E%3C/svg%3E");
+  background-size: 600px 600px, 900px 900px;
+  background-blend-mode: multiply;
+  will-change: background-position;
+  animation: textileDrift 30s ease-in-out infinite;
+}
+
+/* Gentle looping glow for connector lines (Ecosystem) — solid stroke whose
+   opacity + soft shadow swell in and out. No motion, no fast light; just a
+   calm breathing pulse that loops forever. */
+@keyframes spectraGlow {
+  0%, 100% { opacity: 0.30; filter: drop-shadow(0 0 0 rgba(10,14,18,0));   }
+  50%      { opacity: 0.85; filter: drop-shadow(0 0 3px rgba(10,14,18,0.22)); }
+}
+.spectra-glow {
+  animation: spectraGlow 3.4s ease-in-out infinite;
+}
+
+/* GPU-composited signal dots for Detection connector lines.
+   Uses CSS Motion Path (offset-path) so position is handled as a transform
+   by the compositor — zero repaints, butter-smooth even under load.
+   ease-in-out-cubic = correct for on-screen movement (skill: moving elements).
+   Dots fade in near the branch, travel to the node, fade out on arrival. */
+@keyframes spectraTravel {
+  0%   { offset-distance: 100%; opacity: 0; }
+  8%   { opacity: 1; }
+  88%  { opacity: 1; }
+  100% { offset-distance: 0%; opacity: 0; }
+}
+.signal-dot {
+  will-change: transform;
+  animation: spectraTravel 2.4s cubic-bezier(0.645, 0.045, 0.355, 1) infinite;
+}
+
+/* Soft ambient float for hero diagram panel */
+@keyframes spectraFloat {
+  0%, 100% { transform: translateY(0); }
+  50%      { transform: translateY(-8px); }
+}
+.spectra-float {
+  animation: spectraFloat 6s ease-in-out infinite;
+}
+
+/* Gentle bob on small accent dots */
+@keyframes spectraBob {
+  0%, 100% { transform: scale(1);   opacity: 0.6; }
+  50%      { transform: scale(1.4); opacity: 1;   }
+}
+.spectra-bob {
+  animation: spectraBob 2.8s ease-in-out infinite;
+}
+
 /* Respect reduced motion */
 @media (prefers-reduced-motion: reduce) {
   .revolving-door-spinner,
@@ -999,7 +1226,17 @@
     animation: none;
   }
   .s-up, .s-fade, .s-slide,
-  .spectra-pulse, .spectra-line {
+  .spectra-pulse, .spectra-line, .signal-dot, .signal-rail, .dashed-flow,
+  .spectra-glow, .spectra-float, .spectra-bob, .spectra-shimmer, .broadcast-ring {
+    animation: none;
+  }
+  .textile-layer,
+  .textile-layer::after {
+    animation: none;
+    transform: none;
+    transition: none;
+  }
+  main > section::before {
     animation: none;
     opacity: 1;
     transform: none;

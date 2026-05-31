@@ -4,11 +4,19 @@ import { FLOORS, navigateToFloor } from '../data/floors';
 export default function FloorPanel() {
   const [activeFloor, setActiveFloor] = useState('hero');
   const [visible, setVisible] = useState(false);
+  const [shown, setShown] = useState(true);
 
   // Reveal after the initial page-loader exits
   useEffect(() => {
     const t = window.setTimeout(() => setVisible(true), 1000);
     return () => window.clearTimeout(t);
+  }, []);
+
+  // Header hamburger toggles this panel via a CustomEvent
+  useEffect(() => {
+    const onToggle = (e: Event) => setShown((e as CustomEvent<boolean>).detail);
+    window.addEventListener('warden:floor-panel', onToggle);
+    return () => window.removeEventListener('warden:floor-panel', onToggle);
   }, []);
 
   // ── Active-floor tracking ──
@@ -51,7 +59,7 @@ export default function FloorPanel() {
         shadow-[0_20px_50px_-15px_rgba(10,14,18,0.25),0_6px_15px_-5px_rgba(10,14,18,0.10)]
         border border-spectra-hairline
         transition-all duration-500
-        ${visible ? 'opacity-100 scale-100' : 'opacity-0 scale-90'}
+        ${visible && shown ? 'opacity-100 scale-100 translate-x-0 pointer-events-auto' : 'opacity-0 scale-90 translate-x-6 pointer-events-none'}
         hidden md:flex
       `}
     >

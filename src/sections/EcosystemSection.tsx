@@ -51,7 +51,7 @@ export default function EcosystemSection() {
       ref={ref}
       id="ecosystem"
       data-revealed={revealed}
-      className="relative bg-spectra-cream-deep py-28 md:py-40 px-6 md:px-12 lg:px-20 overflow-hidden"
+      className="relative bg-spectra-cream-deep py-16 md:py-40 px-6 md:px-12 lg:px-20 overflow-hidden"
     >
       {/* Soft radial light from top-right */}
       <div
@@ -66,11 +66,11 @@ export default function EcosystemSection() {
       <div className="relative max-w-[1400px] mx-auto">
 
         {/* ── Section header ── */}
-        <div className="grid grid-cols-12 gap-8 mb-20 md:mb-24">
+        <div className="grid grid-cols-12 gap-8 mb-12 md:mb-24">
           <div className="col-span-12 lg:col-span-3">
             <div className="s-up flex items-center gap-3">
               <span className="w-6 h-px bg-spectra-ink/40" />
-              <span className="font-mono text-[10px] tracking-[0.4em] uppercase text-spectra-ink-mute">
+              <span className="font-mono text-[11px] tracking-[0.25em] uppercase bg-spectra-ink text-spectra-cream px-3 py-1.5 rounded-md font-semibold">
                 02 · The Ecosystem
               </span>
             </div>
@@ -78,7 +78,7 @@ export default function EcosystemSection() {
 
           <div className="col-span-12 lg:col-span-9">
             <h2 className="s-up s-d1 font-editorial font-light text-spectra-ink leading-[1.05] tracking-[-0.02em] mb-6"
-                style={{ fontSize: 'clamp(2.25rem, 5vw, 4rem)' }}>
+                style={{ fontSize: 'clamp(1.75rem, 5vw, 4rem)' }}>
               One Intelligent Ecosystem<br />
               <span className="italic text-spectra-ink-soft">for Modern Hospitality.</span>
             </h2>
@@ -94,10 +94,9 @@ export default function EcosystemSection() {
 
           {/* Core hub */}
           <div className="s-fade s-d3 relative z-10 mb-12 md:mb-20">
-            <div className="relative w-52 h-52 md:w-64 md:h-64">
-              {/* Outer ring */}
+            <div className="relative w-64 h-64 md:w-80 md:h-80">
+              {/* Static outer + mid rings */}
               <span className="absolute inset-0 rounded-full border border-spectra-ink/12" />
-              {/* Mid ring */}
               <span className="absolute inset-5 rounded-full border border-spectra-ink/15 bg-spectra-pearl/40" />
               {/* Inner disc — the actual chip */}
               <div className="absolute inset-10 rounded-full bg-spectra-pearl border border-spectra-hairline
@@ -114,50 +113,48 @@ export default function EcosystemSection() {
             </div>
           </div>
 
-          {/* ── Connection lines (desktop only) ── */}
+          {/* ── Connection lines reaching down into the cards (desktop only) ── */}
           <svg
-            className="absolute top-[180px] md:top-[210px] left-1/2 -translate-x-1/2 z-0 hidden md:block pointer-events-none"
-            width="900"
-            height="120"
-            viewBox="0 0 900 120"
+            className="absolute top-[210px] md:top-[280px] left-1/2 -translate-x-1/2 z-0 hidden md:block pointer-events-none"
+            width="980"
+            height="200"
+            viewBox="0 0 980 200"
             fill="none"
             aria-hidden="true"
           >
-            {/* center → card 1 (left) */}
-            <path
-              className="spectra-line"
-              d="M450 10 Q 450 60 150 110"
-              stroke="rgba(10,14,18,0.18)"
-              strokeWidth="1"
-              style={{ animationDelay: '0.6s' }}
-            />
-            {/* center → card 2 (middle) */}
-            <path
-              className="spectra-line"
-              d="M450 10 L 450 110"
-              stroke="rgba(10,14,18,0.18)"
-              strokeWidth="1"
-              style={{ animationDelay: '0.8s' }}
-            />
-            {/* center → card 3 (right) */}
-            <path
-              className="spectra-line"
-              d="M450 10 Q 450 60 750 110"
-              stroke="rgba(10,14,18,0.18)"
-              strokeWidth="1"
-              style={{ animationDelay: '1.0s' }}
-            />
+            {/* Faint static base — each line exits the Core at a distinct point
+                so they fan out cleanly without overlapping at the source */}
+            <path d="M430 8 C 360 60, 240 120, 165 196" stroke="rgba(10,14,18,0.16)" strokeWidth="1" />
+            <path d="M490 8 L 490 196"                  stroke="rgba(10,14,18,0.16)" strokeWidth="1" />
+            <path d="M550 8 C 620 60, 740 120, 815 196" stroke="rgba(10,14,18,0.16)" strokeWidth="1" />
+            {/* Gentle looping glow on top — calm pulse, staggered per line */}
+            <path className="spectra-glow" d="M430 8 C 360 60, 240 120, 165 196"
+                  stroke="rgba(10,14,18,0.5)" strokeWidth="1.2" strokeLinecap="round" />
+            <path className="spectra-glow" d="M490 8 L 490 196"
+                  stroke="rgba(10,14,18,0.5)" strokeWidth="1.2" strokeLinecap="round"
+                  style={{ animationDelay: '-1s' }} />
+            <path className="spectra-glow" d="M550 8 C 620 60, 740 120, 815 196"
+                  stroke="rgba(10,14,18,0.5)" strokeWidth="1.2" strokeLinecap="round"
+                  style={{ animationDelay: '-2s' }} />
+            {/* Exit nodes on the Core edge */}
+            <circle cx="430" cy="8" r="2.5" fill="rgba(10,14,18,0.4)" />
+            <circle cx="490" cy="8" r="2.5" fill="rgba(10,14,18,0.4)" />
+            <circle cx="550" cy="8" r="2.5" fill="rgba(10,14,18,0.4)" />
+            {/* Connection nodes where lines meet each card */}
+            <circle cx="165" cy="196" r="3.5" fill="rgba(10,14,18,0.55)" />
+            <circle cx="490" cy="196" r="3.5" fill="rgba(10,14,18,0.55)" />
+            <circle cx="815" cy="196" r="3.5" fill="rgba(10,14,18,0.55)" />
           </svg>
 
           {/* ── Three mode cards ── */}
-          <div className="relative grid grid-cols-1 md:grid-cols-3 gap-5 md:gap-6 w-full max-w-[1100px]">
+          <div className="relative grid grid-cols-2 md:grid-cols-3 gap-3 md:gap-5 md:gap-6 w-full max-w-[1100px]">
             {MODES.map((m, i) => (
               <article
                 key={m.title}
                 className={`s-up s-d${i + 4}
                             group relative bg-spectra-pearl rounded-2xl p-7 md:p-8
                             border border-spectra-hairline backdrop-blur-sm
-                            transition-all duration-500 ease-[cubic-bezier(0.22,1,0.36,1)]
+                            transition-all duration-500 ease-smooth
                             hover:-translate-y-1
                             hover:shadow-[0_22px_50px_-15px_rgba(10,14,18,0.20),0_6px_15px_-5px_rgba(10,14,18,0.08)]
                             hover:border-spectra-mist-deep/40`}

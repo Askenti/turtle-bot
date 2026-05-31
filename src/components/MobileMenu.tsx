@@ -6,13 +6,6 @@ interface MobileMenuProps {
   onClose: () => void;
 }
 
-/** Primary site nav (same labels as the desktop header). */
-const NAV_LINKS = [
-  { label: 'Work',    targetId: 'solution' },
-  { label: 'About',   targetId: 'team' },
-  { label: 'Contact', targetId: 'footer' },
-];
-
 /**
  * MobileMenu — slide-in drawer that exposes both the marketing nav links
  * AND the full elevator floor list to mobile users (who don't get the
@@ -84,9 +77,9 @@ export default function MobileMenu({ open, onClose }: MobileMenuProps) {
         className={`
           fixed top-0 right-0 bottom-0 z-50 md:hidden
           w-[88vw] max-w-sm
-          bg-[#0a0a0a] border-l border-[rgba(201,185,154,0.15)]
+          bg-spectra-cream border-l border-spectra-hairline
           overflow-y-auto overscroll-contain
-          transform transition-transform duration-[350ms]
+          transform transition-transform duration-350
           ${open ? 'translate-x-0' : 'translate-x-full'}
         `}
         style={{
@@ -95,58 +88,32 @@ export default function MobileMenu({ open, onClose }: MobileMenuProps) {
         }}
       >
         {/* Header bar */}
-        <div className="flex items-center justify-between px-6 py-5 border-b border-[rgba(201,185,154,0.1)]">
-          <span
-            className="font-display text-lg tracking-[0.2em] uppercase font-bold"
-            style={{ color: '#c9b99a' }}
-          >
-            Warden
+        <div className="flex flex-col gap-1 px-6 py-5 border-b border-spectra-hairline">
+          <div className="flex items-center justify-between">
+            <span className="font-editorial text-2xl tracking-tight uppercase text-spectra-ink leading-none">
+              WARDEN
+            </span>
+            <button
+              ref={closeBtnRef}
+              onClick={onClose}
+              className="w-11 h-11 -mr-2 flex items-center justify-center rounded-full text-spectra-ink
+                         active:bg-spectra-ink/5 transition-colors"
+              aria-label="Close menu"
+            >
+              <svg width="18" height="18" viewBox="0 0 18 18" fill="none" aria-hidden="true">
+                <line x1="3" y1="3" x2="15" y2="15" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
+                <line x1="15" y1="3" x2="3" y2="15" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
+              </svg>
+            </button>
+          </div>
+          <span className="font-mono text-[11px] tracking-[0.3em] uppercase text-spectra-ink-faint">
+            Spectra : Smart Hospitality
           </span>
-          <button
-            ref={closeBtnRef}
-            onClick={onClose}
-            className="w-11 h-11 -mr-2 flex items-center justify-center rounded-full
-                       active:bg-[rgba(201,185,154,0.08)] transition-colors"
-            style={{ color: '#c9b99a' }}
-            aria-label="Close menu"
-          >
-            <svg width="18" height="18" viewBox="0 0 18 18" fill="none" aria-hidden="true">
-              <line x1="3" y1="3" x2="15" y2="15" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
-              <line x1="15" y1="3" x2="3" y2="15" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
-            </svg>
-          </button>
         </div>
 
-        {/* ── Section: Navigate ── */}
-        <nav className="px-6 py-6" aria-label="Primary">
-          <p
-            className="font-mono text-[10px] tracking-[0.4em] uppercase mb-4"
-            style={{ color: 'rgba(201,185,154,0.4)' }}
-          >
-            Navigate
-          </p>
-          <ul>
-            {NAV_LINKS.map((link) => (
-              <li key={link.targetId}>
-                <button
-                  onClick={() => goTo(link.targetId)}
-                  className="w-full min-h-[48px] py-3 text-left text-base tracking-[0.1em] uppercase font-mono
-                             active:opacity-60 transition-opacity"
-                  style={{ color: '#c9b99a' }}
-                >
-                  {link.label}
-                </button>
-              </li>
-            ))}
-          </ul>
-        </nav>
-
         {/* ── Section: Elevator ── */}
-        <div className="px-6 py-6 border-t border-[rgba(201,185,154,0.1)]">
-          <p
-            className="font-mono text-[10px] tracking-[0.4em] uppercase mb-4"
-            style={{ color: 'rgba(201,185,154,0.4)' }}
-          >
+        <div className="px-6 py-6">
+          <p className="font-mono text-[12px] tracking-[0.35em] uppercase text-spectra-ink-mute mb-4">
             Elevator
           </p>
           <ul className="flex flex-col gap-1">
@@ -155,30 +122,22 @@ export default function MobileMenu({ open, onClose }: MobileMenuProps) {
                 <button
                   onClick={() => goTo(floor.id)}
                   className="w-full min-h-[56px] flex items-center gap-4 py-2 px-3 -mx-3 rounded-lg
-                             active:bg-[rgba(0,240,255,0.08)] transition-colors"
+                             active:bg-spectra-ink/5 transition-colors"
                   aria-label={`Go to ${floor.description}`}
                 >
                   {/* Floor badge */}
                   <span
                     className="w-11 h-11 shrink-0 flex items-center justify-center rounded-full
-                               font-mono text-sm font-bold
-                               border border-[rgba(0,240,255,0.3)]
-                               bg-[radial-gradient(circle,_rgba(0,240,255,0.08),_rgba(0,240,255,0.02))]"
-                    style={{ color: '#00F0FF' }}
+                               font-mono text-sm
+                               border border-spectra-ink/25 bg-spectra-pearl text-spectra-ink"
                   >
                     {floor.label}
                   </span>
                   <div className="flex flex-col items-start text-left">
-                    <span
-                      className="font-mono text-[10px] tracking-[0.3em] uppercase"
-                      style={{ color: 'rgba(0,240,255,0.5)' }}
-                    >
+                    <span className="font-mono text-[10px] tracking-[0.3em] uppercase text-spectra-ink-faint">
                       {floor.name}
                     </span>
-                    <span
-                      className="font-mono text-sm tracking-[0.05em]"
-                      style={{ color: '#c9b99a' }}
-                    >
+                    <span className="font-editorial text-[15px] tracking-tight text-spectra-ink">
                       {floor.description}
                     </span>
                   </div>
@@ -189,12 +148,9 @@ export default function MobileMenu({ open, onClose }: MobileMenuProps) {
         </div>
 
         {/* Footer credit */}
-        <div className="px-6 py-6 border-t border-[rgba(201,185,154,0.1)]">
-          <p
-            className="font-mono text-[9px] tracking-[0.3em] uppercase"
-            style={{ color: 'rgba(201,185,154,0.3)' }}
-          >
-            Inha University · Team 1 Spectra
+        <div className="px-6 py-6 border-t border-spectra-hairline">
+          <p className="font-mono text-[9px] tracking-[0.3em] uppercase text-spectra-ink-faint">
+            WARDEN · Team 1 Spectra
           </p>
         </div>
       </aside>

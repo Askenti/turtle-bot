@@ -1,3 +1,4 @@
+import { useCallback } from 'react';
 import { useScrollReveal } from '../lib/useScrollReveal';
 
 interface Branch {
@@ -105,15 +106,31 @@ const FUSION_STEPS: { label: string; sub: string }[] = [
   { label: 'Verified Threat Alert',     sub: 'Dispatched to dashboard' },
 ];
 
+// Pointer-tracked 3D tilt — runs entirely off React, writing to style directly.
+function useTilt() {
+  const onMove = useCallback((e: React.MouseEvent<HTMLElement>) => {
+    const el = e.currentTarget;
+    const r = el.getBoundingClientRect();
+    const x = (e.clientX - r.left) / r.width  - 0.5;  // -0.5 .. 0.5
+    const y = (e.clientY - r.top)  / r.height - 0.5;
+    el.style.transform = `perspective(700px) rotateX(${(-y * 6).toFixed(2)}deg) rotateY(${(x * 8).toFixed(2)}deg) translateY(-4px)`;
+  }, []);
+  const onLeave = useCallback((e: React.MouseEvent<HTMLElement>) => {
+    e.currentTarget.style.transform = '';
+  }, []);
+  return { onMouseMove: onMove, onMouseLeave: onLeave };
+}
+
 export default function DetectionSection() {
   const [ref, revealed] = useScrollReveal<HTMLElement>();
+  const tilt = useTilt();
 
   return (
     <section
       ref={ref}
       id="detection"
       data-revealed={revealed}
-      className="relative bg-spectra-cream-deep py-28 md:py-40 px-6 md:px-12 lg:px-20 overflow-hidden"
+      className="relative bg-spectra-cream-deep py-16 md:py-40 px-6 md:px-12 lg:px-20 overflow-hidden"
     >
       {/* Soft mist halo */}
       <div
@@ -128,11 +145,11 @@ export default function DetectionSection() {
       <div className="relative max-w-[1400px] mx-auto">
 
         {/* ── Header ── */}
-        <div className="grid grid-cols-12 gap-8 mb-20 md:mb-24">
+        <div className="grid grid-cols-12 gap-8 mb-12 md:mb-24">
           <div className="col-span-12 lg:col-span-3">
             <div className="s-up flex items-center gap-3">
               <span className="w-6 h-px bg-spectra-ink/40" />
-              <span className="font-mono text-[10px] tracking-[0.4em] uppercase text-spectra-ink-mute">
+              <span className="font-mono text-[11px] tracking-[0.25em] uppercase bg-spectra-ink text-spectra-cream px-3 py-1.5 rounded-md font-semibold">
                 04 · Detection
               </span>
             </div>
@@ -140,7 +157,7 @@ export default function DetectionSection() {
 
           <div className="col-span-12 lg:col-span-9">
             <h2 className="s-up s-d1 font-editorial font-light text-spectra-ink leading-[1.05] tracking-[-0.02em] mb-6"
-                style={{ fontSize: 'clamp(2.25rem, 5vw, 4rem)' }}>
+                style={{ fontSize: 'clamp(1.75rem, 5vw, 4rem)' }}>
               Advanced Multi-Factor<br />
               <span className="italic text-spectra-ink-soft">Threat Detection.</span>
             </h2>
@@ -152,7 +169,7 @@ export default function DetectionSection() {
         </div>
 
         {/* ── Converging diagram ── */}
-        <div className="relative mb-20 md:mb-24">
+        <div className="relative mb-12 md:mb-24">
 
           {/* Verified-Detection center node */}
           <div className="s-fade s-d3 relative z-10 mx-auto mb-12 md:mb-16 w-fit">
@@ -187,24 +204,36 @@ export default function DetectionSection() {
             fill="none"
             aria-hidden="true"
           >
-            <path className="spectra-line" d="M500 10 Q 500 60 180 95"
-                  stroke="rgba(10,14,18,0.22)" strokeWidth="1" style={{ animationDelay: '0.5s' }} />
-            <path className="spectra-line" d="M500 10 L 500 95"
-                  stroke="rgba(10,14,18,0.22)" strokeWidth="1" style={{ animationDelay: '0.7s' }} />
-            <path className="spectra-line" d="M500 10 Q 500 60 820 95"
-                  stroke="rgba(10,14,18,0.22)" strokeWidth="1" style={{ animationDelay: '0.9s' }} />
+            {/* Faint static base tracks */}
+            <path d="M500 10 Q 500 60 180 95" stroke="rgba(10,14,18,0.18)" strokeWidth="1" />
+            <path d="M500 10 L 500 95"        stroke="rgba(10,14,18,0.18)" strokeWidth="1" />
+            <path d="M500 10 Q 500 60 820 95" stroke="rgba(10,14,18,0.18)" strokeWidth="1" />
+            {/*
+              GPU-composited signal dots via CSS Motion Path.
+              offset-path travels the same curves; the browser handles position
+              internally as a transform — zero repaints, fully smooth.
+              Dots travel branch→node (100%→0%) = signal converging inward.
+            */}
+            <circle r="3" fill="rgba(10,14,18,0.88)" className="signal-dot"
+              style={{ offsetPath: "path('M500 10 Q 500 60 180 95')" } as React.CSSProperties} />
+            <circle r="3" fill="rgba(10,14,18,0.88)" className="signal-dot"
+              style={{ offsetPath: "path('M500 10 L 500 95')", animationDelay: '-0.8s' } as React.CSSProperties} />
+            <circle r="3" fill="rgba(10,14,18,0.88)" className="signal-dot"
+              style={{ offsetPath: "path('M500 10 Q 500 60 820 95')", animationDelay: '-1.6s' } as React.CSSProperties} />
           </svg>
 
           {/* 3 branch cards */}
-          <div className="relative grid grid-cols-1 md:grid-cols-3 gap-5 md:gap-6 w-full max-w-[1100px] mx-auto">
+          <div className="relative grid grid-cols-2 md:grid-cols-3 gap-3 md:gap-5 md:gap-6 w-full max-w-[1100px] mx-auto">
             {BRANCHES.map((b, i) => (
               <article
                 key={b.title}
+                onMouseMove={tilt.onMouseMove}
+                onMouseLeave={tilt.onMouseLeave}
                 className={`s-up s-d${i + 4}
                             group relative bg-spectra-pearl rounded-2xl p-7 md:p-8
-                            border border-spectra-hairline
-                            transition-all duration-500 ease-[cubic-bezier(0.22,1,0.36,1)]
-                            hover:-translate-y-1 hover:border-spectra-mist-deep/40
+                            border border-spectra-hairline will-change-transform
+                            transition-[transform,box-shadow,border-color] duration-300 ease-smooth
+                            hover:border-spectra-mist-deep/40
                             hover:shadow-[0_22px_50px_-15px_rgba(10,14,18,0.20),0_6px_15px_-5px_rgba(10,14,18,0.08)]`}
               >
                 {/* Visual + header row */}
@@ -212,7 +241,10 @@ export default function DetectionSection() {
                   <span className="font-editorial italic text-spectra-ink-faint text-[26px] leading-none tracking-tight">
                     {b.index}
                   </span>
-                  <div className="w-16 h-16 opacity-90 group-hover:opacity-100 transition-opacity">
+                  <div
+                    className="spectra-float w-16 h-16 opacity-90 group-hover:opacity-100 transition-opacity"
+                    style={{ animationDelay: `${i * 700}ms` }}
+                  >
                     {b.visual}
                   </div>
                 </div>
@@ -245,19 +277,19 @@ export default function DetectionSection() {
         <div className="s-up s-d6 relative rounded-3xl border border-spectra-hairline overflow-hidden"
              style={{ background: 'linear-gradient(180deg, #FBFAF7 0%, #F0EBE2 100%)' }}>
 
-          <div className="px-6 md:px-12 lg:px-16 py-14 md:py-20">
+          <div className="px-6 md:px-12 lg:px-16 py-10 md:py-20">
 
             {/* Block header */}
             <div className="text-center mb-12 md:mb-16">
               <div className="inline-flex items-center gap-3 mb-5">
                 <span className="w-6 h-px bg-spectra-ink/30" />
-                <span className="font-mono text-[10px] tracking-[0.4em] uppercase text-spectra-ink-mute">
+                <span className="font-mono text-[11px] tracking-[0.25em] uppercase bg-spectra-ink text-spectra-cream px-3 py-1.5 rounded-md font-semibold">
                   Fusion Logic
                 </span>
                 <span className="w-6 h-px bg-spectra-ink/30" />
               </div>
               <h3 className="font-editorial font-light text-spectra-ink leading-[1.1] tracking-[-0.02em] max-w-2xl mx-auto"
-                  style={{ fontSize: 'clamp(1.75rem, 3.5vw, 2.5rem)' }}>
+                  style={{ fontSize: 'clamp(1.35rem, 3.5vw, 2.5rem)' }}>
                 Layered Sensor Fusion <span className="italic text-spectra-ink-soft">Verification.</span>
               </h3>
               <p className="mt-5 max-w-xl mx-auto text-[15px] leading-[1.65] text-spectra-ink-mute">
@@ -267,33 +299,33 @@ export default function DetectionSection() {
             </div>
 
             {/* Vertical flow */}
-            <ol className="relative max-w-md mx-auto">
+            <ol className="relative max-w-xl mx-auto">
               {/* Vertical rail */}
-              <span className="absolute left-[18px] top-3 bottom-3 w-px bg-spectra-ink/15" />
+              <span className="absolute left-[26px] top-4 bottom-4 w-px bg-spectra-ink/15" />
 
               {FUSION_STEPS.map((step, i) => (
-                <li key={step.label} className={`s-slide s-d${i + 3} relative flex items-start gap-5 pb-6 last:pb-0`}>
+                <li key={step.label} className={`s-slide s-d${i + 3} relative flex items-start gap-6 pb-8 last:pb-0`}>
                   {/* Node */}
                   <div className="relative shrink-0 z-10">
-                    <span className="block w-[37px] h-[37px] rounded-full bg-spectra-pearl border border-spectra-ink/30
-                                     flex items-center justify-center font-mono text-[10px] tracking-[0.15em] text-spectra-ink">
+                    <span className="block w-[52px] h-[52px] rounded-full bg-spectra-pearl border border-spectra-ink/30
+                                     flex items-center justify-center font-mono text-[13px] tracking-[0.15em] text-spectra-ink">
                       {String(i + 1).padStart(2, '0')}
                     </span>
                   </div>
 
                   {/* Text */}
-                  <div className="pt-1">
-                    <p className="font-editorial text-[17px] tracking-tight text-spectra-ink leading-tight">
+                  <div className="pt-2">
+                    <p className="font-editorial text-[24px] md:text-[28px] tracking-tight text-spectra-ink leading-tight">
                       {step.label}
                     </p>
-                    <p className="mt-1 font-mono text-[10px] tracking-[0.25em] uppercase text-spectra-ink-faint">
+                    <p className="mt-2 font-mono text-[12px] tracking-[0.25em] uppercase text-spectra-ink-faint">
                       {step.sub}
                     </p>
                   </div>
 
                   {/* Arrow indicator on the last item */}
                   {i === FUSION_STEPS.length - 1 && (
-                    <span className="absolute -right-2 top-[10px] w-2 h-2 rounded-full bg-spectra-ink animate-pulse" />
+                    <span className="absolute -right-2 top-[16px] w-2.5 h-2.5 rounded-full bg-spectra-ink animate-pulse" />
                   )}
                 </li>
               ))}

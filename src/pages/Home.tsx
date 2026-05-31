@@ -1,5 +1,6 @@
 import { useCallback, useState } from 'react';
 import CursorGlow from '../components/CursorGlow';
+import TextileBackground from '../components/TextileBackground';
 import ElevatorShutter from '../components/ElevatorShutter';
 import FloorPanel from '../components/FloorPanel';
 import Header from '../components/Header';
@@ -13,7 +14,6 @@ import AITechSection from '../sections/AITechSection';
 import DashboardSection from '../sections/DashboardSection';
 import SecuritySection from '../sections/SecuritySection';
 import BusinessSection from '../sections/BusinessSection';
-import RaaSSection from '../sections/RaaSSection';
 import RoadmapSection from '../sections/RoadmapSection';
 import ContactSection from '../sections/ContactSection';
 import FooterSection from '../sections/FooterSection';
@@ -52,6 +52,10 @@ export default function Home() {
 
       {booted && (
         <div className="page-reveal">
+          {/* Site-wide silk/textile layer that drifts and follows the cursor */}
+          <TextileBackground />
+          {/* Site-wide film-grain texture */}
+          <div className="grain-overlay" aria-hidden="true" />
           <CursorGlow />
           <ElevatorShutter
             onTransitionStart={handleTransitionStart}
@@ -71,7 +75,6 @@ export default function Home() {
             <DashboardSection />
             <SecuritySection />
             <BusinessSection />
-            <RaaSSection />
             <RoadmapSection />
             <ContactSection />
 

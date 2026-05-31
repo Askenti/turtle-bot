@@ -110,8 +110,8 @@ module.exports = {
         xs: "0 1px 2px 0 rgb(0 0 0 / 0.05)",
       },
       fontFamily: {
-        'display': ['"Playfair Display"', 'serif'],
-        'editorial': ['"Fraunces"', 'Georgia', 'serif'],  // luxury hospitality headlines
+        'display': ['"Cormorant Garamond"', 'Georgia', 'serif'],
+        'editorial': ['"Cormorant Garamond"', 'Georgia', 'serif'],  // luxury hospitality headlines
         'sans': ['Inter', 'sans-serif'],
         'mono': ['"JetBrains Mono"', 'monospace'],
       },
@@ -154,6 +154,14 @@ module.exports = {
         "caret-blink": "caret-blink 1.25s ease-out infinite",
         "glitch-bar": "glitch-bar 3s ease-in-out infinite",
         "text-flicker": "text-flicker 4s ease-in-out infinite",
+      },
+      transitionDuration: {
+        '220': '220ms',
+        '350': '350ms',
+      },
+      transitionTimingFunction: {
+        'spring': 'cubic-bezier(0.23,1,0.32,1)',
+        'smooth': 'cubic-bezier(0.22,1,0.36,1)',
       },
     },
   },

@@ -23,7 +23,7 @@ function ComputerVisionVisual() {
       <rect x="200" y="98" width="58" height="11" fill="#0A0E12" />
       <text x="205" y="106" fontSize="7" fill="#FBFAF7" fontFamily="monospace" letterSpacing="0.5">ANOMALY · 0.86</text>
 
-      <rect x="290" y="180" width="70" height="50" stroke="rgba(180,198,210,0.9)" strokeWidth="1.2" fill="none" strokeDasharray="3 2" />
+      <rect className="dashed-flow" x="290" y="180" width="70" height="50" stroke="rgba(180,198,210,0.9)" strokeWidth="1.2" fill="none" strokeDasharray="3 2" />
       <text x="295" y="178" fontSize="7" fill="rgba(10,14,18,0.6)" fontFamily="monospace" letterSpacing="0.4">CANDIDATE · 0.51</text>
 
       {/* Corner reticle marks */}
@@ -74,7 +74,7 @@ function SLAMNavVisual() {
       )}
 
       {/* Path */}
-      <path d="M30 250 Q 80 220 130 200 T 230 150 Q 280 130 320 90 T 360 40"
+      <path className="dashed-flow" d="M30 250 Q 80 220 130 200 T 230 150 Q 280 130 320 90 T 360 40"
             stroke="rgba(180,198,210,0.95)" strokeWidth="1.5" fill="none" strokeDasharray="4 3" />
 
       {/* Waypoints */}
@@ -150,11 +150,11 @@ function EdgeAIVisual() {
       <path d="M200 220 L 200 185" stroke="rgba(10,14,18,0.45)" strokeWidth="0.8" fill="none" />
       <path d="M330 220 L 270 185" stroke="rgba(10,14,18,0.45)" strokeWidth="0.8" fill="none" />
       {/* edge → cloud */}
-      <path d="M155 130 Q 130 100 175 70" stroke="rgba(10,14,18,0.45)" strokeWidth="0.8" fill="none" strokeDasharray="3 2" />
+      <path className="dashed-flow" d="M155 130 Q 130 100 175 70" stroke="rgba(10,14,18,0.45)" strokeWidth="0.8" fill="none" strokeDasharray="3 2" />
       {/* edge → dashboard */}
-      <path d="M245 130 Q 270 100 290 76" stroke="rgba(10,14,18,0.45)" strokeWidth="0.8" fill="none" strokeDasharray="3 2" />
+      <path className="dashed-flow" d="M245 130 Q 270 100 290 76" stroke="rgba(10,14,18,0.45)" strokeWidth="0.8" fill="none" strokeDasharray="3 2" />
       {/* cloud → dashboard */}
-      <path d="M225 50 L 260 50" stroke="rgba(10,14,18,0.35)" strokeWidth="0.8" fill="none" strokeDasharray="3 2" />
+      <path className="dashed-flow" d="M225 50 L 260 50" stroke="rgba(10,14,18,0.35)" strokeWidth="0.8" fill="none" strokeDasharray="3 2" />
 
       {/* Tier labels */}
       <text x="18" y="22" fontSize="6" fill="rgba(10,14,18,0.4)" fontFamily="monospace" letterSpacing="0.4">CLOUD / DASHBOARD</text>
@@ -237,18 +237,18 @@ export default function AITechSection() {
       ref={ref}
       id="ai"
       data-revealed={revealed}
-      className="relative bg-spectra-cream py-28 md:py-40 px-6 md:px-12 lg:px-20 overflow-hidden"
+      className="relative bg-spectra-cream py-16 md:py-40 px-6 md:px-12 lg:px-20 overflow-hidden"
     >
       <div className="absolute top-0 left-6 md:left-12 lg:left-20 right-6 md:right-12 lg:right-20 h-px bg-spectra-hairline" />
 
       <div className="max-w-[1400px] mx-auto">
 
         {/* ── Section header ── */}
-        <div className="grid grid-cols-12 gap-8 mb-24 md:mb-32">
+        <div className="grid grid-cols-12 gap-8 mb-14 md:mb-32">
           <div className="col-span-12 lg:col-span-3">
             <div className="s-up flex items-center gap-3 mb-6 lg:mb-0">
               <span className="w-6 h-px bg-spectra-ink/40" />
-              <span className="font-mono text-[10px] tracking-[0.4em] uppercase text-spectra-ink-mute">
+              <span className="font-mono text-[11px] tracking-[0.25em] uppercase bg-spectra-ink text-spectra-cream px-3 py-1.5 rounded-md font-semibold">
                 05 · AI & Technology
               </span>
             </div>
@@ -256,7 +256,7 @@ export default function AITechSection() {
 
           <div className="col-span-12 lg:col-span-9">
             <h2 className="s-up s-d1 font-editorial font-light text-spectra-ink leading-[1.05] tracking-[-0.02em] mb-6"
-                style={{ fontSize: 'clamp(2.25rem, 5vw, 4rem)' }}>
+                style={{ fontSize: 'clamp(1.75rem, 5vw, 4rem)' }}>
               Engineering Intelligence<br />
               <span className="italic text-spectra-ink-soft">Behind WARDEN.</span>
             </h2>
@@ -316,7 +316,7 @@ export default function AITechSection() {
 
                   {/* Title */}
                   <h3 className="font-editorial font-light text-spectra-ink leading-[1.1] tracking-[-0.015em] mb-5"
-                      style={{ fontSize: 'clamp(1.65rem, 3vw, 2.25rem)' }}>
+                      style={{ fontSize: 'clamp(1.3rem, 3vw, 2.25rem)' }}>
                     {ch.title}
                   </h3>
 

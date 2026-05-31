@@ -38,8 +38,7 @@ export const FLOORS: Floor[] = [
   { id: 'dashboard',  label: '06', name: 'FLR 06', description: 'Dashboard' },
   { id: 'security',   label: '07', name: 'FLR 07', description: 'Security' },
   { id: 'business',   label: '08', name: 'FLR 08', description: 'Business Value' },
-  { id: 'raas',       label: '09', name: 'FLR 09', description: 'RaaS Model' },
-  { id: 'roadmap',    label: '10', name: 'FLR 10', description: 'Roadmap' },
+  { id: 'roadmap',    label: '09', name: 'FLR 09', description: 'Roadmap' },
   { id: 'contact',    label: 'C',  name: 'CTACT',  description: 'Demo & Contact' },
 ];
 

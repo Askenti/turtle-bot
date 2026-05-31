@@ -1,5 +1,6 @@
 import { navigateToFloor } from '../data/floors';
 import ParticleField from '../components/ParticleField';
+import Magnetic from '../components/Magnetic';
 
 /**
  * Hero — Luxury Smart Hospitality.
@@ -28,7 +29,7 @@ export default function HeroSection() {
       {/* Faint horizon line at the bottom */}
       <div className="absolute bottom-0 left-0 right-0 h-px bg-spectra-hairline" />
 
-      <div className="relative z-10 w-full px-6 md:px-12 lg:px-20 py-32 md:py-40">
+      <div className="relative z-10 w-full px-6 md:px-12 lg:px-20 py-20 md:py-40">
         <div className="max-w-[1400px] mx-auto grid grid-cols-12 gap-8 md:gap-12 items-center">
 
           {/* ── Left: identity + copy + CTAs ── */}
@@ -37,17 +38,17 @@ export default function HeroSection() {
             {/* Eyebrow */}
             <div className="hero-fade flex items-center gap-3 mb-10" style={{ animationDelay: '120ms' }}>
               <span className="w-8 h-px bg-spectra-ink/40" />
-              <span className="font-mono text-[10px] tracking-[0.4em] uppercase text-spectra-ink-mute">
+              <span className="font-mono text-[11px] tracking-[0.25em] uppercase bg-spectra-ink text-spectra-cream px-3 py-1.5 rounded-md font-semibold">
                 Spectra · Smart Hospitality
               </span>
             </div>
 
             {/* Wordmark */}
             <h1
-              className="hero-up font-editorial font-light text-spectra-ink leading-[0.92] tracking-[-0.025em] mb-6"
+              className="hero-up spectra-shimmer relative z-20 font-editorial font-light text-spectra-ink leading-[0.92] tracking-[-0.04em] mb-6 -ml-1 md:-ml-3 lg:-ml-4"
               style={{
-                fontSize: 'clamp(4.5rem, 14vw, 11rem)',
-                animationDuration: '1.1s',
+                fontSize: 'clamp(3rem, 11vw, 8.5rem)',
+                animationDuration: '3.0s',
                 fontVariationSettings: '"SOFT" 50',
               }}
             >
@@ -58,7 +59,7 @@ export default function HeroSection() {
             <h2
               className="hero-up font-editorial italic text-spectra-ink-soft leading-tight tracking-tight mb-8"
               style={{
-                fontSize: 'clamp(1.5rem, 3vw, 2.25rem)',
+                fontSize: 'clamp(1.15rem, 3vw, 2.25rem)',
                 animationDelay: '300ms',
                 animationDuration: '900ms',
               }}
@@ -81,39 +82,41 @@ export default function HeroSection() {
               className="hero-up flex flex-wrap items-center gap-4"
               style={{ animationDelay: '700ms' }}
             >
-              <button
-                onClick={() => navigateToFloor('contact')}
-                className="group inline-flex items-center gap-3 px-6 py-3.5
-                           bg-spectra-ink text-spectra-cream rounded-full
-                           text-sm tracking-[0.15em] uppercase font-mono
-                           transition-all duration-300
-                           hover:bg-spectra-ink-soft hover:-translate-y-0.5 hover:shadow-[0_12px_30px_rgba(10,14,18,0.18)]
-                           active:translate-y-0"
-              >
-                <span>Watch Demo</span>
-                <svg width="14" height="14" viewBox="0 0 14 14" fill="none" className="transition-transform group-hover:translate-x-0.5">
-                  <path d="M3 7H11M11 7L7 3M11 7L7 11" stroke="currentColor" strokeWidth="1.2" strokeLinecap="round" strokeLinejoin="round" />
-                </svg>
-              </button>
+              <Magnetic strength={14}>
+                <button
+                  onClick={() => navigateToFloor('contact')}
+                  className="group inline-flex items-center gap-3 px-6 py-3.5
+                             bg-spectra-ink text-spectra-cream rounded-full
+                             text-sm tracking-[0.15em] uppercase font-mono
+                             transition-[background-color,box-shadow] duration-300
+                             hover:bg-spectra-ink-soft hover:shadow-[0_12px_30px_rgba(10,14,18,0.18)]"
+                >
+                  <span>Watch Demo</span>
+                  <svg width="14" height="14" viewBox="0 0 14 14" fill="none" className="transition-transform group-hover:translate-x-0.5">
+                    <path d="M3 7H11M11 7L7 3M11 7L7 11" stroke="currentColor" strokeWidth="1.2" strokeLinecap="round" strokeLinejoin="round" />
+                  </svg>
+                </button>
+              </Magnetic>
 
-              <button
-                onClick={() => navigateToFloor('ai')}
-                className="group inline-flex items-center gap-3 px-6 py-3.5
-                           border border-spectra-ink/20 rounded-full
-                           text-sm tracking-[0.15em] uppercase font-mono text-spectra-ink
-                           transition-all duration-300
-                           hover:border-spectra-ink hover:-translate-y-0.5
-                           active:translate-y-0"
-              >
-                <span>Explore Technology</span>
-              </button>
+              <Magnetic strength={12}>
+                <button
+                  onClick={() => navigateToFloor('ai')}
+                  className="inline-flex items-center gap-3 px-6 py-3.5
+                             border border-spectra-ink/20 rounded-full
+                             text-sm tracking-[0.15em] uppercase font-mono text-spectra-ink
+                             transition-[border-color] duration-300
+                             hover:border-spectra-ink"
+                >
+                  <span>Explore Technology</span>
+                </button>
+              </Magnetic>
             </div>
           </div>
 
           {/* ── Right: floating tech ornament panel ── */}
-          <div className="col-span-12 lg:col-span-5 hidden lg:block">
+          <div className="col-span-12 lg:col-span-5 mt-12 lg:mt-0">
             <div
-              className="hero-fade relative aspect-[3/4] max-w-[420px] ml-auto"
+              className="hero-fade spectra-float relative aspect-[3/4] max-w-[280px] sm:max-w-[340px] lg:max-w-[420px] mx-auto lg:ml-auto"
               style={{ animationDelay: '900ms', animationDuration: '1.4s' }}
             >
               {/* Panel — soft glass card with mist-blue overlay */}

@@ -116,7 +116,7 @@ export default function DashboardSection() {
       ref={ref}
       id="dashboard"
       data-revealed={revealed}
-      className="relative bg-spectra-cream-deep py-28 md:py-40 px-6 md:px-12 lg:px-20 overflow-hidden"
+      className="relative bg-spectra-cream-deep py-16 md:py-40 px-6 md:px-12 lg:px-20 overflow-hidden"
     >
       {/* Soft mist halo */}
       <div
@@ -130,11 +130,11 @@ export default function DashboardSection() {
       <div className="relative max-w-[1400px] mx-auto">
 
         {/* ── Header ── */}
-        <div className="grid grid-cols-12 gap-8 mb-20 md:mb-24">
+        <div className="grid grid-cols-12 gap-8 mb-12 md:mb-24">
           <div className="col-span-12 lg:col-span-3">
             <div className="s-up flex items-center gap-3 mb-6 lg:mb-0">
               <span className="w-6 h-px bg-spectra-ink/40" />
-              <span className="font-mono text-[10px] tracking-[0.4em] uppercase text-spectra-ink-mute">
+              <span className="font-mono text-[11px] tracking-[0.25em] uppercase bg-spectra-ink text-spectra-cream px-3 py-1.5 rounded-md font-semibold">
                 06 · Dashboard
               </span>
             </div>
@@ -142,7 +142,7 @@ export default function DashboardSection() {
 
           <div className="col-span-12 lg:col-span-9">
             <h2 className="s-up s-d1 font-editorial font-light text-spectra-ink leading-[1.05] tracking-[-0.02em] mb-6"
-                style={{ fontSize: 'clamp(2.25rem, 5vw, 4rem)' }}>
+                style={{ fontSize: 'clamp(1.75rem, 5vw, 4rem)' }}>
               Centralised Intelligence<br />
               <span className="italic text-spectra-ink-soft">for Hotel Operations.</span>
             </h2>

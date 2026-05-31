@@ -156,18 +156,18 @@ export default function HowItWorksSection() {
       ref={ref}
       id="how"
       data-revealed={revealed}
-      className="relative bg-spectra-cream py-28 md:py-40 px-6 md:px-12 lg:px-20 overflow-hidden"
+      className="relative bg-spectra-cream py-16 md:py-40 px-6 md:px-12 lg:px-20 overflow-hidden"
     >
       <div className="absolute top-0 left-6 md:left-12 lg:left-20 right-6 md:right-12 lg:right-20 h-px bg-spectra-hairline" />
 
       <div className="max-w-[1400px] mx-auto">
 
         {/* ── Header ── */}
-        <div className="grid grid-cols-12 gap-8 mb-20 md:mb-28">
+        <div className="grid grid-cols-12 gap-8 mb-12 md:mb-28">
           <div className="col-span-12 lg:col-span-3">
             <div className="s-up flex items-center gap-3 mb-6 lg:mb-0">
               <span className="w-6 h-px bg-spectra-ink/40" />
-              <span className="font-mono text-[10px] tracking-[0.4em] uppercase text-spectra-ink-mute">
+              <span className="font-mono text-[11px] tracking-[0.25em] uppercase bg-spectra-ink text-spectra-cream px-3 py-1.5 rounded-md font-semibold">
                 03 · How It Works
               </span>
             </div>
@@ -175,7 +175,7 @@ export default function HowItWorksSection() {
 
           <div className="col-span-12 lg:col-span-9">
             <h2 className="s-up s-d1 font-editorial font-light text-spectra-ink leading-[1.05] tracking-[-0.02em] mb-6"
-                style={{ fontSize: 'clamp(2.25rem, 5vw, 4rem)' }}>
+                style={{ fontSize: 'clamp(1.75rem, 5vw, 4rem)' }}>
               An AI Pipeline<br />
               <span className="italic text-spectra-ink-soft">for Future Hotels.</span>
             </h2>
@@ -193,9 +193,10 @@ export default function HowItWorksSection() {
             className="hidden lg:block absolute top-[88px] left-[6%] right-[6%] h-px pointer-events-none"
             aria-hidden="true"
           >
-            <div className="relative h-full bg-spectra-ink/10">
-              <div className="s-fade s-d3 absolute inset-0 origin-left"
-                   style={{ background: 'linear-gradient(to right, rgba(10,14,18,0.4), rgba(180,198,210,0.6) 60%, rgba(10,14,18,0.05))' }} />
+            <div className="relative h-full bg-spectra-ink/15">
+              {/* Two signal pulses sliding across the rail */}
+              <span className="signal-rail signal-rail-1" />
+              <span className="signal-rail signal-rail-2" />
             </div>
           </div>
 
@@ -216,7 +217,7 @@ export default function HowItWorksSection() {
                 <article
                   className="group h-full bg-spectra-pearl rounded-2xl p-6 pt-10 lg:pt-12
                              border border-spectra-hairline
-                             transition-all duration-500 ease-[cubic-bezier(0.22,1,0.36,1)]
+                             transition-all duration-500 ease-smooth
                              hover:-translate-y-1 hover:border-spectra-mist-deep/40
                              hover:shadow-[0_18px_40px_-12px_rgba(10,14,18,0.18),0_4px_10px_-4px_rgba(10,14,18,0.06)]"
                 >

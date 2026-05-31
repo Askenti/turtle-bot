@@ -1,39 +1,5 @@
 import { useScrollReveal } from '../lib/useScrollReveal';
 
-interface ValueCard {
-  number: string;
-  title: string;
-  description: string;
-  metric: string;
-}
-
-const VALUES: ValueCard[] = [
-  {
-    number: '01',
-    title: 'Reduced Inspection Workload',
-    description: 'AI-assisted automation reduces repetitive manual inspection tasks across daily operations.',
-    metric: '−68% manual hours',
-  },
-  {
-    number: '02',
-    title: 'Faster Operational Response',
-    description: 'Real-time alerts improve coordination and incident-response speed across hotel teams.',
-    metric: '~4× faster triage',
-  },
-  {
-    number: '03',
-    title: 'Improved Guest Trust',
-    description: 'Privacy-focused monitoring supports safer, more transparent hospitality environments.',
-    metric: 'Verified privacy',
-  },
-  {
-    number: '04',
-    title: 'Scalable Hotel Operations',
-    description: 'Centralised monitoring enables more efficient multi-room and multi-floor management.',
-    metric: 'Multi-property ready',
-  },
-];
-
 const VERIFIED_PILLARS = [
   { label: 'Privacy',      sub: 'Guest data protected on-device' },
   { label: 'Inspection',   sub: 'Audited multi-sensor verification' },
@@ -108,9 +74,6 @@ function VerifiedMedallion() {
         <p className="font-editorial italic text-spectra-ink text-[19px] tracking-tight mt-3">
           Verified
         </p>
-        <p className="font-mono text-[9px] tracking-[0.35em] uppercase text-spectra-ink-faint mt-1">
-          Est. 2026
-        </p>
       </div>
     </div>
   );
@@ -124,7 +87,7 @@ export default function BusinessSection() {
       ref={ref}
       id="business"
       data-revealed={revealed}
-      className="relative bg-spectra-cream-deep py-28 md:py-40 px-6 md:px-12 lg:px-20 overflow-hidden"
+      className="relative bg-spectra-cream-deep py-16 md:py-40 px-6 md:px-12 lg:px-20 overflow-hidden"
     >
       {/* Soft mist halo */}
       <div
@@ -139,11 +102,11 @@ export default function BusinessSection() {
       <div className="relative max-w-[1400px] mx-auto">
 
         {/* ── Header ── */}
-        <div className="grid grid-cols-12 gap-8 mb-20 md:mb-24">
+        <div className="grid grid-cols-12 gap-8 mb-12 md:mb-24">
           <div className="col-span-12 lg:col-span-3">
             <div className="s-up flex items-center gap-3 mb-6 lg:mb-0">
               <span className="w-6 h-px bg-spectra-ink/40" />
-              <span className="font-mono text-[10px] tracking-[0.4em] uppercase text-spectra-ink-mute">
+              <span className="font-mono text-[11px] tracking-[0.25em] uppercase bg-spectra-ink text-spectra-cream px-3 py-1.5 rounded-md font-semibold">
                 08 · Business Value
               </span>
             </div>
@@ -151,7 +114,7 @@ export default function BusinessSection() {
 
           <div className="col-span-12 lg:col-span-9">
             <h2 className="s-up s-d1 font-editorial font-light text-spectra-ink leading-[1.05] tracking-[-0.02em] mb-6"
-                style={{ fontSize: 'clamp(2.25rem, 5vw, 4rem)' }}>
+                style={{ fontSize: 'clamp(1.75rem, 5vw, 4rem)' }}>
               Smarter Operations.<br />
               <span className="italic text-spectra-ink-soft">Greater Guest Trust.</span>
             </h2>
@@ -160,45 +123,6 @@ export default function BusinessSection() {
               safer and more trusted guest experiences.
             </p>
           </div>
-        </div>
-
-        {/* ── 4 Value cards ── */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5 md:gap-6 mb-24 md:mb-32">
-          {VALUES.map((v, i) => (
-            <article
-              key={v.number}
-              className={`s-up s-d${i + 3}
-                          group relative bg-spectra-pearl rounded-2xl p-7 md:p-8
-                          border border-spectra-hairline
-                          transition-all duration-500 ease-[cubic-bezier(0.22,1,0.36,1)]
-                          hover:-translate-y-1 hover:border-spectra-mist-deep/40
-                          hover:shadow-[0_22px_50px_-15px_rgba(10,14,18,0.20),0_6px_15px_-5px_rgba(10,14,18,0.08)]`}
-            >
-              {/* Number row */}
-              <div className="flex items-center gap-3 mb-7">
-                <span className="font-mono text-[10px] tracking-[0.4em] uppercase text-spectra-ink-faint">
-                  {v.number}
-                </span>
-                <span className="flex-1 h-px bg-spectra-hairline" />
-              </div>
-
-              {/* Metric — large */}
-              <p className="font-editorial font-light text-spectra-ink leading-none tracking-[-0.02em] mb-6"
-                 style={{ fontSize: 'clamp(1.5rem, 2.5vw, 1.875rem)' }}>
-                {v.metric}
-              </p>
-
-              {/* Title */}
-              <h3 className="font-editorial text-[17px] text-spectra-ink mb-3 tracking-tight">
-                {v.title}
-              </h3>
-
-              {/* Description */}
-              <p className="text-[13px] leading-[1.6] text-spectra-ink-mute">
-                {v.description}
-              </p>
-            </article>
-          ))}
         </div>
 
         {/* ── WARDEN Verified centerpiece ── */}
@@ -217,13 +141,13 @@ export default function BusinessSection() {
                 {/* Eyebrow */}
                 <div className="flex items-center gap-3 mb-5">
                   <span className="w-6 h-px bg-spectra-ink/30" />
-                  <span className="font-mono text-[10px] tracking-[0.4em] uppercase text-spectra-ink-mute">
+                  <span className="font-mono text-[11px] tracking-[0.25em] uppercase bg-spectra-ink text-spectra-cream px-3 py-1.5 rounded-md font-semibold">
                     The Standard
                   </span>
                 </div>
 
                 <h3 className="font-editorial font-light text-spectra-ink leading-[1.1] tracking-[-0.02em] mb-6"
-                    style={{ fontSize: 'clamp(1.75rem, 3.5vw, 2.5rem)' }}>
+                    style={{ fontSize: 'clamp(1.35rem, 3.5vw, 2.5rem)' }}>
                   WARDEN <span className="italic text-spectra-ink-soft">Verified.</span>
                 </h3>
 

@@ -1,13 +1,16 @@
 import { useRef, useCallback, useEffect } from 'react';
 import gsap from 'gsap';
+import { FLOORS } from '../data/floors';
 
 interface ElevatorShutterProps {
   onTransitionStart?: () => void;
   onTransitionEnd?: () => void;
 }
 
-// Floor order for determining direction
-const floorOrder = ['hero', 'problem', 'solution', 'team', 'market', 'marketing', 'roadmap'];
+// Floor order + label lookup, driven by the canonical FLOORS list so the
+// indicator can never desync from the floor panel / mobile menu.
+const floorOrder = FLOORS.map((f) => f.id);
+const labelById = new Map(FLOORS.map((f) => [f.id, f.label]));
 
 // Create elevator ping sound
 const createPingSound = () => {
@@ -77,11 +80,9 @@ export default function ElevatorShutter({ onTransitionStart, onTransitionEnd }: 
     const isGoingUp = targetIndex < currentIndex;
     const floorDistance = Math.abs(targetIndex - currentIndex);
     
-    // Update floor indicator text
-    const targetLabel = targetId === 'hero' ? 'L' : 
-                        targetId === 'team' ? 'R' : 
-                        targetId === 'roadmap' ? '★' :
-                        String(floorOrder.indexOf(targetId));
+    // Update floor indicator text — pull straight from FLOORS so the
+    // shutter shows the same label as the floor panel ("L", "01", … "C").
+    const targetLabel = labelById.get(targetId) ?? '·';
     
     currentFloorRef.current = targetId;
 

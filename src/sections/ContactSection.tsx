@@ -8,15 +8,15 @@ interface Member {
 }
 
 const TEAM: Member[] = [
-  { name: 'Pivevar Darya',        role: 'Team Leader',              isLead: true },
-  { name: 'Saydullayeva Aziza',   role: 'AI Systems Engineer' },
-  { name: 'Nurillaeva Zarina',    role: 'UI · Dashboard' },
-  { name: 'Tologoneva Batkaiym',  role: 'Robotics & Mechanical' },
-  { name: 'Hakimova Hadicha',     role: 'Business & Market' },
-  { name: 'Kodirova Zahrokhon',   role: 'System Integrator' },
-  { name: 'Norov Mirsaid',        role: 'Navigation Engineer' },
-  { name: 'Nimatilaev Javokhir',  role: 'Computer Vision' },
-  { name: 'Amaan',                role: 'QA & Integration' },
+  { name: 'Pivavar Darya',        role: 'Project Lead & Business Development', isLead: true },
+  { name: 'Saydullaeva Aziza',    role: 'Data Research & Market Analysis' },
+  { name: 'Nurillaeva Zarina',    role: 'Product Strategy & Documentation' },
+  { name: 'Tologonova Datkaiym',  role: 'UI/UX Designer & Front-End Developer' },
+  { name: 'Hakimova Hadicha',     role: 'Systems Integration Engineer' },
+  { name: 'Kodirova Zahrokhon',   role: 'AI & Data Analysis Engineer' },
+  { name: 'Norov Mirsaid',        role: 'Robotics & Embedded Systems Engineer' },
+  { name: 'Nimatilaev Javokhir',  role: 'Robotics Software Engineer' },
+  { name: 'Amaan',                role: 'Backend & Cloud Systems Engineer' },
 ];
 
 function initialsOf(name: string) {
@@ -35,7 +35,7 @@ function MemberCard({ member, index }: { member: Member; index: number }) {
   return (
     <article
       className={`group relative bg-spectra-pearl rounded-2xl p-6 border border-spectra-hairline
-                  transition-all duration-500 ease-[cubic-bezier(0.22,1,0.36,1)]
+                  transition-all duration-500 ease-smooth
                   hover:-translate-y-1 hover:border-spectra-mist-deep/40
                   hover:shadow-[0_22px_50px_-15px_rgba(10,14,18,0.18),0_6px_15px_-5px_rgba(10,14,18,0.08)]
                   ${member.isLead ? 'ring-1 ring-spectra-ink/12' : ''}`}
@@ -95,7 +95,7 @@ export default function ContactSection() {
       ref={ref}
       id="contact"
       data-revealed={revealed}
-      className="relative bg-spectra-cream py-28 md:py-40 px-6 md:px-12 lg:px-20 overflow-hidden"
+      className="relative bg-spectra-cream py-16 md:py-40 px-6 md:px-12 lg:px-20 overflow-hidden"
     >
       {/* Centred radial light — closing-act spotlight */}
       <div
@@ -110,17 +110,17 @@ export default function ContactSection() {
       <div className="relative max-w-[1400px] mx-auto">
 
         {/* ── Closer header ── */}
-        <div className="text-center mb-20 md:mb-24 max-w-3xl mx-auto">
+        <div className="text-center mb-12 md:mb-24 max-w-3xl mx-auto">
           <div className="s-up inline-flex items-center gap-3 mb-8">
             <span className="w-6 h-px bg-spectra-ink/40" />
-            <span className="font-mono text-[10px] tracking-[0.4em] uppercase text-spectra-ink-mute">
+            <span className="font-mono text-[11px] tracking-[0.25em] uppercase bg-spectra-ink text-spectra-cream px-3 py-1.5 rounded-md font-semibold">
               11 · Demo & Contact
             </span>
             <span className="w-6 h-px bg-spectra-ink/40" />
           </div>
 
           <h2 className="s-up s-d1 font-editorial font-light text-spectra-ink leading-[1.05] tracking-[-0.02em] mb-6"
-              style={{ fontSize: 'clamp(2.5rem, 5.5vw, 4.5rem)' }}>
+              style={{ fontSize: 'clamp(1.85rem, 5.5vw, 4.5rem)' }}>
             The Future of Trusted Hospitality<br />
             <span className="italic text-spectra-ink-soft">Starts Here.</span>
           </h2>
@@ -132,26 +132,6 @@ export default function ContactSection() {
 
           {/* CTAs */}
           <div className="s-up s-d3 flex flex-wrap items-center justify-center gap-4">
-            <a
-              href="#contact-team"
-              onClick={(e) => {
-                e.preventDefault();
-                document.getElementById('contact-team')?.scrollIntoView({ behavior: 'smooth' });
-              }}
-              className="group inline-flex items-center gap-3 px-6 py-3.5
-                         bg-spectra-ink text-spectra-cream rounded-full
-                         text-sm tracking-[0.15em] uppercase font-mono
-                         transition-all duration-300
-                         hover:bg-spectra-ink-soft hover:-translate-y-0.5 hover:shadow-[0_12px_30px_rgba(10,14,18,0.18)]"
-            >
-              <span>Get in Touch</span>
-              <svg width="14" height="14" viewBox="0 0 14 14" fill="none"
-                   className="transition-transform group-hover:translate-x-0.5">
-                <path d="M3 7H11M11 7L7 3M11 7L7 11" stroke="currentColor" strokeWidth="1.2"
-                      strokeLinecap="round" strokeLinejoin="round" />
-              </svg>
-            </a>
-
             <button
               onClick={() => navigateToFloor('dashboard')}
               className="inline-flex items-center gap-3 px-6 py-3.5
@@ -168,7 +148,7 @@ export default function ContactSection() {
         {/* ── Video placeholder (browser-framed, [data-video-slot]) ── */}
         <div className="s-up s-d4 relative rounded-3xl overflow-hidden border border-spectra-hairline bg-spectra-pearl
                         shadow-[0_40px_100px_-30px_rgba(10,14,18,0.25),0_12px_30px_-10px_rgba(10,14,18,0.10)]
-                        mb-24 md:mb-32">
+                        mb-14 md:mb-32">
 
           {/* Browser chrome */}
           <div className="flex items-center gap-3 px-5 py-3 border-b border-spectra-hairline bg-spectra-cream/40 backdrop-blur-sm">
@@ -213,7 +193,7 @@ export default function ContactSection() {
                   <path d="M7 4 L 18 11 L 7 18 Z" fill="currentColor" />
                 </svg>
               </span>
-              <span className="font-mono text-[10px] tracking-[0.4em] uppercase text-spectra-ink-mute">
+              <span className="font-mono text-[11px] tracking-[0.25em] uppercase bg-spectra-ink text-spectra-cream px-3 py-1.5 rounded-md font-semibold">
                 Play Demo · 3:24
               </span>
             </button>
@@ -226,13 +206,13 @@ export default function ContactSection() {
         </div>
 
         {/* ── Team ── */}
-        <div id="contact-team" className="mb-20 md:mb-24 scroll-mt-32">
+        <div id="contact-team" className="mb-12 md:mb-24 scroll-mt-32">
 
           <div className="grid grid-cols-12 gap-8 mb-12 md:mb-16">
             <div className="col-span-12 lg:col-span-3">
               <div className="s-up flex items-center gap-3 mb-6 lg:mb-0">
                 <span className="w-6 h-px bg-spectra-ink/40" />
-                <span className="font-mono text-[10px] tracking-[0.4em] uppercase text-spectra-ink-mute">
+                <span className="font-mono text-[11px] tracking-[0.25em] uppercase bg-spectra-ink text-spectra-cream px-3 py-1.5 rounded-md font-semibold">
                   Team 1 · Spectra
                 </span>
               </div>
@@ -240,12 +220,11 @@ export default function ContactSection() {
 
             <div className="col-span-12 lg:col-span-9">
               <h3 className="s-up s-d1 font-editorial font-light text-spectra-ink leading-[1.1] tracking-[-0.02em] mb-4"
-                  style={{ fontSize: 'clamp(1.75rem, 3.5vw, 2.5rem)' }}>
+                  style={{ fontSize: 'clamp(1.35rem, 3.5vw, 2.5rem)' }}>
                 The people <span className="italic text-spectra-ink-soft">behind WARDEN.</span>
               </h3>
               <p className="s-up s-d2 max-w-xl text-[14.5px] leading-[1.7] text-spectra-ink-mute">
-                Nine engineers and designers from Inha University's School of Global
-                Convergence Studies — building the autonomous hospitality standard.
+                Nine engineers and designers — building the autonomous hospitality standard.
               </p>
             </div>
           </div>
@@ -257,64 +236,6 @@ export default function ContactSection() {
                 <MemberCard member={m} index={i} />
               </div>
             ))}
-          </div>
-        </div>
-
-        {/* ── Contact info block ── */}
-        <div className="s-up s-d6 relative rounded-3xl overflow-hidden border border-spectra-hairline"
-             style={{ background: 'linear-gradient(180deg, #FBFAF7 0%, #EAF1F6 100%)' }}>
-
-          <div className="px-6 md:px-10 lg:px-16 py-14 md:py-18">
-
-            <div className="grid grid-cols-12 gap-10 items-center">
-
-              {/* Address */}
-              <div className="col-span-12 md:col-span-7">
-                <div className="flex items-center gap-3 mb-6">
-                  <span className="w-6 h-px bg-spectra-ink/30" />
-                  <span className="font-mono text-[10px] tracking-[0.4em] uppercase text-spectra-ink-mute">
-                    Contact
-                  </span>
-                </div>
-
-                <p className="font-editorial italic text-spectra-ink leading-[1.3] tracking-tight mb-4"
-                   style={{ fontSize: 'clamp(1.25rem, 2.5vw, 1.75rem)' }}>
-                  Inha University · SGCS Office
-                </p>
-
-                <p className="text-[14px] leading-[1.7] text-spectra-ink-mute max-w-md mb-4">
-                  Center for Continuing Education Building, Rm 323<br />
-                  100 Inha-ro, Michuhol-gu, Incheon 22212<br />
-                  South Korea
-                </p>
-
-                <p className="font-mono text-[11px] tracking-[0.25em] uppercase text-spectra-ink">
-                  TEL · +82 32 860 8112
-                </p>
-              </div>
-
-              {/* Badges */}
-              <div className="col-span-12 md:col-span-5 flex flex-col gap-3 md:items-end">
-                <span className="inline-flex items-center gap-2 px-4 py-2.5 rounded-full
-                                 bg-spectra-ink text-spectra-cream
-                                 font-mono text-[10px] tracking-[0.3em] uppercase">
-                  <span className="w-1.5 h-1.5 rounded-full bg-spectra-cream" />
-                  WARDEN Verified · Partner Program
-                </span>
-
-                <span className="inline-flex items-center gap-2 px-4 py-2.5 rounded-full
-                                 border border-spectra-ink/25 text-spectra-ink
-                                 font-mono text-[10px] tracking-[0.3em] uppercase
-                                 bg-spectra-pearl">
-                  <span className="w-1.5 h-1.5 rounded-full bg-spectra-mist-deep" />
-                  B2B Inquiries · Open
-                </span>
-
-                <span className="font-mono text-[9px] tracking-[0.3em] uppercase text-spectra-ink-faint mt-2">
-                  2026 · IBT / ISE Capstone Design
-                </span>
-              </div>
-            </div>
           </div>
         </div>
 
