@@ -1,3 +1,4 @@
+import { useEffect, useRef } from 'react';
 import { useScrollReveal } from '../lib/useScrollReveal';
 import { navigateToFloor } from '../data/floors';
 
@@ -102,6 +103,15 @@ function MemberCard({ member, index }: { member: Member; index: number }) {
 export default function ContactSection() {
   const [ref, revealed] = useScrollReveal<HTMLElement>();
 
+  // React doesn't reliably set the muted DOM property via JSX props —
+  // force it off imperatively so the browser plays audio.
+  const videoRef = useRef<HTMLVideoElement>(null);
+  useEffect(() => {
+    if (videoRef.current) {
+      videoRef.current.muted = false;
+    }
+  }, []);
+
   return (
     <section
       ref={ref}
@@ -179,6 +189,7 @@ export default function ContactSection() {
           </div>
 
           <video
+            ref={videoRef}
             src="/videos/demo.mp4"
             controls
             playsInline

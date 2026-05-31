@@ -204,16 +204,9 @@ export default function DetectionSection() {
             fill="none"
             aria-hidden="true"
           >
-            {/* Faint static base tracks */}
             <path d="M500 10 Q 500 60 180 95" stroke="rgba(10,14,18,0.18)" strokeWidth="1" />
             <path d="M500 10 L 500 95"        stroke="rgba(10,14,18,0.18)" strokeWidth="1" />
             <path d="M500 10 Q 500 60 820 95" stroke="rgba(10,14,18,0.18)" strokeWidth="1" />
-            {/*
-              GPU-composited signal dots via CSS Motion Path.
-              offset-path travels the same curves; the browser handles position
-              internally as a transform — zero repaints, fully smooth.
-              Dots travel branch→node (100%→0%) = signal converging inward.
-            */}
             <circle r="3" fill="rgba(10,14,18,0.88)" className="signal-dot"
               style={{ offsetPath: "path('M500 10 Q 500 60 180 95')" } as React.CSSProperties} />
             <circle r="3" fill="rgba(10,14,18,0.88)" className="signal-dot"
@@ -222,8 +215,20 @@ export default function DetectionSection() {
               style={{ offsetPath: "path('M500 10 Q 500 60 820 95')", animationDelay: '-1.6s' } as React.CSSProperties} />
           </svg>
 
+          {/* Mobile vertical connector with animated signal dots */}
+          <div className="flex flex-col items-center md:hidden -mt-4 mb-4">
+            {[0, 1, 2].map((i) => (
+              <svg key={i} width="2" height="44" viewBox="0 0 2 44" fill="none" aria-hidden="true">
+                <line x1="1" y1="0" x2="1" y2="44"
+                      stroke="rgba(10,14,18,0.18)" strokeWidth="1" />
+                <circle r="3" cx="1" fill="rgba(10,14,18,0.88)" className="signal-dot"
+                        style={{ offsetPath: "path('M1 0 L1 44')", animationDelay: `${-i * 0.8}s` } as React.CSSProperties} />
+              </svg>
+            ))}
+          </div>
+
           {/* 3 branch cards */}
-          <div className="relative grid grid-cols-2 md:grid-cols-3 gap-3 md:gap-5 md:gap-6 w-full max-w-[1100px] mx-auto">
+          <div className="relative grid grid-cols-1 md:grid-cols-3 gap-4 md:gap-5 w-full max-w-[1100px] mx-auto">
             {BRANCHES.map((b, i) => (
               <article
                 key={b.title}

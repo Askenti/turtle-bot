@@ -113,7 +113,7 @@ export default function EcosystemSection() {
             </div>
           </div>
 
-          {/* ── Connection lines reaching down into the cards (desktop only) ── */}
+          {/* ── Desktop fan-out connection lines ── */}
           <svg
             className="absolute top-[210px] md:top-[280px] left-1/2 -translate-x-1/2 z-0 hidden md:block pointer-events-none"
             width="980"
@@ -122,12 +122,9 @@ export default function EcosystemSection() {
             fill="none"
             aria-hidden="true"
           >
-            {/* Faint static base — each line exits the Core at a distinct point
-                so they fan out cleanly without overlapping at the source */}
             <path d="M430 8 C 360 60, 240 120, 165 196" stroke="rgba(10,14,18,0.16)" strokeWidth="1" />
             <path d="M490 8 L 490 196"                  stroke="rgba(10,14,18,0.16)" strokeWidth="1" />
             <path d="M550 8 C 620 60, 740 120, 815 196" stroke="rgba(10,14,18,0.16)" strokeWidth="1" />
-            {/* Gentle looping glow on top — calm pulse, staggered per line */}
             <path className="spectra-glow" d="M430 8 C 360 60, 240 120, 165 196"
                   stroke="rgba(10,14,18,0.5)" strokeWidth="1.2" strokeLinecap="round" />
             <path className="spectra-glow" d="M490 8 L 490 196"
@@ -136,23 +133,34 @@ export default function EcosystemSection() {
             <path className="spectra-glow" d="M550 8 C 620 60, 740 120, 815 196"
                   stroke="rgba(10,14,18,0.5)" strokeWidth="1.2" strokeLinecap="round"
                   style={{ animationDelay: '-2s' }} />
-            {/* Exit nodes on the Core edge */}
             <circle cx="430" cy="8" r="2.5" fill="rgba(10,14,18,0.4)" />
             <circle cx="490" cy="8" r="2.5" fill="rgba(10,14,18,0.4)" />
             <circle cx="550" cy="8" r="2.5" fill="rgba(10,14,18,0.4)" />
-            {/* Connection nodes where lines meet each card */}
             <circle cx="165" cy="196" r="3.5" fill="rgba(10,14,18,0.55)" />
             <circle cx="490" cy="196" r="3.5" fill="rgba(10,14,18,0.55)" />
             <circle cx="815" cy="196" r="3.5" fill="rgba(10,14,18,0.55)" />
           </svg>
 
+          {/* ── Mobile vertical connector (replaces fan-out on small screens) ── */}
+          <div className="flex flex-col items-center md:hidden -mt-4 mb-4 gap-0">
+            {[0, 1, 2].map((i) => (
+              <svg key={i} width="2" height="40" viewBox="0 0 2 40" fill="none" aria-hidden="true">
+                <line x1="1" y1="0" x2="1" y2="40"
+                      stroke="rgba(10,14,18,0.18)" strokeWidth="1" />
+                <circle r="2.5" cx="1" fill="rgba(10,14,18,0.55)"
+                        className="signal-dot"
+                        style={{ offsetPath: "path('M1 0 L1 40')", animationDelay: `${-i * 0.9}s` } as React.CSSProperties} />
+              </svg>
+            ))}
+          </div>
+
           {/* ── Three mode cards ── */}
-          <div className="relative grid grid-cols-2 md:grid-cols-3 gap-3 md:gap-5 md:gap-6 w-full max-w-[1100px]">
+          <div className="relative grid grid-cols-1 md:grid-cols-3 gap-4 md:gap-5 w-full max-w-[1100px]">
             {MODES.map((m, i) => (
               <article
                 key={m.title}
                 className={`s-up s-d${i + 4}
-                            group relative bg-spectra-pearl rounded-2xl p-7 md:p-8
+                            group relative bg-spectra-pearl rounded-2xl p-6 md:p-8
                             border border-spectra-hairline backdrop-blur-sm
                             transition-all duration-500 ease-smooth
                             hover:-translate-y-1
@@ -175,7 +183,7 @@ export default function EcosystemSection() {
                 </div>
 
                 {/* Title */}
-                <h3 className="font-editorial text-2xl text-spectra-ink mb-3 tracking-tight">
+                <h3 className="font-editorial text-xl md:text-2xl text-spectra-ink mb-3 tracking-tight">
                   {m.title}
                 </h3>
 
