@@ -1,5 +1,59 @@
+import { useState } from 'react';
 import { useScrollReveal } from '../lib/useScrollReveal';
 import { navigateToFloor } from '../data/floors';
+
+const YT_ID = 'L_ObudI3Nzo';
+
+/** Thumbnail + custom play button. Swaps to the iframe only on click. */
+function DemoVideo() {
+  const [playing, setPlaying] = useState(false);
+
+  if (playing) {
+    return (
+      <div className="aspect-video bg-spectra-ink">
+        <iframe
+          src={`https://www.youtube-nocookie.com/embed/${YT_ID}?autoplay=1&rel=0&modestbranding=1&color=white&iv_load_policy=3`}
+          title="WARDEN Demo"
+          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+          allowFullScreen
+          className="w-full h-full"
+        />
+      </div>
+    );
+  }
+
+  return (
+    <div className="relative aspect-video bg-spectra-ink overflow-hidden group cursor-pointer"
+         onClick={() => setPlaying(true)}>
+      {/* YouTube max-res thumbnail */}
+      <img
+        src={`https://img.youtube.com/vi/${YT_ID}/maxresdefault.jpg`}
+        alt="WARDEN Demo video thumbnail"
+        className="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-[1.02]"
+      />
+      {/* Subtle dark overlay */}
+      <div className="absolute inset-0 bg-spectra-ink/30 group-hover:bg-spectra-ink/20 transition-colors duration-300" />
+
+      {/* Play button */}
+      <div className="absolute inset-0 flex flex-col items-center justify-center gap-4">
+        <div className="w-20 h-20 rounded-full bg-spectra-ink/90 backdrop-blur-sm
+                        flex items-center justify-center
+                        shadow-[0_18px_40px_-10px_rgba(10,14,18,0.5)]
+                        group-hover:scale-110 group-hover:bg-spectra-ink
+                        transition-all duration-300">
+          <svg width="22" height="22" viewBox="0 0 22 22" fill="none" aria-hidden="true">
+            <path d="M7 4 L 18 11 L 7 18 Z" fill="white" />
+          </svg>
+        </div>
+        <span className="font-mono text-[11px] tracking-[0.25em] uppercase
+                         bg-spectra-ink/80 backdrop-blur-sm text-spectra-cream
+                         px-3 py-1.5 rounded-md font-semibold">
+          Play Demo
+        </span>
+      </div>
+    </div>
+  );
+}
 
 interface Member {
   name: string;
@@ -178,15 +232,7 @@ export default function ContactSection() {
             </span>
           </div>
 
-          <div className="aspect-video bg-spectra-ink">
-            <iframe
-              src="https://www.youtube-nocookie.com/embed/L_ObudI3Nzo?rel=0&modestbranding=1&color=white"
-              title="WARDEN Demo"
-              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-              allowFullScreen
-              className="w-full h-full"
-            />
-          </div>
+          <DemoVideo />
         </div>
 
         {/* ── Team ── */}
