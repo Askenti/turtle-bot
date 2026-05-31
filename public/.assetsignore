@@ -1,0 +1,3 @@
+# Large media files — hosted on GitHub Releases CDN instead.
+# Cloudflare Workers has a 25 MiB per-asset limit.
+videos/demo.mp4

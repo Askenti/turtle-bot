@@ -190,7 +190,7 @@ export default function ContactSection() {
 
           <video
             ref={videoRef}
-            src="/videos/demo.mp4"
+            src="https://github.com/Askenti/turtle-bot/releases/download/v1.0-demo-assets/demo.mp4"
             controls
             playsInline
             className="w-full aspect-video bg-spectra-ink"

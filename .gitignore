@@ -57,3 +57,6 @@ coverage
 .dev.vars*
 !.dev.vars.example
 !.env.example
+
+# ─── Large media (hosted on GitHub Releases CDN) ───────────────────────────
+public/videos/demo.mp4
