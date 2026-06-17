@@ -6,8 +6,8 @@ import Magnetic from '../components/Magnetic';
  * Hero — Luxury Smart Hospitality.
  *
  * Bright cream canvas, editorial Fraunces headline, generous whitespace.
- * No glitch bars, no scan lines, no robot. The "tech" is delivered via a
- * floating diagram panel on the right (Apple-style product page).
+ * No glitch bars, no scan lines, no robot. A single left-aligned column of
+ * identity + copy + CTAs, with the right side left as open breathing room.
  */
 export default function HeroSection() {
   return (
@@ -32,7 +32,7 @@ export default function HeroSection() {
       <div className="relative z-10 w-full px-6 md:px-12 lg:px-20 py-20 md:py-40">
         <div className="max-w-[1400px] mx-auto grid grid-cols-12 gap-8 md:gap-12 items-center">
 
-          {/* ── Left: identity + copy + CTAs ── */}
+          {/* ── Identity + copy + CTAs (right side left as open breathing room) ── */}
           <div className="col-span-12 lg:col-span-7">
 
             {/* Eyebrow */}
@@ -110,54 +110,6 @@ export default function HeroSection() {
                   <span>Explore Technology</span>
                 </button>
               </Magnetic>
-            </div>
-          </div>
-
-          {/* ── Right: floating tech ornament panel ── */}
-          <div className="col-span-12 lg:col-span-5 mt-12 lg:mt-0">
-            <div
-              className="hero-fade spectra-float relative aspect-[3/4] max-w-[280px] sm:max-w-[340px] lg:max-w-[420px] mx-auto lg:ml-auto"
-              style={{ animationDelay: '900ms', animationDuration: '1.4s' }}
-            >
-              {/* Panel — soft glass card with mist-blue overlay */}
-              <div className="absolute inset-0 rounded-[24px] bg-spectra-pearl shadow-[0_30px_80px_-20px_rgba(10,14,18,0.18),0_8px_20px_-8px_rgba(10,14,18,0.08)] border border-spectra-hairline overflow-hidden">
-
-                {/* Soft mist-blue gradient overlay */}
-                <div
-                  className="absolute inset-0"
-                  style={{
-                    background:
-                      'linear-gradient(155deg, rgba(214,225,232,0.65) 0%, rgba(214,225,232,0) 55%, rgba(180,198,210,0.25) 100%)',
-                  }}
-                />
-
-                {/* Top bar — minimal chrome */}
-                <div className="absolute top-0 left-0 right-0 h-12 border-b border-spectra-hairline" />
-
-                {/* Center — Warden robot video */}
-                <div className="absolute inset-0 top-12 bottom-12 flex items-center justify-center">
-                  <video
-                    autoPlay
-                    muted
-                    loop
-                    playsInline
-                    className="w-full h-full object-cover"
-                  >
-                    <source src="/videos/model.mp4" type="video/mp4" />
-                    Your browser does not support the video tag.
-                  </video>
-                </div>
-
-                {/* Bottom — clean label removed, kept structure */}
-                <div className="absolute bottom-0 left-0 right-0 px-5 py-4 border-t border-spectra-hairline" />
-
-              </div>
-
-              {/* Floating mini-card behind the main one */}
-              <div
-                className="absolute -z-10 -bottom-6 -left-8 w-44 h-28 rounded-2xl bg-spectra-mist-deep/30 border border-spectra-hairline"
-                style={{ backdropFilter: 'blur(2px)' }}
-              />
             </div>
           </div>
         </div>
